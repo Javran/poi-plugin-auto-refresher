@@ -49,7 +49,8 @@ module.exports = {
     'react/prefer-stateless-function': 'off',
     'react/jsx-boolean-value': 'off',
     'no-mixed-operators': 'off',
-    'consistent-return': 'off'
+    'consistent-return': 'off',
+    'no-plusplus': 'off'
   },
   'settings': {
     'import/resolver': {

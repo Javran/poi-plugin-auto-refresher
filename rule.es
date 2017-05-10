@@ -182,7 +182,6 @@ const prepareRuleTable = (ruleTable, fcdMap) => {
           return watchList.length > 0 ? {...rule, check} : rule
         }
 
-
         if (type === 'edge') {
           const result = []
           Object.keys( route ).map( edgeNumStr => {
@@ -200,6 +199,19 @@ const prepareRuleTable = (ruleTable, fcdMap) => {
       // TODO: remove duplicated rules
       ruleTable.set(mapId, newRules)
     })
+  return ruleTable
+}
+
+// shouldTrigger(<prepared table>)(<mapId>)(<edgeNum>)
+// returns true if we are suppose to trigger a refresh
+const shouldTrigger = preparedTable => mapId => {
+  if (preparedTable.has(mapId)) {
+    const mapRules = preparedTable.get(mapId)
+    return edgeNum => mapRules.some( rule =>
+      typeof rule.check !== 'undefined' && rule.check(edgeNum) )
+  } else {
+    return () => false
+  }
 }
 
 export {
@@ -209,4 +221,5 @@ export {
   splitMapId,
   loadRules,
   prepareRuleTable,
+  shouldTrigger,
 }
