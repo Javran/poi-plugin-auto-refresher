@@ -36,6 +36,7 @@
     "path-extra": "^4.1.0"
   },
   "dependencies": {
+    "fs-extra": "^3.0.1",
     "parsimmon": "^1.2.0"
   }
 }

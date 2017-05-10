@@ -29,86 +29,170 @@
        - '44:j'
  */
 
+import { join } from 'path-extra'
+import { readJsonSync } from 'fs-extra'
+
 const P = require('parsimmon')
+const fs = require('fs')
+const _ = require('lodash')
 
 // INTERNAL ONLY
 // helper function for making several structures
 // note that these functions are not responsible to check and normalize
 // their arguments before creating the corresponding structure.
 const mk = {
+  map: (world,area) => world*10+area,
   node: n => ({type: 'node', node: n}),
   edge: (begin,end) => ({type: 'edge', begin, end}),
   edgeNum: edge => ({type: 'edgeNum', edge}),
 }
 
-const token = p => p.skip(P.optWhitespace)
+const splitMapId = mapId => ({
+  world: Math.floor(mapId/10),
+  area: mapId % 10,
+})
 
-const num = token(P.regexp(/[0-9]+/).map(x => parseInt(x,10)))
+const parser = (() => {
+  const token = p => p.skip(P.optWhitespace)
 
-const world = token(P
-  .seq(
+  const num = token(P.regexp(/[0-9]+/).map(x => parseInt(x,10)))
+
+  const world = token(P
+    .seq(
+      num,
+      P.string('-').then(num).atMost(1))
+    .map( ([x,ys]) => {
+      if (ys.length === 0) {
+        return x
+      } else {
+        const [area] = ys
+        return mk.map(x,area)
+      }
+    })
+    .desc('world'))
+
+  const node = token(P
+    .letter
+    .map(x => x.toUpperCase())
+    .desc('node')
+  )
+
+  const nodeOrEdge = token(P
+    .seq(
+      node,
+      token(P.string('->')).then(node).atMost(1))
+    .map( ([x,ys]) => {
+      if (ys.length === 0) {
+        return mk.node(x)
+      } else {
+        const [end] = ys
+        return mk.edge(x,end)
+      }
+    })
+    .desc('node or edge'))
+
+  const edgeNum = num
+    .map( mk.edgeNum )
+    .desc('edge number')
+
+  const selector = P
+    .alt(edgeNum, nodeOrEdge)
+    .desc('selector')
+
+  const rule = P
+    .seq(
+      world,
+      token(P.oneOf(',:')).then(
+        P.sepBy(
+          selector,
+          token(P.string(',')))),
+      token(P.string(',').atMost(1)))
+    .map(([map,rules]) => ({map, rules}))
+    .desc('rule')
+
+  // parse a line of rules
+  const ruleLine = P.optWhitespace.then(rule)
+
+  return {
     num,
-    P.string('-').then(num).atMost(1))
-  .map( ([x,ys]) => {
-    if (ys.length === 0) {
-      return { world: Math.floor(x/10), area: x%10 }
-    } else {
-      const [area] = ys
-      return { world: x, area }
-    }
-  })
-  .desc('world'))
-
-const node = token(P
-  .letter
-  .map(x => x.toUpperCase())
-  .desc('node')
-)
-
-const nodeOrEdge = token(P
-  .seq(
-    node,
-    token(P.string('->')).then(node).atMost(1))
-  .map( ([x,ys]) => {
-    if (ys.length === 0) {
-      return mk.node(x)
-    } else {
-      const [end] = ys
-      return mk.edge(x,end)
-    }
-  })
-  .desc('node or edge'))
-
-const edgeNum = num
-  .map( mk.edgeNum )
-  .desc('edge number')
-
-const selector = P
-  .alt(edgeNum, nodeOrEdge)
-  .desc('selector')
-
-const rule = P
-  .seq(
     world,
-    token(P.oneOf(',:')).then(
-      P.sepBy(
-        selector,
-        token(P.string(',')))),
-    token(P.string(',').atMost(1)))
-  .map(([map,rules]) => ({map, rules}))
-  .desc('rule')
+    selector,
+    ruleLine,
+  }
+})()
 
-// parse a line of rules
-const ruleLine = P.optWhitespace.then(rule)
+const loadRules = (fp, errFunc=console.error) => {
+  const ruleTable = new Map()
+  const register = (mapId, r1) => {
+    if (ruleTable.has(mapId)) {
+      const arr = ruleTable.get(mapId)
+      if (arr.findIndex(r2 => _.isEqual(r1,r2)) === -1)
+        arr.push(r1)
+    } else {
+      ruleTable.set(mapId, [r1])
+    }
+  }
+  fs.readFileSync(fp,'utf8')
+    .split(/\r?\n/)
+    .map( raw => {
+      // skipping lines that does not contain any non-space
+      if (/^\s*$/.test(raw))
+        return
 
-const parser = {
-  num,
-  world,
-  selector,
-  ruleLine,
+      try {
+        const {map, rules} = parser.ruleLine.tryParse(raw)
+        rules.map( r => register(map, r) )
+      } catch (e) {
+        errFunc(`Failed to parse "${raw}"`)
+        errFunc(`Error message: ${e.message}`)
+      }
+    })
+  return ruleTable
 }
+
+/*
+const tmpFcdMap = readJsonSync(join(__dirname,'assets','map.json'))
+
+const applyFcd = (ruleTable, fcdMap) => {
+  [...ruleTable.keys()]
+    .map( mapId => {
+      const {world,area} = splitMapId(mapId)
+      const rules = ruleTable.get(mapId)
+      const mapInfo = fcdMap[`${world}-${area}`] || { route: {} }
+      const { route } = mapInfo
+
+      const newRules = rules.map( rule => {
+        const { type } = rule
+        if (type === 'edgeNum') {
+          const check = edgeNum =>
+            rule.edge === edgeNum
+          return {...rule, check }
+        }
+
+        if (type === 'node') {
+          // TODO
+        }
+
+
+        if (type === 'edge') {
+          // TODO
+        }
+        console.log(rule)
+        console.error(`invalid type: ${type}`)
+      })
+
+      ruleTable.set(mapId, newRules)
+    })
+}
+
+const r = loadRules(join(__dirname,'assets','default.csv'))
+applyFcd(r,tmpFcdMap)
+*/
 
 export {
   mk,
   parser,
+
+  splitMapId,
+  loadRules,
 }
