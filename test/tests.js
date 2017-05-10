@@ -1,4 +1,5 @@
 import { join } from 'path-extra'
+import { readJsonSync } from 'fs-extra'
 
 import * as rule from '../rule'
 
@@ -120,5 +121,11 @@ describe('rule', () => {
         assert.equal(recorder.countMessages(), 2*2)
       }
     })
+  })
+
+  spec('fcd', () => {
+    // a small portion of fcd for testing config normalization
+    const fcdMap = readJsonSync(join(__dirname,'map.json'))
+
   })
 })

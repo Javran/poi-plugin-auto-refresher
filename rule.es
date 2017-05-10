@@ -150,16 +150,16 @@ const loadRules = (fp, errFunc=console.error) => {
   return ruleTable
 }
 
-/*
-const tmpFcdMap = readJsonSync(join(__dirname,'assets','map.json'))
+const ignored = () => ({})
 
-const applyFcd = (ruleTable, fcdMap) => {
+// trim ruleTable, setup "check" function for rules using fcd
+const prepareRuleTable = (ruleTable, fcdMap) => {
   [...ruleTable.keys()]
     .map( mapId => {
       const {world,area} = splitMapId(mapId)
       const rules = ruleTable.get(mapId)
-      const mapInfo = fcdMap[`${world}-${area}`] || { route: {} }
-      const { route } = mapInfo
+
+      const { route } = fcdMap[`${world}-${area}`] || { route: {} }
 
       const newRules = rules.map( rule => {
         const { type } = rule
@@ -170,24 +170,37 @@ const applyFcd = (ruleTable, fcdMap) => {
         }
 
         if (type === 'node') {
-          // TODO
+          const watchList = []
+          Object.keys( route ).map( edgeNumStr => {
+            const [begin,end] = route[edgeNumStr]
+            ignored(begin)
+            if (end === rule.node) {
+              watchList.push(parseInt(edgeNumStr,10))
+            }
+          })
+          const check = edgeNum => watchList.indexOf(edgeNum) !== -1
+          return watchList.length > 0 ? {...rule, check} : rule
         }
 
 
         if (type === 'edge') {
-          // TODO
+          const result = []
+          Object.keys( route ).map( edgeNumStr => {
+            const [begin,end] = route[edgeNumStr]
+            if (begin === rule.begin && end === rule.end) {
+              result.push(parseInt(edgeNumStr,10))
+            }
+          })
+          const check = edgeNum =>
+            result[0] === edgeNum
+          return result.length === 1 ? {...rule, check} : rule
         }
-        console.log(rule)
         console.error(`invalid type: ${type}`)
       })
-
+      // TODO: remove duplicated rules
       ruleTable.set(mapId, newRules)
     })
 }
-
-const r = loadRules(join(__dirname,'assets','default.csv'))
-applyFcd(r,tmpFcdMap)
-*/
 
 export {
   mk,
@@ -195,4 +208,5 @@ export {
 
   splitMapId,
   loadRules,
+  prepareRuleTable,
 }

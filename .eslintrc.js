@@ -48,7 +48,8 @@ module.exports = {
     'react/forbid-prop-types': 'off',
     'react/prefer-stateless-function': 'off',
     'react/jsx-boolean-value': 'off',
-    'no-mixed-operators': 'off'
+    'no-mixed-operators': 'off',
+    'consistent-return': 'off'
   },
   'settings': {
     'import/resolver': {
