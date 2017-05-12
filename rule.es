@@ -214,17 +214,17 @@ const shouldTrigger = preparedTable => mapId => {
   }
 }
 
+// should work on both unprocessed and processed rule table
 const ruleTableToStr = ruleTable =>
-  [...ruleTable.keys()]
-    .map(mapId => {
-      const ruleArr = ruleTable.get(mapId)
+  [...ruleTable.entries()]
+    .map(([mapId,rules]) => {
       const ruleToStr = rule =>
           rule.type === 'edgeNum' ? String(rule.edge)
         : rule.type === 'edge' ? `${rule.begin}-${rule.end}`
         : rule.type === 'node' ? rule.node
         : console.error(`Unknown rule type: ${rule.type}`)
 
-      return [mapId, ...ruleArr.map(ruleToStr)].join(',')
+      return [mapId, ...rules.map(ruleToStr)].join(',')
     })
     .join('\n')
 
