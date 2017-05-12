@@ -220,7 +220,7 @@ const ruleTableToStr = ruleTable =>
     .map(([mapId,rules]) => {
       const ruleToStr = rule =>
           rule.type === 'edgeNum' ? String(rule.edge)
-        : rule.type === 'edge' ? `${rule.begin}-${rule.end}`
+        : rule.type === 'edge' ? `${rule.begin}->${rule.end}`
         : rule.type === 'node' ? rule.node
         : console.error(`Unknown rule type: ${rule.type}`)
 
