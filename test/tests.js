@@ -99,7 +99,7 @@ describe('rule', () => {
         r33)
     })
 
-    spec('parsing config', () => {
+    spec('parsing & dumping config', () => {
       const mkErrorRecorder = () => {
         const errMsgLog = []
         return {
@@ -110,8 +110,20 @@ describe('rule', () => {
 
       {
         const recorder = mkErrorRecorder()
-        rule.loadRules(join(__dirname,'conf1.csv'), recorder.recordError)
+        const r = rule.loadRules(join(__dirname,'conf1.csv'), recorder.recordError)
         assert.equal(recorder.countMessages(), 0)
+
+        assert.equal(
+          rule.ruleTableToStr(r),
+          [
+            '13,B,D-C,8',
+            '15,E-G',
+            '16,K',
+            '22,A,A-B,6',
+            '33,4,7',
+            '44,G-J',
+            '51,E',
+          ].join('\n'))
       }
 
       {
