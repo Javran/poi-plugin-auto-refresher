@@ -214,6 +214,20 @@ const shouldTrigger = preparedTable => mapId => {
   }
 }
 
+const ruleTableToStr = ruleTable =>
+  [...ruleTable.keys()]
+    .map(mapId => {
+      const ruleArr = ruleTable.get(mapId)
+      const ruleToStr = rule =>
+          rule.type === 'edgeNum' ? String(rule.edge)
+        : rule.type === 'edge' ? `${rule.begin}-${rule.end}`
+        : rule.type === 'node' ? rule.node
+        : console.error(`Unknown rule type: ${rule.type}`)
+
+      return [mapId, ...ruleArr.map(ruleToStr)].join(',')
+    })
+    .join('\n')
+
 export {
   mk,
   parser,
@@ -222,4 +236,6 @@ export {
   loadRules,
   prepareRuleTable,
   shouldTrigger,
+
+  ruleTableToStr,
 }
