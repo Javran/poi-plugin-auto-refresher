@@ -3,6 +3,10 @@ import { join } from 'path-extra'
 import React, { Component } from 'react'
 import { Panel, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import { AreaPanel } from './area-panel'
+import { loadRules } from './rule'
+
+// TODO: to be removed after implementing profile switching
+const ruleTable = loadRules(join(__dirname,'default.csv'))
 
 /*
    TODO: allow profile switching, each rule file is an individual profile,
