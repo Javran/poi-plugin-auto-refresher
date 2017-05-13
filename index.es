@@ -3,12 +3,13 @@ import { join } from 'path-extra'
 import React, { Component } from 'react'
 import { Panel, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import { AreaPanel } from './area-panel'
-import { loadRules } from './rule'
+import { loadRules, prepareRuleTable } from './rule'
 import { AutoRefresherMain } from './auto-refresher-main'
+import { fcdMapSelector } from './selector'
+import { connect } from 'react-redux'
 
 // TODO: to be removed after implementing profile switching
-const ruleTable = loadRules(join(__dirname,'default.csv'))
-
+const ruleTableRaw = loadRules(join(__dirname,'default.csv'))
 
 /*
    TODO: allow profile switching, each rule file is an individual profile,
@@ -22,7 +23,13 @@ const ruleTable = loadRules(join(__dirname,'default.csv'))
    flag sounds like the most sensible option.
 */
 
-const reactClass = AutoRefresherMain
+const reactClass = connect(
+  state => {
+    const fcdMap = fcdMapSelector(state)
+    // prepared rule table
+    const ruleTable = prepareRuleTable(ruleTableRaw,fcdMap)
+    return { ruleTable }
+  })(AutoRefresherMain)
 
 export {
   reactClass,
