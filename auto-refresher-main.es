@@ -1,11 +1,17 @@
 import { join } from 'path-extra'
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Panel, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import { AreaPanel } from './area-panel'
+import { mapIdToStr } from './rule'
 
 class AutoRefresherMain extends Component {
+  static propTypes = {
+    ruleTable: PropTypes.instanceOf(Map).isRequired,
+  }
   render() {
+    const { ruleTable } = this.props
+    const ruleEntries = [...ruleTable.entries()]
     return (
       <div className="poi-plugin-auto-refresher">
         <link rel="stylesheet" href={join(__dirname, 'assets', 'auto-refresher.css')} />
@@ -41,15 +47,15 @@ class AutoRefresherMain extends Component {
             </div>
           </div>
         </Panel>
-        <AreaPanel
-            header="1-3"
-        />
-        <AreaPanel
-            header="2-2"
-        />
-        <AreaPanel
-            header="4-2"
-        />
+        {
+          ruleEntries.map( ([mapId, rules]) => (
+            <AreaPanel
+                key={mapId}
+                header={mapIdToStr(mapId)}
+                rules={rules}
+            />
+          ))
+        }
       </div>)
   }
 }

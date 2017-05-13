@@ -52,6 +52,11 @@ const splitMapId = mapId => ({
   area: mapId % 10,
 })
 
+const mapIdToStr = mapId => {
+  const { world, area } = splitMapId(mapId)
+  return `${world}-${area}`
+}
+
 const parser = (() => {
   const token = p => p.skip(P.optWhitespace)
 
@@ -233,6 +238,8 @@ export {
   parser,
 
   splitMapId,
+  mapIdToStr,
+
   loadRules,
   prepareRuleTable,
   shouldTrigger,
