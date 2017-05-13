@@ -1,12 +1,9 @@
 import { join } from 'path-extra'
+import { connect } from 'react-redux'
 
-import React, { Component } from 'react'
-import { Panel, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
-import { AreaPanel } from './area-panel'
 import { loadRules, prepareRuleTable } from './rule'
 import { AutoRefresherMain } from './auto-refresher-main'
 import { fcdMapSelector } from './selector'
-import { connect } from 'react-redux'
 
 // TODO: to be removed after implementing profile switching
 const ruleTableRaw = loadRules(join(__dirname,'default.csv'))
