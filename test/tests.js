@@ -44,7 +44,7 @@ describe('rule', () => {
 
       assert.deepEqual(
         p.selector.parse('15 ').value,
-        mk.edgeNum(15))
+        mk.edgeId(15))
     })
 
     spec('rule line', () => {
@@ -91,7 +91,7 @@ describe('rule', () => {
 
       const r33 = {
         map: 33,
-        rules: [mk.edgeNum(4),mk.edgeNum(7)],
+        rules: [mk.edgeId(4),mk.edgeId(7)],
       }
 
       assert.deepEqual(

@@ -25,6 +25,7 @@ const tHeader = props => (
 class AreaPanel extends Component {
   static propTypes = {
     mapId: PropTypes.number.isRequired,
+    rules: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
   render() {
     const { mapId, rules } = this.props

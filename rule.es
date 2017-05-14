@@ -41,7 +41,7 @@ const mk = {
   map: (world,area) => world*10+area,
   node: n => ({type: 'node', node: n}),
   edge: (begin,end) => ({type: 'edge', begin, end}),
-  edgeNum: edge => ({type: 'edgeNum', edge}),
+  edgeId: edge => ({type: 'edgeId', edge}),
 }
 
 const splitMapId = mapId => ({
@@ -93,12 +93,12 @@ const parser = (() => {
     })
     .desc('node or edge'))
 
-  const edgeNum = num
-    .map( mk.edgeNum )
+  const edgeId = num
+    .map( mk.edgeId )
     .desc('edge number')
 
   const selector = P
-    .alt(edgeNum, nodeOrEdge)
+    .alt(edgeId, nodeOrEdge)
     .desc('selector')
 
   const rule = P
@@ -163,35 +163,35 @@ const prepareRuleTable = (ruleTable, fcdMap) => {
 
       const newRules = rules.map( rule => {
         const { type } = rule
-        if (type === 'edgeNum') {
-          const check = edgeNum =>
-            rule.edge === edgeNum
+        if (type === 'edgeId') {
+          const check = edgeId =>
+            rule.edge === edgeId
           return {...rule, check }
         }
 
         if (type === 'node') {
-          const edgeNums = []
-          Object.keys( route ).map( edgeNumStr => {
-            const [begin,end] = route[edgeNumStr]
+          const edgeIds = []
+          Object.keys( route ).map( edgeIdStr => {
+            const [begin,end] = route[edgeIdStr]
             ignored(begin)
             if (end === rule.node) {
-              edgeNums.push(parseInt(edgeNumStr,10))
+              edgeIds.push(parseInt(edgeIdStr,10))
             }
           })
-          const check = edgeNum => edgeNums.indexOf(edgeNum) !== -1
-          return edgeNums.length > 0 ? {...rule, edgeNums, check} : rule
+          const check = edgeId => edgeIds.indexOf(edgeId) !== -1
+          return edgeIds.length > 0 ? {...rule, edgeIds, check} : rule
         }
 
         if (type === 'edge') {
           const result = []
-          Object.keys( route ).map( edgeNumStr => {
-            const [begin,end] = route[edgeNumStr]
+          Object.keys( route ).map( edgeIdStr => {
+            const [begin,end] = route[edgeIdStr]
             if (begin === rule.begin && end === rule.end) {
-              result.push(parseInt(edgeNumStr,10))
+              result.push(parseInt(edgeIdStr,10))
             }
           })
-          const check = edgeNum =>
-            result[0] === edgeNum
+          const check = edgeId =>
+            result[0] === edgeId
           return result.length === 1 ? {...rule, check, edge: result[0]} : rule
         }
         console.error(`invalid type: ${type}`)
@@ -202,13 +202,13 @@ const prepareRuleTable = (ruleTable, fcdMap) => {
   return retRuleTable
 }
 
-// shouldTrigger(<prepared table>)(<mapId>)(<edgeNum>)
+// shouldTrigger(<prepared table>)(<mapId>)(<edgeId>)
 // returns true if we are suppose to trigger a refresh
 const shouldTrigger = preparedTable => mapId => {
   if (preparedTable.has(mapId)) {
     const mapRules = preparedTable.get(mapId)
-    return edgeNum => mapRules.some( rule =>
-      typeof rule.check !== 'undefined' && rule.check(edgeNum) )
+    return edgeId => mapRules.some( rule =>
+      typeof rule.check !== 'undefined' && rule.check(edgeId) )
   } else {
     return () => false
   }
@@ -219,7 +219,7 @@ const ruleTableToStr = ruleTable =>
   [...ruleTable.entries()]
     .map(([mapId,rules]) => {
       const ruleToStr = rule =>
-          rule.type === 'edgeNum' ? String(rule.edge)
+          rule.type === 'edgeId' ? String(rule.edge)
         : rule.type === 'edge' ? `${rule.begin}->${rule.end}`
         : rule.type === 'node' ? rule.node
         : console.error(`Unknown rule type: ${rule.type}`)
