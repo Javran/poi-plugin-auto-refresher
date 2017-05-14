@@ -234,26 +234,49 @@ const shouldTrigger = preparedTable => mapId => {
   }
 }
 
+const destructRule = (onEdgeId, onEdge, onNode) =>
+  rule =>
+      rule.type === 'edgeId' ? onEdgeId(rule.edge, rule)
+    : rule.type === 'edge' ? onEdge(rule.begin,rule.end, rule)
+    : rule.type === 'node' ? onNode(rule.node, rule)
+    : console.error(`Unknown rule type: ${rule.type}`)
+
 // should work on both unprocessed and processed rule table
 const ruleTableToStr = ruleTable =>
   [...ruleTable.entries()]
-    .map(([mapId,rules]) => {
-      const ruleToStr = rule =>
-          rule.type === 'edgeId' ? String(rule.edge)
-        : rule.type === 'edge' ? `${rule.begin}->${rule.end}`
-        : rule.type === 'node' ? rule.node
-        : console.error(`Unknown rule type: ${rule.type}`)
-
-      return [mapId, ...rules.map(ruleToStr)].join(',')
-    })
+    .map(([mapId,rules]) =>
+      [mapId, ...rules.map(
+        destructRule(
+          edgeId => String(edgeId),
+          (begin,end) => `${begin}->${end}`,
+          node => node)
+      )].join(','))
     .join('\n')
 
 // encode rule as id
-const ruleAsId = rule =>
-    rule.type === 'edgeId' ? `d-${rule.edge}`
-  : rule.type === 'edge' ? `e-${rule.begin}-${rule.end}`
-  : rule.type === 'node' ? `n-${rule.node}`
-  : console.error(`Unknown rule type: ${rule.type}`)
+const ruleAsId = destructRule(
+  edgeId => `d-${edgeId}`,
+  (begin,end) => `e-${begin}-${end}`,
+  node => `n-${node}`)
+
+// rule pretty printer (to string)
+const prettyRule = destructRule(
+  (edgeId, r) => {
+    const [begin,end] = [r.begin || '?', r.end || '?']
+    return `${begin}->${end} (${edgeId})`
+  },
+  (begin,end,r) => {
+    const edgeId = r.edge || '?'
+    return `${begin}->${end} (${edgeId})`
+  },
+  (node,r) => {
+    const edges =
+      typeof r.edgeIds !== 'undefined'
+      ? r.edgeIds.map(String).join(',')
+      : '?'
+    return `*->${node} (${edges})`
+  }
+)
 
 export {
   mk,
@@ -268,4 +291,5 @@ export {
 
   ruleTableToStr,
   ruleAsId,
+  prettyRule,
 }

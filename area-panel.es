@@ -5,7 +5,7 @@ import {
   ListGroup,
   ListGroupItem,
 } from 'react-bootstrap'
-import { mapIdToStr } from './rule'
+import { mapIdToStr, ruleAsId, prettyRule } from './rule'
 
 const tHeader = props => (
   <div>
@@ -43,10 +43,11 @@ class AreaPanel extends Component {
               const available = typeof r.check === 'function'
               return (
                 <ListGroupItem
+                    key={ruleAsId(r)}
                     style={{ backgroundColor: 'initial'}}
                     bsStyle={available ? 'success' : 'danger'}
                 >
-                  { JSON.stringify( r ) }
+                  { prettyRule( r ) }
                 </ListGroupItem>
               )
             })
