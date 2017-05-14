@@ -3,7 +3,6 @@ import { join } from 'path-extra'
 import React, { Component, PropTypes } from 'react'
 import { Panel, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import { AreaPanel } from './area-panel'
-import { mapIdToStr } from './rule'
 
 class AutoRefresherMain extends Component {
   static propTypes = {
@@ -51,7 +50,7 @@ class AutoRefresherMain extends Component {
           ruleEntries.map( ([mapId, rules]) => (
             <AreaPanel
                 key={mapId}
-                header={mapIdToStr(mapId)}
+                mapId={mapId}
                 rules={rules}
             />
           ))

@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Panel, Button } from 'react-bootstrap'
+import { mapIdToStr } from './rule'
 
 const tHeader = props => (
   <div>
@@ -17,11 +18,16 @@ const tHeader = props => (
   </div>)
 
 class AreaPanel extends Component {
+  static propTypes = {
+    mapId: PropTypes.number.isRequired,
+  }
   render() {
+    const { mapId } = this.props
+    const header = mapIdToStr(mapId)
     return (
       <Panel
           bsStyle="primary"
-          header={tHeader(this.props)}
+          header={tHeader({header})}
           content="content"
           collapsible>
         Content
