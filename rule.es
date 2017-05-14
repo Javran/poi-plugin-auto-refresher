@@ -170,16 +170,16 @@ const prepareRuleTable = (ruleTable, fcdMap) => {
         }
 
         if (type === 'node') {
-          const watchList = []
+          const edgeNums = []
           Object.keys( route ).map( edgeNumStr => {
             const [begin,end] = route[edgeNumStr]
             ignored(begin)
             if (end === rule.node) {
-              watchList.push(parseInt(edgeNumStr,10))
+              edgeNums.push(parseInt(edgeNumStr,10))
             }
           })
-          const check = edgeNum => watchList.indexOf(edgeNum) !== -1
-          return watchList.length > 0 ? {...rule, check} : rule
+          const check = edgeNum => edgeNums.indexOf(edgeNum) !== -1
+          return edgeNums.length > 0 ? {...rule, edgeNums, check} : rule
         }
 
         if (type === 'edge') {
@@ -192,7 +192,7 @@ const prepareRuleTable = (ruleTable, fcdMap) => {
           })
           const check = edgeNum =>
             result[0] === edgeNum
-          return result.length === 1 ? {...rule, check} : rule
+          return result.length === 1 ? {...rule, check, edge: result[0]} : rule
         }
         console.error(`invalid type: ${type}`)
       })
