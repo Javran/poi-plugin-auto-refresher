@@ -1,5 +1,5 @@
 import * as P from 'parsimmon'
-import { mk } from './rule-base'
+import { mk } from './base'
 
 // transforms the parser so that it not only yields the expected result
 // but also consumes all following spaces of the input string

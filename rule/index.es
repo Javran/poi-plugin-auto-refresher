@@ -52,8 +52,8 @@
        - exists only when this rule object is processed and valid
  */
 
-import * as parser from './rule-syntax'
-import { mk } from './rule-base'
+import * as parser from './syntax'
+import { mk } from './base'
 
 const fs = require('fs')
 const _ = require('lodash')
