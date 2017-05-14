@@ -29,9 +29,6 @@
        - '44:j'
  */
 
-import { join } from 'path-extra'
-import { readJsonSync } from 'fs-extra'
-
 const P = require('parsimmon')
 const fs = require('fs')
 const _ = require('lodash')
@@ -159,12 +156,10 @@ const ignored = () => ({})
 
 // trim ruleTable, setup "check" function for rules using fcd
 const prepareRuleTable = (ruleTable, fcdMap) => {
-  [...ruleTable.keys()]
-    .map( mapId => {
-      const {world,area} = splitMapId(mapId)
-      const rules = ruleTable.get(mapId)
-
-      const { route } = fcdMap[`${world}-${area}`] || { route: {} }
+  const retRuleTable = new Map();
+  [...ruleTable.entries()]
+    .map( ([mapId,rules]) => {
+      const { route } = fcdMap[mapIdToStr(mapId)] || { route: {} }
 
       const newRules = rules.map( rule => {
         const { type } = rule
@@ -202,9 +197,9 @@ const prepareRuleTable = (ruleTable, fcdMap) => {
         console.error(`invalid type: ${type}`)
       })
       // TODO: remove duplicated rules
-      ruleTable.set(mapId, newRules)
+      retRuleTable.set(mapId, newRules)
     })
-  return ruleTable
+  return retRuleTable
 }
 
 // shouldTrigger(<prepared table>)(<mapId>)(<edgeNum>)
