@@ -38,12 +38,17 @@ class AreaPanel extends Component {
           collapsible>
         <ListGroup>
           {
-            rules.map( r => (
-              <ListGroupItem
-              >
-                { JSON.stringify( r ) }
-              </ListGroupItem>
-            ))
+            rules.map( r => {
+              const available = typeof r.check === 'function'
+              return (
+                <ListGroupItem
+                    style={{ backgroundColor: 'initial'}}
+                    bsStyle={available ? 'success' : 'danger'}
+                >
+                  { JSON.stringify( r ) }
+                </ListGroupItem>
+              )
+            })
           }
         </ListGroup>
       </Panel>
