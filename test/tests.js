@@ -8,6 +8,19 @@ const assert = require('assert')
 const spec = it
 
 describe('rule', () => {
+  spec('ruleAsId', () => {
+    const mk = rule.mk
+    assert.equal(
+      rule.ruleAsId(mk.node('X')),
+      'n-X')
+    assert.equal(
+      rule.ruleAsId(mk.edge('U','V')),
+      'e-U-V')
+    assert.equal(
+      rule.ruleAsId(mk.edgeId(192)),
+      'd-192')
+  })
+
   describe('parsing', () => {
     const p = rule.parser
     const mk = rule.mk

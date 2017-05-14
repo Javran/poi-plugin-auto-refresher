@@ -248,6 +248,13 @@ const ruleTableToStr = ruleTable =>
     })
     .join('\n')
 
+// encode rule as id
+const ruleAsId = rule =>
+    rule.type === 'edgeId' ? `d-${rule.edge}`
+  : rule.type === 'edge' ? `e-${rule.begin}-${rule.end}`
+  : rule.type === 'node' ? `n-${rule.node}`
+  : console.error(`Unknown rule type: ${rule.type}`)
+
 export {
   mk,
   parser,
@@ -260,4 +267,5 @@ export {
   shouldTrigger,
 
   ruleTableToStr,
+  ruleAsId,
 }
