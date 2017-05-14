@@ -4,7 +4,7 @@
   "description": "Avoid unwelcome nodes or edges by refreshing. Use at your own risk.",
   "main": "index.es",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register"
+    "test": "mocha --compilers js:babel-core/register --recursive"
   },
   "keywords": [
     "kancolle",
