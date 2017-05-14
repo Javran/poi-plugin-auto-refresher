@@ -1,5 +1,10 @@
 import React, { Component, PropTypes } from 'react'
-import { Panel, Button } from 'react-bootstrap'
+import {
+  Panel,
+  Button,
+  ListGroup,
+  ListGroupItem,
+} from 'react-bootstrap'
 import { mapIdToStr } from './rule'
 
 const tHeader = props => (
@@ -22,15 +27,25 @@ class AreaPanel extends Component {
     mapId: PropTypes.number.isRequired,
   }
   render() {
-    const { mapId } = this.props
+    const { mapId, rules } = this.props
     const header = mapIdToStr(mapId)
     return (
       <Panel
           bsStyle="primary"
           header={tHeader({header})}
           content="content"
+          defaultExpanded
           collapsible>
-        Content
+        <ListGroup>
+          {
+            rules.map( r => (
+              <ListGroupItem
+              >
+                { JSON.stringify( r ) }
+              </ListGroupItem>
+            ))
+          }
+        </ListGroup>
       </Panel>
     )
   }

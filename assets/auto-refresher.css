@@ -11,3 +11,7 @@
 .poi-plugin-auto-refresher .btn {
     margin-top: 0;
 }
+
+.poi-plugin-auto-refresher .panel-body > ul {
+    margin-bottom: 0;
+}
