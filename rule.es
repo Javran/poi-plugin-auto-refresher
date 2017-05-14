@@ -28,6 +28,9 @@
        - '42,i,c->h'
        - '44:j'
 
+   TODO: rule syntax: keep track of flags:
+   - introduce map toggle: '!33 / !3-3' means all 3-3 rules are disabled
+   - rule toggle: prefix with '!', e.g. `!A->B` `!10` `!A`
 
    - Rule object structure:
 
@@ -49,20 +52,11 @@
        - exists only when this rule object is processed and valid
  */
 
-const P = require('parsimmon')
+import * as parser from './rule-syntax'
+import { mk } from './rule-base'
+
 const fs = require('fs')
 const _ = require('lodash')
-
-// INTERNAL ONLY
-// helper function for making several structures
-// note that these functions are not responsible to check and normalize
-// their arguments before creating the corresponding structure.
-const mk = {
-  map: (world,area) => world*10+area,
-  node: n => ({type: 'node', node: n}),
-  edge: (begin,end) => ({type: 'edge', begin, end}),
-  edgeId: edge => ({type: 'edgeId', edge}),
-}
 
 const splitMapId = mapId => ({
   world: Math.floor(mapId/10),
@@ -73,75 +67,6 @@ const mapIdToStr = mapId => {
   const { world, area } = splitMapId(mapId)
   return `${world}-${area}`
 }
-
-const parser = (() => {
-  const token = p => p.skip(P.optWhitespace)
-
-  const num = token(P.regexp(/[0-9]+/).map(x => parseInt(x,10)))
-
-  const world = token(P
-    .seq(
-      num,
-      P.string('-').then(num).atMost(1))
-    .map( ([x,ys]) => {
-      if (ys.length === 0) {
-        return x
-      } else {
-        const [area] = ys
-        return mk.map(x,area)
-      }
-    })
-    .desc('world'))
-
-  const node = token(P
-    .letter
-    .map(x => x.toUpperCase())
-    .desc('node')
-  )
-
-  const nodeOrEdge = token(P
-    .seq(
-      node,
-      token(P.string('->')).then(node).atMost(1))
-    .map( ([x,ys]) => {
-      if (ys.length === 0) {
-        return mk.node(x)
-      } else {
-        const [end] = ys
-        return mk.edge(x,end)
-      }
-    })
-    .desc('node or edge'))
-
-  const edgeId = num
-    .map( mk.edgeId )
-    .desc('edge number')
-
-  const selector = P
-    .alt(edgeId, nodeOrEdge)
-    .desc('selector')
-
-  const rule = P
-    .seq(
-      world,
-      token(P.oneOf(',:')).then(
-        P.sepBy(
-          selector,
-          token(P.string(',')))),
-      token(P.string(',').atMost(1)))
-    .map(([map,rules]) => ({map, rules}))
-    .desc('rule')
-
-  // parse a line of rules
-  const ruleLine = P.optWhitespace.then(rule)
-
-  return {
-    num,
-    world,
-    selector,
-    ruleLine,
-  }
-})()
 
 const loadRules = (fp, errFunc=console.error) => {
   const ruleTable = new Map()
@@ -186,7 +111,15 @@ const prepareRuleTable = (ruleTable, fcdMap) => {
         if (type === 'edgeId') {
           const check = edgeId =>
             rule.edge === edgeId
-          return {...rule, check }
+
+          const result = []
+          Object.keys( route ).map( edgeIdStr => {
+            if (parseInt(edgeIdStr,10) === rule.edge)
+              result.push( route[edgeIdStr] )
+          })
+          return result.length === 1
+            ? { ...rule, check, begin: result[0][0], end: result[0][1] }
+            : {...rule, check }
         }
 
         if (type === 'node') {
@@ -263,18 +196,18 @@ const ruleAsId = destructRule(
 const prettyRule = destructRule(
   (edgeId, r) => {
     const [begin,end] = [r.begin || '?', r.end || '?']
-    return `${begin}->${end} (${edgeId})`
+    return `Match Edge Id: ${begin}->${end} (${edgeId})`
   },
   (begin,end,r) => {
     const edgeId = r.edge || '?'
-    return `${begin}->${end} (${edgeId})`
+    return `Match Edge: ${begin}->${end} (${edgeId})`
   },
   (node,r) => {
     const edges =
       typeof r.edgeIds !== 'undefined'
       ? r.edgeIds.map(String).join(',')
       : '?'
-    return `*->${node} (${edges})`
+    return `Match End Node: *->${node} (${edges})`
   }
 )
 
