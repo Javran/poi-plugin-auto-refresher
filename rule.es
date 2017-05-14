@@ -27,6 +27,26 @@
        - '4-2: I, C->H'
        - '42,i,c->h'
        - '44:j'
+
+
+   - Rule object structure:
+
+
+   - 'type': one of 'edge', 'edgeId', 'node'
+   - 'node':
+       - required when type is 'node', an uppercase letter indicating the node
+   - 'edgeIds':
+       - only exists in processed 'node' rule, which is a list of all edges
+         that point to node in question
+   - 'begin' & 'end':
+       - required when type is 'node', both are uppercase node letters
+   - 'edge':
+       - required when type is `edgeId`, a number indicating the in-game edge id
+       - also exists for processed 'edge' node rules
+   - 'check':
+       - a function that accepts an edge number and returns either 'true' or 'false'
+         indicating whether the edge number in question matches this rule
+       - exists only when this rule object is processed and valid
  */
 
 const P = require('parsimmon')
