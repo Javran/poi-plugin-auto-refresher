@@ -1,4 +1,5 @@
 import * as rule from '../../rule'
+import { mkErrorRecorder } from '../../utils'
 
 const assert = require('assert')
 
@@ -132,6 +133,31 @@ describe('rule/syntax', () => {
       assert.deepEqual(
         p.configLine.parse('3-3 , 4, 7').value,
         r33)
+    })
+
+    describe('parseLine', () => {
+      spec('skip leading spaces', () => {
+        const er = mkErrorRecorder()
+        const result1 = p.parseLine(' 2-2,a',er)
+        const result2 = p.parseLine('2-2,a',er)
+        assert(result1)
+        assert.deepEqual(result1,result2)
+      })
+
+      spec('empty lines', () => {
+        const er = mkErrorRecorder()
+        assert.equal(p.parseLine('  \t\t',er.recordError),null)
+        assert.equal(er.get().length, 0)
+
+        assert.equal(p.parseLine('',er.recordError),null)
+        assert.equal(er.get().length, 0)
+      })
+
+      spec('error', () => {
+        const er = mkErrorRecorder()
+        assert.equal(p.parseLine('t,his,line,should,not,parse',er.recordError),null)
+        assert.equal(er.get().length, 1)
+      })
     })
   })
 })

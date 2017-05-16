@@ -162,10 +162,14 @@ const ruleLine = token(P.regexp(/l/i))
 const configLine = P.alt(mapToggleLine,ruleLine)
 
 // parses a config line, returns either a config line representation
-// or null on parse failure, in this case errFunc is called with error message.
+// or null on parse failure or empty lines,
+// when it is a parse error, errFunc is called with error message.
 const parseLine = (raw, errFunc=console.error) => {
+  if (P.optWhitespace.parse(raw).status === true)
+    return null
+
   try {
-    return P.optWhitespace.then(configLine)
+    return P.optWhitespace.then(configLine).tryParse(raw)
   } catch (e) {
     errFunc(`Failed to parse "${raw}, Error message: ${e.message}`)
     return null

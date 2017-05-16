@@ -28,6 +28,14 @@ const identity = x => x
 
 const not = x => !x
 
+const mkErrorRecorder = () => {
+  const errMsgLog = []
+  return {
+    recordError: msg => errMsgLog.push(msg),
+    get: () => errMsgLog,
+  }
+}
+
 export {
   enumFromTo,
   konst,
@@ -37,4 +45,6 @@ export {
 
   warn,
   error,
+
+  mkErrorRecorder,
 }
