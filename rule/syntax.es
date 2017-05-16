@@ -66,8 +66,10 @@ import { mk } from './base'
 // this allows next parser to assume the input is either EOF or non-space
 const token = p => p.skip(P.optWhitespace)
 
+// parse a number
 const num = token(P.regexp(/[0-9]+/).map(x => parseInt(x,10)))
 
+// parse a world indicator, yields mapId
 const world = token(P
   .seq(
     num,
@@ -82,26 +84,33 @@ const world = token(P
   })
   .desc('world'))
 
+// parse and yield the node letter in uppercase
 const node = token(P
   .letter
   .map(x => x.toUpperCase())
   .desc('node')
 )
 
+// parse either a node or an edge, yields a rule structure
+// these two parser are combined to avoid backtracking
 const nodeOrEdge = token(P
   .seq(
     node,
     token(P.string('->')).then(node).atMost(1))
   .map( ([x,ys]) => {
     if (ys.length === 0) {
+      // e.g. 'A'
       return mk.node(x)
     } else {
+      // ys has exactly one element, this constraint is
+      // implied by ".atMost(1)"
       const [end] = ys
       return mk.edge(x,end)
     }
   })
   .desc('node or edge'))
 
+// parse and yield edgeId
 const edgeId = num
   .map( mk.edgeId )
   .desc('edge number')
