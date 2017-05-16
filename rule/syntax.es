@@ -1,8 +1,6 @@
 /*
    Rule Config Syntax
 
-   TODO: not implemented yet
-
    - Rule Config file itself should be valid CSV file
 
    - unless explicitly stated, every letter is case-insensitive, and if there
@@ -12,7 +10,7 @@
 
    - a 'config line' means either a 'rule line' or a 'map toggle'
 
-     - a 'rule line' indicates a map, and a (perhaps empty) set of rules
+     - a 'rule line' indicates a map, and a non-empty set of rules
 
        - first field is always 'l' (for 'line')
        - to indicate a map, you can use either `38-2` or `382`, which both means
@@ -60,16 +58,17 @@
  */
 import * as P from 'parsimmon'
 import { mk } from './base'
+import { ignore } from '../utils'
 
 // transforms the parser so that it not only yields the expected result
 // but also consumes all following spaces of the input string
 // this allows next parser to assume the input is either EOF or non-space
 const token = p => p.skip(P.optWhitespace)
 
-// parse a number
+// parses a number
 const num = token(P.regexp(/[0-9]+/).map(x => parseInt(x,10)))
 
-// parse a world indicator, yields mapId
+// parses a world indicator, yields mapId
 const world = token(P
   .seq(
     num,
@@ -84,14 +83,14 @@ const world = token(P
   })
   .desc('world'))
 
-// parse and yield the node letter in uppercase
+// parses and yields the node letter in uppercase
 const node = token(P
   .letter
   .map(x => x.toUpperCase())
   .desc('node')
 )
 
-// parse either a node or an edge, yields a rule structure
+// parses either a node or an edge, yields a rule structure
 // these two parser are combined to avoid backtracking
 const nodeOrEdge = token(P
   .seq(
@@ -110,32 +109,74 @@ const nodeOrEdge = token(P
   })
   .desc('node or edge'))
 
-// parse and yield edgeId
+// parses and yields edgeId
 const edgeId = num
   .map( mk.edgeId )
   .desc('edge number')
 
-const selector = P
-  .alt(edgeId, nodeOrEdge)
-  .desc('selector')
 
+// parses and yields a single rule
 const rule = P
   .seq(
-    world,
-    token(P.oneOf(',:')).then(
-      P.sepBy(
-        selector,
-        token(P.string(',')))),
-    token(P.string(',').atMost(1)))
-  .map(([map,rules]) => ({map, rules}))
+    token(P.string('!').atMost(1)),
+    P.alt(edgeId, nodeOrEdge))
+  .map(([ec,r]) => (
+    { ...r,
+      // this field should always be present,
+      // we are not relying on default values.
+      enabled: ec.length === 0,
+    }))
   .desc('rule')
 
-// parse a line of rules
-const ruleLine = P.optWhitespace.then(rule)
+const comma = token(P.string(','))
+
+const mapToggleLine = P
+  .seq(
+    token(P.regexp(/t/i)).skip(comma),
+    world.skip(comma),
+    token(P.regexp(/[01]/)))
+  .map( ([t,mapId,rawFlg]) => ignore(t) && (
+    {
+      type: 'toggle',
+      mapId,
+      enabled: rawFlg === '1',
+    }))
+  .desc('map toggle line')
+
+const ruleLine = token(P.regexp(/l/i))
+  .skip(comma).atMost(1) // optional 'l,'
+  .then(P
+    .seq(
+      // mapId (e.g. 23)
+      world,
+      // ',rule_1,rule_2 ... ,rule_n'
+      comma.then(rule).atLeast(1))
+    .map( ([mapId, rules]) => (
+      {
+        type: 'line',
+        mapId,
+        rules,
+      }))
+    .desc('rule line'))
+
+const configLine = P.alt(mapToggleLine,ruleLine)
+
+// parses a config line, returns either a config line representation
+// or null on parse failure, in this case errFunc is called with error message.
+const parseLine = (raw, errFunc=console.error) => {
+  try {
+    return P.optWhitespace.then(configLine)
+  } catch (e) {
+    errFunc(`Failed to parse "${raw}, Error message: ${e.message}`)
+    return null
+  }
+}
 
 export {
   num,
   world,
-  selector,
-  ruleLine,
+  rule,
+  configLine,
+
+  parseLine,
 }
