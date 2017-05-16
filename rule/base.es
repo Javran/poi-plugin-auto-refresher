@@ -9,4 +9,6 @@ const mk = {
   edgeId: edge => ({type: 'edgeId', edge}),
 }
 
-export { mk }
+export {
+  mk,
+}

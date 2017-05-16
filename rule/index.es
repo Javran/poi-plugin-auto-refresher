@@ -8,30 +8,6 @@
      if you see numbers as large as 30, it's an event world
    - areaId: second part of the index to pinpoint a map
 
-   Rule syntax:
-
-   - comma separated, first separator can be ':' in addition to ','
-   - map can be indicated by number '-' number, or just a simple number
-     (e.g. 25 and 2-5 refer to the same map)
-   - a list of node / edge / edge number can be followed. letters are case-insensitive
-       - node: matches all edges ending at that node. example: 'A', 'a'
-       - edge: one node to another. example: 'H->I'
-       - edge number: in-game edge numbers, in case fcd is not available
-
-       - we call this "selector" for short
-
-   - examples:
-
-       - '2-2: A'
-       - '22:a'
-       - '4-2: I, C->H'
-       - '42,i,c->h'
-       - '44:j'
-
-   TODO: rule syntax: keep track of flags:
-   - introduce map toggle: '!33 / !3-3' means all 3-3 rules are disabled
-   - rule toggle: prefix with '!', e.g. `!A->B` `!10` `!A`
-
    - Rule object structure:
 
 

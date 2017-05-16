@@ -24,12 +24,15 @@ const konst = x => () => x
 // are somehow being used, it serves as an explicit annotation to say that they actually don't
 const ignore = konst
 
+const identity = x => x
+
 const not = x => !x
 
 export {
   enumFromTo,
   konst,
   ignore,
+  identity,
   not,
 
   warn,
