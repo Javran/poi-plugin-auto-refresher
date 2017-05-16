@@ -1,12 +1,12 @@
 import { join } from 'path-extra'
 import { connect } from 'react-redux'
 
-import { loadRules, prepareRuleTable } from './rule'
+import { loadRuleConfig } from './rule/config'
 import { AutoRefresherMain } from './auto-refresher-main'
 import { fcdMapSelector } from './selector'
 
 // TODO: to be removed after implementing profile switching
-const ruleTableRaw = loadRules(join(__dirname,'default.csv'))
+// const ruleTableRaw = loadRules(join(__dirname,'default.csv'))
 
 /*
    TODO: allow profile switching, each rule file is an individual profile,
@@ -23,9 +23,7 @@ const ruleTableRaw = loadRules(join(__dirname,'default.csv'))
 const reactClass = connect(
   state => {
     const fcdMap = fcdMapSelector(state)
-    // prepared rule table
-    const ruleTable = prepareRuleTable(ruleTableRaw,fcdMap)
-    return { ruleTable }
+    return loadRuleConfig(join(__dirname,'default.csv'), fcdMap)
   })(AutoRefresherMain)
 
 export {

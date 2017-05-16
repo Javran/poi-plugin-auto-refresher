@@ -29,107 +29,14 @@
  */
 
 import * as parser from './syntax'
-import { mk } from './base'
-
-const fs = require('fs')
-const _ = require('lodash')
-
-const splitMapId = mapId => ({
-  world: Math.floor(mapId/10),
-  area: mapId % 10,
-})
-
-const mapIdToStr = mapId => {
-  const { world, area } = splitMapId(mapId)
-  return `${world}-${area}`
-}
-
-const loadRules = (fp, errFunc=console.error) => {
-  const ruleTable = new Map()
-  const register = (mapId, r1) => {
-    if (ruleTable.has(mapId)) {
-      const arr = ruleTable.get(mapId)
-      if (arr.findIndex(r2 => _.isEqual(r1,r2)) === -1)
-        arr.push(r1)
-    } else {
-      ruleTable.set(mapId, [r1])
-    }
-  }
-  fs.readFileSync(fp,'utf8')
-    .split(/\r?\n/)
-    .map( raw => {
-      // skipping lines that does not contain any non-space
-      if (/^\s*$/.test(raw))
-        return
-
-      try {
-        const {map, rules} = parser.ruleLine.tryParse(raw)
-        rules.map( r => register(map, r) )
-      } catch (e) {
-        errFunc(`Failed to parse "${raw}"`)
-        errFunc(`Error message: ${e.message}`)
-      }
-    })
-  return ruleTable
-}
-
-const ignored = () => ({})
-
-// trim ruleTable, setup "check" function for rules using fcd
-const prepareRuleTable = (ruleTable, fcdMap) => {
-  const retRuleTable = new Map();
-  [...ruleTable.entries()]
-    .map( ([mapId,rules]) => {
-      const { route } = fcdMap[mapIdToStr(mapId)] || { route: {} }
-
-      const newRules = rules.map( rule => {
-        const { type } = rule
-        if (type === 'edgeId') {
-          const check = edgeId =>
-            rule.edge === edgeId
-
-          const result = []
-          Object.keys( route ).map( edgeIdStr => {
-            if (parseInt(edgeIdStr,10) === rule.edge)
-              result.push( route[edgeIdStr] )
-          })
-          return result.length === 1
-            ? { ...rule, check, begin: result[0][0], end: result[0][1] }
-            : {...rule, check }
-        }
-
-        if (type === 'node') {
-          const edgeIds = []
-          Object.keys( route ).map( edgeIdStr => {
-            const [begin,end] = route[edgeIdStr]
-            ignored(begin)
-            if (end === rule.node) {
-              edgeIds.push(parseInt(edgeIdStr,10))
-            }
-          })
-          const check = edgeId => edgeIds.indexOf(edgeId) !== -1
-          return edgeIds.length > 0 ? {...rule, edgeIds, check} : rule
-        }
-
-        if (type === 'edge') {
-          const result = []
-          Object.keys( route ).map( edgeIdStr => {
-            const [begin,end] = route[edgeIdStr]
-            if (begin === rule.begin && end === rule.end) {
-              result.push(parseInt(edgeIdStr,10))
-            }
-          })
-          const check = edgeId =>
-            result[0] === edgeId
-          return result.length === 1 ? {...rule, check, edge: result[0]} : rule
-        }
-        console.error(`invalid type: ${type}`)
-      })
-      // TODO: remove duplicated rules
-      retRuleTable.set(mapId, newRules)
-    })
-  return retRuleTable
-}
+import {
+  mk,
+  mapIdToStr,
+  splitMapId,
+  destructRule,
+  ruleAsId,
+  prettyRule,
+} from './base'
 
 // shouldTrigger(<prepared table>)(<mapId>)(<edgeId>)
 // returns true if we are suppose to trigger a refresh
@@ -143,13 +50,6 @@ const shouldTrigger = preparedTable => mapId => {
   }
 }
 
-const destructRule = (onEdgeId, onEdge, onNode) =>
-  rule =>
-      rule.type === 'edgeId' ? onEdgeId(rule.edge, rule)
-    : rule.type === 'edge' ? onEdge(rule.begin,rule.end, rule)
-    : rule.type === 'node' ? onNode(rule.node, rule)
-    : console.error(`Unknown rule type: ${rule.type}`)
-
 // should work on both unprocessed and processed rule table
 const ruleTableToStr = ruleTable =>
   [...ruleTable.entries()]
@@ -162,31 +62,6 @@ const ruleTableToStr = ruleTable =>
       )].join(','))
     .join('\n')
 
-// encode rule as id
-const ruleAsId = destructRule(
-  edgeId => `d-${edgeId}`,
-  (begin,end) => `e-${begin}-${end}`,
-  node => `n-${node}`)
-
-// rule pretty printer (to string)
-const prettyRule = destructRule(
-  (edgeId, r) => {
-    const [begin,end] = [r.begin || '?', r.end || '?']
-    return `Match Edge Id: ${begin}->${end} (${edgeId})`
-  },
-  (begin,end,r) => {
-    const edgeId = r.edge || '?'
-    return `Match Edge: ${begin}->${end} (${edgeId})`
-  },
-  (node,r) => {
-    const edges =
-      typeof r.edgeIds !== 'undefined'
-      ? r.edgeIds.map(String).join(',')
-      : '?'
-    return `Match End Node: *->${node} (${edges})`
-  }
-)
-
 export {
   mk,
   parser,
@@ -194,8 +69,6 @@ export {
   splitMapId,
   mapIdToStr,
 
-  loadRules,
-  prepareRuleTable,
   shouldTrigger,
 
   ruleTableToStr,

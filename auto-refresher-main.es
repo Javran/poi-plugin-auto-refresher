@@ -6,11 +6,11 @@ import { AreaPanel } from './area-panel'
 
 class AutoRefresherMain extends Component {
   static propTypes = {
-    ruleTable: PropTypes.instanceOf(Map).isRequired,
+    ruleTable: PropTypes.object.isRequired,
+    disabledMapIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   }
   render() {
-    const { ruleTable } = this.props
-    const ruleEntries = [...ruleTable.entries()]
+    const { ruleTable, disabledMapIds } = this.props
     return (
       <div className="poi-plugin-auto-refresher">
         <link rel="stylesheet" href={join(__dirname, 'assets', 'auto-refresher.css')} />
@@ -47,13 +47,18 @@ class AutoRefresherMain extends Component {
           </div>
         </Panel>
         {
-          ruleEntries.map( ([mapId, rules]) => (
-            <AreaPanel
-                key={mapId}
-                mapId={mapId}
-                rules={rules}
-            />
-          ))
+          Object.keys(ruleTable).map( mapIdStr => {
+            const mapId = parseInt(mapIdStr,10)
+            const rules = ruleTable[mapIdStr]
+            return (
+              <AreaPanel
+                  enabled={disabledMapIds.indexOf(mapId) === -1}
+                  key={mapId}
+                  mapId={mapId}
+                  rules={rules}
+              />
+            )
+          })
         }
       </div>)
   }

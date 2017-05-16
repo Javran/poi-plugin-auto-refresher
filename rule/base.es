@@ -9,6 +9,55 @@ const mk = {
   edgeId: edge => ({type: 'edgeId', edge}),
 }
 
+const splitMapId = mapId => ({
+  world: Math.floor(mapId/10),
+  area: mapId % 10,
+})
+
+const mapIdToStr = mapId => {
+  const { world, area } = splitMapId(mapId)
+  return `${world}-${area}`
+}
+
+const destructRule = (onEdgeId, onEdge, onNode) =>
+  rule =>
+      rule.type === 'edgeId' ? onEdgeId(rule.edge, rule)
+    : rule.type === 'edge' ? onEdge(rule.begin,rule.end, rule)
+    : rule.type === 'node' ? onNode(rule.node, rule)
+    : console.error(`Unknown rule type: ${rule.type}`)
+
+// encode rule as id
+const ruleAsId = destructRule(
+  edgeId => `d-${edgeId}`,
+  (begin,end) => `e-${begin}-${end}`,
+  node => `n-${node}`)
+
+// rule pretty printer (to string)
+const prettyRule = destructRule(
+  (edgeId, r) => {
+    const [begin,end] = [r.begin || '?', r.end || '?']
+    return `Match Edge Id: ${begin}->${end} (${edgeId})`
+  },
+  (begin,end,r) => {
+    const edgeId = r.edge || '?'
+    return `Match Edge: ${begin}->${end} (${edgeId})`
+  },
+  (node,r) => {
+    const edges =
+      typeof r.edgeIds !== 'undefined'
+      ? r.edgeIds.map(String).join(',')
+      : '?'
+    return `Match End Node: *->${node} (${edges})`
+  }
+)
+
 export {
   mk,
+
+  mapIdToStr,
+  splitMapId,
+  destructRule,
+
+  ruleAsId,
+  prettyRule,
 }
