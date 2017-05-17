@@ -36,7 +36,7 @@ class AreaPanel extends Component {
           bsStyle="primary"
           header={tHeader({header, enabled})}
           content="content"
-          defaultExpanded
+          defaultExpanded={enabled}
           collapsible>
         <ListGroup>
           {
@@ -45,10 +45,10 @@ class AreaPanel extends Component {
               return (
                 <ListGroupItem
                     key={ruleAsId(r)}
-                    style={{ backgroundColor: 'initial'}}
+                    style={{backgroundColor: 'initial'}}
                     bsStyle={available ? 'success' : 'danger'}
                 >
-                  { prettyRule( r ) }
+                  { prettyRule(r) }
                 </ListGroupItem>
               )
             })
