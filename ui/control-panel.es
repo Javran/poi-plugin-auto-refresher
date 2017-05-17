@@ -7,6 +7,8 @@ import {
   FormControl,
 } from 'react-bootstrap'
 
+import { TriButton } from './tri-button'
+
 class ControlPanel extends Component {
   render() {
     return (
@@ -28,9 +30,10 @@ class ControlPanel extends Component {
                 <MenuItem eventKey="2">Expand All</MenuItem>
               </DropdownButton>
             </div>
-            <Button
-                bsStyle="primary"
-                style={{alignSelf: 'flex-end'}} >Enabled</Button>
+            <TriButton
+                style={{alignSelf: 'flex-end'}}
+                enabled={true}
+            />
           </div>
           <div style={{display: 'flex', marginTop: '5px', flex: 1, alignItems: 'center'}}>
             <FormControl

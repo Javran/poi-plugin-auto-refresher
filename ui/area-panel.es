@@ -5,8 +5,9 @@ import {
   ListGroupItem,
 } from 'react-bootstrap'
 
-import { mapIdToStr, ruleAsId, prettyRule } from '../rule'
+import { mapIdToStr, ruleAsId } from '../rule'
 import { AreaHeader } from './area-header'
+import { RuleControl } from './rule-control'
 
 class AreaPanel extends Component {
   static propTypes = {
@@ -39,7 +40,7 @@ class AreaPanel extends Component {
                     style={{backgroundColor: 'initial'}}
                     bsStyle={available ? 'success' : 'danger'}
                 >
-                  { prettyRule(r) }
+                  <RuleControl rule={r} />
                 </ListGroupItem>
               )
             })

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import {
-  Button,
-} from 'react-bootstrap'
+
+import { TriButton } from './tri-button'
 
 class AreaHeader extends Component {
   static propTypes = {
@@ -14,14 +13,10 @@ class AreaHeader extends Component {
     return (
       <div style={{width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
         <div style={{flex: '1',height: '100%'}}>{header}</div>
-        <Button
-            bsStyle={enabled ? 'primary' : 'danger'}
-            onClick={
-              e => {
-                e.stopPropagation()
-              }
-                    }
-        >{enabled ? 'Enabled' : 'Disabled'}</Button>
+        <TriButton
+            enabled={enabled}
+            onClick={e => { e.stopPropagation() }}
+        />
       </div>)
   }
 }
