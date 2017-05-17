@@ -9,7 +9,13 @@ import {
 
 import { TriButton } from './tri-button'
 
+import { parseLine } from '../rule/syntax'
+
 class ControlPanel extends Component {
+  handleAddRule = () => {
+    console.log( parseLine( this.ruleInput.value || '') )
+  }
+
   render() {
     return (
       <Panel header="Control" >
@@ -38,9 +44,14 @@ class ControlPanel extends Component {
           <div style={{display: 'flex', marginTop: '5px', flex: 1, alignItems: 'center'}}>
             <FormControl
                 type="text"
+                inputRef={ref => { this.ruleInput = ref }}
                 placeholder="Enter rule"
             />
-            <Button>Add Rule</Button>
+            <Button
+                onClick={this.handleAddRule}
+            >
+              Add Rule
+            </Button>
           </div>
         </div>
       </Panel>

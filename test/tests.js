@@ -1,6 +1,6 @@
 import { join } from 'path-extra'
 import { readJsonSync } from 'fs-extra'
-import * as ruleConfig from '../rule/config'
+// import * as ruleConfig from '../rule/config'
 
 import * as rule from '../rule'
 
@@ -8,12 +8,7 @@ const assert = require('assert')
 
 const spec = it
 
-const fcdMap = readJsonSync(join(__dirname,'map.json'))
-
-console.log(
-  JSON.stringify(
-    ruleConfig.loadRuleConfig(
-      join(__dirname,'conf1.csv'),fcdMap) ) )
+// const fcdMap = readJsonSync(join(__dirname,'map.json'))
 
 describe('rule', () => {
   spec('ruleAsId', () => {

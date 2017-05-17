@@ -14,38 +14,52 @@ import { ignore, modifyArray, konst } from '../utils'
 
 const fs = require('fs')
 
-const parseRuleConfig = (filePath, errFunc=console.error) => {
-  const ruleTable = {}
-  const disabledMapIds = []
+const addConfigLine = (config, configLine/* parsed config line*/) => {
+  if (configLine === null)
+    return config
 
+  const {ruleTable, disabledMapIds} = config
+
+  if (configLine.type === 'toggle') {
+    const { enabled, mapId } = configLine
+    if (!enabled && disabledMapIds.indexOf(mapId) === -1) {
+      return {
+        ...config,
+        disabledMapIds: [...disabledMapIds, mapId],
+      }
+    }
+  }
+
+  if (configLine.type === 'line') {
+    const { mapId, rules } = configLine
+    const ruleArr =
+      typeof ruleTable[mapId] === 'undefined' ? [] : ruleTable[mapId]
+    const addRule = (curRules, rule) => {
+      const ruleId = ruleAsId(rule)
+      const ruleInd = curRules.findIndex(r => ruleAsId(r) === ruleId)
+      return ruleInd === -1 ? [...curRules, rule] : modifyArray(ruleInd,konst(rule))(curRules)
+    }
+
+    return {
+      ...config,
+      ruleTable: {
+        ...ruleTable,
+        [mapId]: rules.reduce(addRule, ruleArr),
+      },
+    }
+  }
+
+  console.error(`Unknown configLine type: ${configLine.type}`)
+}
+
+const parseRuleConfig = (filePath, errFunc=console.error) =>
   fs.readFileSync(filePath,'utf8')
     .split(/\r?\n/)
-    .map( raw => {
-      const parseResult = parseLine(raw, errFunc)
-      if (parseResult !== null) {
-        if (parseResult.type === 'toggle') {
-          const { enabled, mapId } = parseResult
-          if (!enabled && disabledMapIds.indexOf(mapId) === -1)
-            disabledMapIds.push(mapId)
-        } else if (parseResult.type === 'line') {
-          const { mapId, rules } = parseResult
-          const ruleArr =
-            typeof ruleTable[mapId] === 'undefined' ? [] : ruleTable[mapId]
-          const addRule = (curRules, rule) => {
-            const ruleId = ruleAsId(rule)
-            const ruleInd = curRules.findIndex(r => ruleAsId(r) === ruleId)
-            return ruleInd === -1 ? [...curRules, rule] : modifyArray(ruleInd,konst(rule))(curRules)
-          }
-          ruleTable[mapId] = rules.reduce(addRule, ruleArr)
-        }
-      }
+    .map(raw => parseLine(raw,errFunc))
+    .reduce(addConfigLine, {
+      ruleTable: {},
+      disabledMapIds: [],
     })
-
-  return {
-    ruleTable,
-    disabledMapIds,
-  }
-}
 
 // trim ruleTable, setup "check" function for rules using fcd
 const prepareRuleConfig = ({ruleTable, disabledMapIds}, fcdMap) => {
@@ -105,6 +119,7 @@ const loadRuleConfig = (filePath,fcdMap,errFunc=console.error) =>
   prepareRuleConfig(parseRuleConfig(filePath,errFunc),fcdMap)
 
 export {
+  addConfigLine,
   loadRuleConfig,
 
   parseRuleConfig,
