@@ -1,26 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import {
   Panel,
-  Button,
   ListGroup,
   ListGroupItem,
 } from 'react-bootstrap'
-import { mapIdToStr, ruleAsId, prettyRule } from '../rule'
 
-const tHeader = props => (
-  <div>
-    <div style={{width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
-      <div style={{flex: '1',height: '100%'}}>{props.header}</div>
-      <Button
-          bsStyle={props.enabled ? 'primary' : 'danger'}
-          onClick={
-            e => {
-              e.stopPropagation()
-            }
-          }
-      >{props.enabled ? 'Enabled' : 'Disabled'}</Button>
-    </div>
-  </div>)
+import { mapIdToStr, ruleAsId, prettyRule } from '../rule'
+import { AreaHeader } from './area-header'
 
 class AreaPanel extends Component {
   static propTypes = {
@@ -34,7 +20,9 @@ class AreaPanel extends Component {
     return (
       <Panel
           bsStyle="primary"
-          header={tHeader({header, enabled})}
+          header={<AreaHeader
+            header={header}
+            enabled={enabled} />}
           content="content"
           defaultExpanded={enabled}
           collapsible>

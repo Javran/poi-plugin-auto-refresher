@@ -25,23 +25,27 @@ class AutoRefresherMain extends Component {
 
   render() {
     const { ruleTable, disabledMapIds } = this.props
+
     return ruleTable !== null && disabledMapIds !== null && (
       <div className="poi-plugin-auto-refresher">
         <link rel="stylesheet" href={join(__dirname, '..' , 'assets', 'auto-refresher.css')} />
         <ControlPanel />
         {
-          Object.keys(ruleTable).map( mapIdStr => {
-            const mapId = parseInt(mapIdStr,10)
-            const rules = ruleTable[mapIdStr]
-            return (
-              <AreaPanel
-                  enabled={disabledMapIds.indexOf(mapId) === -1}
-                  key={mapId}
-                  mapId={mapId}
-                  rules={rules}
-              />
-            )
-          })
+          Object.keys(ruleTable)
+            .map(x => parseInt(x,10))
+            .sort((x,y) => x-y)
+            .map( mapIdStr => {
+              const mapId = parseInt(mapIdStr,10)
+              const rules = ruleTable[mapIdStr]
+              return (
+                <AreaPanel
+                    enabled={disabledMapIds.indexOf(mapId) === -1}
+                    key={mapId}
+                    mapId={mapId}
+                    rules={rules}
+                />
+              )
+            })
         }
       </div>)
   }
