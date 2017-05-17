@@ -171,7 +171,7 @@ const parseLine = (raw, errFunc=console.error) => {
   try {
     return P.optWhitespace.then(configLine).tryParse(raw)
   } catch (e) {
-    errFunc(`Failed to parse "${raw}, Error message: ${e.message}`)
+    errFunc(e.message)
     return null
   }
 }
