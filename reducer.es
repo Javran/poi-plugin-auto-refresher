@@ -2,6 +2,7 @@ import { join } from 'path-extra'
 
 import { ruleAsId } from './rule/base'
 import {
+  addConfigLine,
   loadRuleConfig,
 } from './rule/config'
 
@@ -76,6 +77,20 @@ const reducer = (state = initState, action) => {
     }
   }
 
+  if (action.type === '@poi-plugin-auto-refresher@AddConfigLine') {
+    const { ruleTable, disabledMapIds, ...remainingState } = state
+    const { configLine } = action
+
+    const newConfig = addConfigLine(
+      { ruleTable, disabledMapIds }, configLine)
+
+    return {
+      ...remainingState,
+      ruleTable: newConfig.ruleTable,
+      disabledMapIds: newConfig.disabledMapIds,
+    }
+  }
+
   return state
 }
 
@@ -101,6 +116,11 @@ const mapDispatchToProps = dispatch => ({
       type: '@poi-plugin-auto-refresher@RemoveRule',
       mapId,
       ruleId,
+    }),
+  onAddConfigLine: configLine =>
+    dispatch({
+      type: '@poi-plugin-auto-refresher@AddConfigLine',
+      configLine,
     }),
 })
 

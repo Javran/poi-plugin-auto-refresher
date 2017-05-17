@@ -10,10 +10,28 @@ import {
 import { TriButton } from './tri-button'
 
 import { parseLine } from '../rule/syntax'
+import { prepareConfigLine } from '../rule/config'
 
 class ControlPanel extends Component {
+  static propTypes = {
+    fcdMap: PropTypes.object.isRequired,
+    onAddConfigLine: PropTypes.func.isRequired,
+  }
+
   handleAddRule = () => {
-    console.log( parseLine( this.ruleInput.value || '') )
+    const { fcdMap } = this.props
+    const configLine = parseLine( this.ruleInput.value || '')
+    if (configLine !== null) {
+      this.props.onAddConfigLine(
+        prepareConfigLine(configLine,fcdMap))
+      this.ruleInput.value = ''
+    }
+  }
+
+  handleRuleKeyPress = target => {
+    if (target.charCode === 13) {
+      this.handleAddRule()
+    }
   }
 
   render() {
@@ -43,6 +61,7 @@ class ControlPanel extends Component {
           </div>
           <div style={{display: 'flex', marginTop: '5px', flex: 1, alignItems: 'center'}}>
             <FormControl
+                onKeyPress={this.handleRuleKeyPress}
                 type="text"
                 inputRef={ref => { this.ruleInput = ref }}
                 placeholder="Enter rule"

@@ -61,6 +61,60 @@ const parseRuleConfig = (filePath, errFunc=console.error) =>
       disabledMapIds: [],
     })
 
+const prepareRule = route => destructRule(
+  (edgeId,rule) => {
+    const check = curEdgeId => edgeId === curEdgeId
+    const result = []
+    Object.keys( route ).map( edgeIdStr => {
+      if (parseInt(edgeIdStr,10) === edgeId)
+        result.push( route[edgeIdStr] )
+    })
+    return result.length === 1
+      ? { ...rule, check, begin: result[0][0], end: result[0][1] }
+      : {...rule, check }
+  },
+  (begin,end,rule) => {
+    const result = []
+    Object.keys( route ).map( edgeIdStr => {
+      const [thisBegin,thisEnd] = route[edgeIdStr]
+      if (thisBegin === begin && thisEnd === end) {
+        result.push(parseInt(edgeIdStr,10))
+      }
+    })
+    const check = curEdgeId => result[0] === curEdgeId
+    return result.length === 1 ? {...rule, check, edge: result[0]} : rule
+  },
+  (node,rule) => {
+    const edgeIds = []
+    Object.keys( route ).map( edgeIdStr => {
+      const [thisBegin,thisEnd] = route[edgeIdStr]
+      ignore(thisBegin)
+      if (thisEnd === node) {
+        edgeIds.push(parseInt(edgeIdStr,10))
+      }
+    })
+    const check = edgeId => edgeIds.indexOf(edgeId) !== -1
+    return edgeIds.length > 0 ? {...rule, edgeIds, check} : rule
+  }
+)
+
+const prepareConfigLine = (configLine, fcdMap) => {
+  if (configLine.type === 'toggle')
+    return configLine
+
+  if (configLine.type === 'line') {
+    const { mapId, rules } = configLine
+    const { route } = fcdMap[mapIdToStr(mapId)] || { route: {} }
+    const processRule = prepareRule(route)
+    return {
+      ...configLine,
+      rules: rules.map(processRule),
+    }
+  }
+
+  console.error(`Unknown configLine type: ${configLine.type}`)
+}
+
 // trim ruleTable, setup "check" function for rules using fcd
 const prepareRuleConfig = ({ruleTable, disabledMapIds}, fcdMap) => {
   const resultRuleTable = {}
@@ -69,44 +123,9 @@ const prepareRuleConfig = ({ruleTable, disabledMapIds}, fcdMap) => {
     const mapId = parseInt(mapIdStr,10)
     const rules = ruleTable[mapIdStr]
     const { route } = fcdMap[mapIdToStr(mapId)] || { route: {} }
+    const processRule = prepareRule(route)
 
-    resultRuleTable[mapIdStr] = rules.map(
-      destructRule(
-        (edgeId,rule) => {
-          const check = curEdgeId => edgeId === curEdgeId
-          const result = []
-          Object.keys( route ).map( edgeIdStr => {
-            if (parseInt(edgeIdStr,10) === edgeId)
-              result.push( route[edgeIdStr] )
-          })
-          return result.length === 1
-            ? { ...rule, check, begin: result[0][0], end: result[0][1] }
-            : {...rule, check }
-        },
-        (begin,end,rule) => {
-          const result = []
-          Object.keys( route ).map( edgeIdStr => {
-            const [thisBegin,thisEnd] = route[edgeIdStr]
-            if (thisBegin === begin && thisEnd === end) {
-              result.push(parseInt(edgeIdStr,10))
-            }
-          })
-          const check = curEdgeId => result[0] === curEdgeId
-          return result.length === 1 ? {...rule, check, edge: result[0]} : rule
-        },
-        (node,rule) => {
-          const edgeIds = []
-          Object.keys( route ).map( edgeIdStr => {
-            const [thisBegin,thisEnd] = route[edgeIdStr]
-            ignore(thisBegin)
-            if (thisEnd === node) {
-              edgeIds.push(parseInt(edgeIdStr,10))
-            }
-          })
-          const check = edgeId => edgeIds.indexOf(edgeId) !== -1
-          return edgeIds.length > 0 ? {...rule, edgeIds, check} : rule
-        }
-      ))
+    resultRuleTable[mapIdStr] = rules.map(processRule)
   })
 
   return {
@@ -124,4 +143,5 @@ export {
 
   parseRuleConfig,
   prepareRuleConfig,
+  prepareConfigLine,
 }

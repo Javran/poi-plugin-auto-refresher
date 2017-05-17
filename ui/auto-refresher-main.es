@@ -15,6 +15,7 @@ class AutoRefresherMain extends Component {
     onToggleArea: PropTypes.func.isRequired,
     onToggleRule: PropTypes.func.isRequired,
     onRemoveRule: PropTypes.func.isRequired,
+    onAddConfigLine: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -31,11 +32,22 @@ class AutoRefresherMain extends Component {
     this.props.onToggleArea(mapId)
 
   render() {
-    const { ruleTable, disabledMapIds, onToggleRule, onRemoveRule } = this.props
+    const {
+      ruleTable,
+      disabledMapIds,
+      fcdMap,
+
+      onToggleRule,
+      onRemoveRule,
+      onAddConfigLine,
+    } = this.props
     return ruleTable !== null && disabledMapIds !== null && (
       <div className="poi-plugin-auto-refresher">
         <link rel="stylesheet" href={join(__dirname, '..' , 'assets', 'auto-refresher.css')} />
-        <ControlPanel />
+        <ControlPanel
+            fcdMap={fcdMap}
+            onAddConfigLine={onAddConfigLine}
+        />
         {
           Object.keys(ruleTable)
             .map(x => parseInt(x,10))
