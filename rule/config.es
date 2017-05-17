@@ -8,9 +8,9 @@
      to produce the final result in one call.
 
  */
-import { destructRule, mapIdToStr } from './base'
+import { destructRule, mapIdToStr, ruleAsId } from './base'
 import { parseLine } from './syntax'
-import { ignore } from '../utils'
+import { ignore, modifyArray, konst } from '../utils'
 
 const fs = require('fs')
 
@@ -31,7 +31,12 @@ const parseRuleConfig = (filePath, errFunc=console.error) => {
           const { mapId, rules } = parseResult
           const ruleArr =
             typeof ruleTable[mapId] === 'undefined' ? [] : ruleTable[mapId]
-          ruleTable[mapId] = [...ruleArr, ...rules]
+          const addRule = (curRules, rule) => {
+            const ruleId = ruleAsId(rule)
+            const ruleInd = curRules.findIndex(r => ruleAsId(r) === ruleId)
+            return ruleInd === -1 ? [...curRules, rule] : modifyArray(ruleInd,konst(rule))(curRules)
+          }
+          ruleTable[mapId] = rules.reduce(addRule, ruleArr)
         }
       }
     })
