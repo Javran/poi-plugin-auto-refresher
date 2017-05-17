@@ -1,7 +1,13 @@
 import { join } from 'path-extra'
 
 import React, { Component, PropTypes } from 'react'
-import { Panel, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
+import {
+  Panel,
+  Button,
+  DropdownButton,
+  MenuItem,
+  FormControl,
+} from 'react-bootstrap'
 import { AreaPanel } from './area-panel'
 
 class AutoRefresherMain extends Component {
@@ -24,10 +30,7 @@ class AutoRefresherMain extends Component {
 
   render() {
     const { ruleTable, disabledMapIds } = this.props
-    if (ruleTable === null || disabledMapIds === null)
-      return false
-
-    return (
+    return ruleTable !== null && disabledMapIds !== null && (
       <div className="poi-plugin-auto-refresher">
         <link rel="stylesheet" href={join(__dirname, 'assets', 'auto-refresher.css')} />
         <Panel

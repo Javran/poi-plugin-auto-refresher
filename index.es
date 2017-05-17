@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import { AutoRefresherMain } from './auto-refresher-main'
+import { AutoRefresherMain } from './ui/auto-refresher-main'
 import { mainSelector } from './selector'
 import { reducer, mapDispatchToProps } from './reducer'
 
@@ -20,7 +20,7 @@ import { reducer, mapDispatchToProps } from './reducer'
 */
 
 const reactClass = connect(
-  state => mainSelector(state),
+  mainSelector,
   mapDispatchToProps,
 )(AutoRefresherMain)
 

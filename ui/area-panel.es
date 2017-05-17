@@ -5,7 +5,7 @@ import {
   ListGroup,
   ListGroupItem,
 } from 'react-bootstrap'
-import { mapIdToStr, ruleAsId, prettyRule } from './rule'
+import { mapIdToStr, ruleAsId, prettyRule } from '../rule'
 
 const tHeader = props => (
   <div>
