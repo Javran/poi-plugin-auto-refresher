@@ -19,14 +19,22 @@ class TriButton extends Component {
     onClick: null,
     style: {},
   }
+
+  handleClick = e => {
+    e.stopPropagation()
+    const { valid, onClick } = this.props
+    if (valid)
+      onClick(e)
+  }
+
   render() {
-    const { valid, enabled, onClick, style } = this.props
+    const { valid, enabled, style } = this.props
     return (
       <Button
           className="tri-button"
           style={style}
           bsStyle={valid ? (enabled ? 'primary' : 'warning') : 'danger'}
-          onClick={onClick}
+          onClick={this.handleClick}
       >
         {
           valid ? (enabled ? 'Enabled' : 'Disabled') : 'Invalid'

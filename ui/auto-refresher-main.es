@@ -8,9 +8,13 @@ import { AreaPanel } from './area-panel'
 class AutoRefresherMain extends Component {
   static propTypes = {
     fcdMap: PropTypes.object.isRequired,
-    onInitialize: PropTypes.func.isRequired,
     ruleTable: PropTypes.object,
     disabledMapIds: PropTypes.arrayOf(PropTypes.number),
+
+    onInitialize: PropTypes.func.isRequired,
+    onToggleArea: PropTypes.func.isRequired,
+    onToggleRule: PropTypes.func.isRequired,
+    onRemoveRule: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -23,9 +27,11 @@ class AutoRefresherMain extends Component {
     onInitialize(fcdMap)
   }
 
-  render() {
-    const { ruleTable, disabledMapIds } = this.props
+  handleToggleArea = mapId => () =>
+    this.props.onToggleArea(mapId)
 
+  render() {
+    const { ruleTable, disabledMapIds, onToggleRule, onRemoveRule } = this.props
     return ruleTable !== null && disabledMapIds !== null && (
       <div className="poi-plugin-auto-refresher">
         <link rel="stylesheet" href={join(__dirname, '..' , 'assets', 'auto-refresher.css')} />
@@ -37,9 +43,12 @@ class AutoRefresherMain extends Component {
             .map( mapIdStr => {
               const mapId = parseInt(mapIdStr,10)
               const rules = ruleTable[mapIdStr]
-              return (
+              return rules.length > 0 && (
                 <AreaPanel
                     enabled={disabledMapIds.indexOf(mapId) === -1}
+                    onToggleArea={this.handleToggleArea(mapId)}
+                    onToggleRule={onToggleRule}
+                    onRemoveRule={onRemoveRule}
                     key={mapId}
                     mapId={mapId}
                     rules={rules}

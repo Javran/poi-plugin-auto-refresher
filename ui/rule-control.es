@@ -18,21 +18,34 @@ class RuleControl extends Component {
       enabled: PropTypes.bool.isRequired,
       check: PropTypes.func,
     }).isRequired,
+    onToggleRule: PropTypes.func.isRequired,
+    onRemoveRule: PropTypes.func.isRequired,
   }
+
+  handleRemoveRule = e => {
+    e.stopPropagation()
+    this.props.onRemoveRule()
+  }
+
   render() {
-    const { enabled, check } = this.props.rule
+    const { onToggleRule, rule } = this.props
+    const { enabled, check } = rule
     const valid = typeof check === 'function'
     return (
       <div style={{display: 'flex', alignItems: 'center'}}>
         <Button
+            onClick={this.handleRemoveRule}
             className="rule-delete">
           <FontAwesome
-            name="close" />
+              name="close" />
         </Button>
         <div style={{flex: 1}}>
-          { prettyRule(this.props.rule) }
+          { prettyRule(rule) }
         </div>
-        <TriButton enabled={enabled} valid={valid} />
+        <TriButton
+            onClick={onToggleRule}
+            enabled={enabled}
+            valid={valid} />
       </div>
     )
   }
