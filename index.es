@@ -1,8 +1,8 @@
-import { join } from 'path-extra'
 import { connect } from 'react-redux'
 
 import { AutoRefresherMain } from './auto-refresher-main'
-import { fcdMapSelector } from './selector'
+import { mainSelector } from './selector'
+import { reducer, mapDispatchToProps } from './reducer'
 
 // TODO: to be removed after implementing profile switching
 // const ruleTableRaw = loadRules(join(__dirname,'default.csv'))
@@ -20,9 +20,11 @@ import { fcdMapSelector } from './selector'
 */
 
 const reactClass = connect(
-  state => ({fcdMap: fcdMapSelector(state)})
+  state => mainSelector(state),
+  mapDispatchToProps,
 )(AutoRefresherMain)
 
 export {
   reactClass,
+  reducer,
 }

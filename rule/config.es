@@ -1,3 +1,13 @@
+/*
+   load rule config files.
+
+   - parseRuleConfig parses the file into an intermediate structure
+   - prepareRuleConfig accepts the intermediate structure and fcdMap (fcd.map)
+     to produce the final representation of the rule config
+   - if both config file path and fcdMap are known, loadRuleConfig can be used
+     to produce the final result in one call.
+
+ */
 import { destructRule, mapIdToStr } from './base'
 import { parseLine } from './syntax'
 import { ignore } from '../utils'

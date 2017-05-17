@@ -1,8 +1,23 @@
 import { createSelector } from 'reselect'
-import { fcdSelector } from 'views/utils/selectors'
+import {
+  fcdSelector,
+  extensionSelectorFactory,
+} from 'views/utils/selectors'
 
 const fcdMapSelector = createSelector(
   fcdSelector,
   fcd => fcd.map)
 
-export { fcdMapSelector }
+const extSelector = extensionSelectorFactory('poi-plugin-auto-refresher')
+
+const mainSelector = createSelector(
+  fcdMapSelector,
+  extSelector,
+  (fcdMap,{ruleTable,disabledMapIds}) => ({
+    fcdMap,
+    ruleTable,
+    disabledMapIds,
+  }))
+
+
+export { mainSelector }

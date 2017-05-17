@@ -4,21 +4,29 @@ import React, { Component, PropTypes } from 'react'
 import { Panel, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import { AreaPanel } from './area-panel'
 
-import {
-  parseRuleConfig,
-  prepareRuleConfig,
-} from './rule/config'
-
-const parsedRuleConfig = parseRuleConfig(join(__dirname,'default.csv'))
-
 class AutoRefresherMain extends Component {
   static propTypes = {
     fcdMap: PropTypes.object.isRequired,
+    onInitialize: PropTypes.func.isRequired,
+    ruleTable: PropTypes.object,
+    disabledMapIds: PropTypes.arrayOf(PropTypes.number),
   }
+
+  static defaultProps = {
+    ruleTable: null,
+    disabledMapIds: null,
+  }
+
+  componentWillMount() {
+    const { onInitialize, fcdMap } = this.props
+    onInitialize(fcdMap)
+  }
+
   render() {
-    const { fcdMap } = this.props
-    const { ruleTable, disabledMapIds } =
-      prepareRuleConfig(parsedRuleConfig,fcdMap)
+    const { ruleTable, disabledMapIds } = this.props
+    if (ruleTable === null || disabledMapIds === null)
+      return false
+
     return (
       <div className="poi-plugin-auto-refresher">
         <link rel="stylesheet" href={join(__dirname, 'assets', 'auto-refresher.css')} />
@@ -31,8 +39,9 @@ class AutoRefresherMain extends Component {
                 <DropdownButton
                     style={{flex: 1, margin: '5px'}}
                     title="File" id="auto-refresher-file-dropdown">
-                  <MenuItem eventKey="1">Import</MenuItem>
-                  <MenuItem eventKey="2">Export</MenuItem>
+                  <MenuItem eventKey="1">Load Config ...</MenuItem>
+                  <MenuItem eventKey="2">Save Config ...</MenuItem>
+                  <MenuItem eventKey="3">Quick Load</MenuItem>
                 </DropdownButton>
                 <DropdownButton
                     style={{flex: 1, margin: '5px'}}
