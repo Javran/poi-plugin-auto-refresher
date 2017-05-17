@@ -12,18 +12,16 @@ class AreaHeader extends Component {
   render() {
     const { header, enabled } = this.props
     return (
-      <div>
-        <div style={{width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
-          <div style={{flex: '1',height: '100%'}}>{header}</div>
-          <Button
-              bsStyle={enabled ? 'primary' : 'danger'}
-              onClick={
-                e => {
-                  e.stopPropagation()
-                }
-                      }
-          >{enabled ? 'Enabled' : 'Disabled'}</Button>
-        </div>
+      <div style={{width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
+        <div style={{flex: '1',height: '100%'}}>{header}</div>
+        <Button
+            bsStyle={enabled ? 'primary' : 'danger'}
+            onClick={
+              e => {
+                e.stopPropagation()
+              }
+                    }
+        >{enabled ? 'Enabled' : 'Disabled'}</Button>
       </div>)
   }
 }

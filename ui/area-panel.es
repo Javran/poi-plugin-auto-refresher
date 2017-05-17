@@ -20,9 +20,12 @@ class AreaPanel extends Component {
     return (
       <Panel
           bsStyle="primary"
-          header={<AreaHeader
-            header={header}
-            enabled={enabled} />}
+          header={
+            <div>
+              <AreaHeader
+                header={header}
+                enabled={enabled} />
+            </div>}
           content="content"
           defaultExpanded={enabled}
           collapsible>
