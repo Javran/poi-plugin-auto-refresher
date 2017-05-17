@@ -4,13 +4,21 @@ import React, { Component, PropTypes } from 'react'
 import { Panel, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import { AreaPanel } from './area-panel'
 
+import {
+  parseRuleConfig,
+  prepareRuleConfig,
+} from './rule/config'
+
+const parsedRuleConfig = parseRuleConfig(join(__dirname,'default.csv'))
+
 class AutoRefresherMain extends Component {
   static propTypes = {
-    ruleTable: PropTypes.object.isRequired,
-    disabledMapIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+    fcdMap: PropTypes.object.isRequired,
   }
   render() {
-    const { ruleTable, disabledMapIds } = this.props
+    const { fcdMap } = this.props
+    const { ruleTable, disabledMapIds } =
+      prepareRuleConfig(parsedRuleConfig,fcdMap)
     return (
       <div className="poi-plugin-auto-refresher">
         <link rel="stylesheet" href={join(__dirname, 'assets', 'auto-refresher.css')} />

@@ -91,4 +91,7 @@ const loadRuleConfig = (filePath,fcdMap,errFunc=console.error) =>
 
 export {
   loadRuleConfig,
+
+  parseRuleConfig,
+  prepareRuleConfig,
 }

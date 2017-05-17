@@ -1,7 +1,6 @@
 import { join } from 'path-extra'
 import { connect } from 'react-redux'
 
-import { loadRuleConfig } from './rule/config'
 import { AutoRefresherMain } from './auto-refresher-main'
 import { fcdMapSelector } from './selector'
 
@@ -21,10 +20,8 @@ import { fcdMapSelector } from './selector'
 */
 
 const reactClass = connect(
-  state => {
-    const fcdMap = fcdMapSelector(state)
-    return loadRuleConfig(join(__dirname,'default.csv'), fcdMap)
-  })(AutoRefresherMain)
+  state => ({fcdMap: fcdMapSelector(state)})
+)(AutoRefresherMain)
 
 export {
   reactClass,
