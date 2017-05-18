@@ -52,14 +52,18 @@ const addConfigLine = (config, configLine/* parsed config line*/) => {
   console.error(`Unknown configLine type: ${configLine.type}`)
 }
 
-const parseRuleConfig = (filePath, errFunc=console.error) =>
-  fs.readFileSync(filePath,'utf8')
+// parse a raw string (as if it's file content)
+const parseRuleConfigStr = (rawString, errFunc=console.error) =>
+  rawString
     .split(/\r?\n/)
     .map(raw => parseLine(raw,errFunc))
     .reduce(addConfigLine, {
       ruleTable: {},
       disabledMapIds: [],
     })
+
+const parseRuleConfig = (filePath, errFunc=console.error) =>
+  parseRuleConfigStr(fs.readFileSync(filePath,'utf8'), errFunc)
 
 const prepareRule = route => destructRule(
   (edgeId,rule) => {
@@ -142,6 +146,7 @@ export {
   loadRuleConfig,
 
   parseRuleConfig,
+  parseRuleConfigStr,
   prepareRuleConfig,
   prepareConfigLine,
 }
