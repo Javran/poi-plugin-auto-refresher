@@ -22,11 +22,17 @@ const addConfigLine = (config, configLine/* parsed config line*/) => {
 
   if (configLine.type === 'toggle') {
     const { enabled, mapId } = configLine
-    if (!enabled && disabledMapIds.indexOf(mapId) === -1) {
-      return {
-        ...config,
-        disabledMapIds: [...disabledMapIds, mapId],
-      }
+    return {
+      ...config,
+      disabledMapIds:
+        enabled
+          // remove mapId from disabled list
+          ? disabledMapIds.filter( curMapId => curMapId !== mapId )
+          // try making sure mapId is in the resulting list
+          // while avoiding duplicated values
+          : (disabledMapIds.indexOf(mapId) === -1
+              ? [...disabledMapIds, mapId]
+              : disabledMapIds),
     }
   }
 
@@ -141,6 +147,28 @@ const prepareRuleConfig = ({ruleTable, disabledMapIds}, fcdMap) => {
 const loadRuleConfig = (filePath,fcdMap,errFunc=console.error) =>
   prepareRuleConfig(parseRuleConfig(filePath,errFunc),fcdMap)
 
+const configToStr = ({ ruleTable, disabledMapIds}) => {
+  // construct line of rules
+  const ruleLines = Object.keys( ruleTable ).map( mapIdStr =>
+    // l,<mapId>, <a list of dumped rules>
+    ['l',mapIdStr, ...ruleTable[mapIdStr].map( r => {
+      // dump toggle first
+      const prefix = r.enabled ? '' : '!'
+      // dump rule for all 3 cases
+      return prefix +
+        destructRule(
+          edgeId => String(edgeId),
+          (begin,end) => `${begin}->${end}`,
+          node => node)(r)
+    })].join(','))
+
+  const toggleLines = disabledMapIds.map( mapId =>
+    `t,${mapId},0`)
+
+  return [...ruleLines, ...toggleLines]
+    .join('\n')
+}
+
 export {
   addConfigLine,
   loadRuleConfig,
@@ -149,4 +177,6 @@ export {
   parseRuleConfigStr,
   prepareRuleConfig,
   prepareConfigLine,
+
+  configToStr,
 }

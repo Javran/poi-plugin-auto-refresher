@@ -33,7 +33,6 @@ import {
   mk,
   mapIdToStr,
   splitMapId,
-  destructRule,
   ruleAsId,
   prettyRule,
 } from './base'
@@ -50,18 +49,6 @@ const shouldTrigger = preparedTable => mapId => {
   }
 }
 
-// should work on both unprocessed and processed rule table
-const ruleTableToStr = ruleTable =>
-  [...ruleTable.entries()]
-    .map(([mapId,rules]) =>
-      [mapId, ...rules.map(
-        destructRule(
-          edgeId => String(edgeId),
-          (begin,end) => `${begin}->${end}`,
-          node => node)
-      )].join(','))
-    .join('\n')
-
 export {
   mk,
   parser,
@@ -71,7 +58,6 @@ export {
 
   shouldTrigger,
 
-  ruleTableToStr,
   ruleAsId,
   prettyRule,
 }
