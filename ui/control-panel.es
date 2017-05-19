@@ -17,6 +17,7 @@ class ControlPanel extends Component {
   static propTypes = {
     fcdMap: PropTypes.object.isRequired,
     onAddConfigLines: PropTypes.func.isRequired,
+    onExportConfigFile: PropTypes.func.isRequired,
   }
 
   handleAddRule = () => {
@@ -38,7 +39,7 @@ class ControlPanel extends Component {
   handleImportFile = () => {
     const { fcdMap } = this.props
     const result = dialog.showOpenDialog({
-      title: 'Open Auto Refresher Config',
+      title: 'Import Auto Refresher Config',
       filters: [{name: 'Auto Refresher Config (*.csv)', extensions: ['csv']}],
       properties: ['openFile'],
     })
@@ -56,6 +57,18 @@ class ControlPanel extends Component {
     this.props.onAddConfigLines( preparedRules )
   }
 
+  handleExportFile = () => {
+    const exportFileName = dialog.showSaveDialog({
+      title: 'Export Auto Refresher Config',
+      filters: [{name: 'Auto Refresher Config (*.csv)', extensions: ['csv']}],
+    })
+
+    if (typeof exportFileName !== 'string')
+      return
+
+    this.props.onExportConfigFile(exportFileName)
+  }
+
   // TODO:
   // - add a "Quick Import", keep track of most recent importing file paths.
   // - enable / disable whole plugin
@@ -69,7 +82,7 @@ class ControlPanel extends Component {
                   style={{flex: 1, margin: '5px'}}
                   title="File" id="auto-refresher-file-dropdown">
                 <MenuItem eventKey="1" onClick={this.handleImportFile}>Import ...</MenuItem>
-                <MenuItem eventKey="2">Export ...</MenuItem>
+                <MenuItem eventKey="2" onClick={this.handleExportFile}>Export ...</MenuItem>
               </DropdownButton>
               <DropdownButton
                   style={{flex: 1, margin: '5px'}}

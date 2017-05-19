@@ -16,6 +16,7 @@ class AutoRefresherMain extends Component {
     onToggleRule: PropTypes.func.isRequired,
     onRemoveRule: PropTypes.func.isRequired,
     onAddConfigLines: PropTypes.func.isRequired,
+    onExportConfigFile: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -40,6 +41,7 @@ class AutoRefresherMain extends Component {
       onToggleRule,
       onRemoveRule,
       onAddConfigLines,
+      onExportConfigFile,
     } = this.props
     return ruleTable !== null && disabledMapIds !== null && (
       <div className="poi-plugin-auto-refresher">
@@ -47,6 +49,7 @@ class AutoRefresherMain extends Component {
         <ControlPanel
             fcdMap={fcdMap}
             onAddConfigLines={onAddConfigLines}
+            onExportConfigFile={onExportConfigFile}
         />
         {
           Object.keys(ruleTable)

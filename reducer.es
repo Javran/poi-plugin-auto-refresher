@@ -16,6 +16,7 @@ import {
 
 import { modifyArray } from './utils'
 
+const fs = require('fs')
 const { getStore } = window
 
 // 'null' as placeholders for both, the real initialization is done
@@ -119,6 +120,13 @@ const reducer = (state = initState, action) => {
     })
   }
 
+  if (action.type === '@poi-plugin-auto-refresher@ExportConfigFile') {
+    const { ruleTable, disabledMapIds } = state
+    const { exportFileName } = action
+    fs.writeFile(exportFileName, configToStr({ruleTable, disabledMapIds}))
+    return state
+  }
+
   if (action.type === '@@Response/kcsapi/kcsapi/api_port/port') {
     return {
       ...state,
@@ -192,6 +200,11 @@ const mapDispatchToProps = dispatch => ({
     dispatch({
       type: '@poi-plugin-auto-refresher@AddConfigLines',
       configLines,
+    }),
+  onExportConfigFile: exportFileName =>
+    dispatch({
+      type: '@poi-plugin-auto-refresher@ExportConfigFile',
+      exportFileName,
     }),
 })
 
