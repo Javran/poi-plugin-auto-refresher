@@ -9,8 +9,7 @@ import {
 
 import { TriButton } from './tri-button'
 
-import { parseLine } from '../rule/syntax'
-import { prepareConfigLine } from '../rule/config'
+import { parser, prepareConfigLine } from '../rule'
 
 class ControlPanel extends Component {
   static propTypes = {
@@ -20,7 +19,7 @@ class ControlPanel extends Component {
 
   handleAddRule = () => {
     const { fcdMap } = this.props
-    const configLine = parseLine( this.ruleInput.value || '')
+    const configLine = parser.parseLine( this.ruleInput.value || '')
     if (configLine !== null) {
       this.props.onAddConfigLine(
         prepareConfigLine(configLine,fcdMap))

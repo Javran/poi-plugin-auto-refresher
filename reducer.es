@@ -8,11 +8,11 @@ import {
 } from 'views/utils/selectors'
 import { gameReloadFlash } from 'views/services/utils'
 
-import { ruleAsId } from './rule/base'
 import {
+  ruleAsId,
   addConfigLine,
   loadRuleConfig,
-} from './rule/config'
+} from './rule'
 
 import { modifyArray } from './utils'
 

@@ -30,7 +30,6 @@
 import * as parser from './syntax'
 
 import {
-  mk,
   mapIdToStr,
   splitMapId,
   ruleAsId,
@@ -38,10 +37,13 @@ import {
 } from './base'
 
 import { shouldTrigger } from './trigger'
-import { loadRuleConfig, addConfigLine } from './config'
+import {
+  loadRuleConfig,
+  addConfigLine,
+  prepareConfigLine,
+} from './config'
 
 export {
-  mk,
   parser,
 
   splitMapId,
@@ -52,6 +54,7 @@ export {
   ruleAsId,
   prettyRule,
 
+  prepareConfigLine,
   loadRuleConfig,
   addConfigLine,
 }

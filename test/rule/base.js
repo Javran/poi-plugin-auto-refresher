@@ -1,4 +1,4 @@
-import * as rule from '../../rule'
+import * as rule from '../../rule/base'
 
 const assert = require('assert')
 

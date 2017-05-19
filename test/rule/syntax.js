@@ -1,4 +1,6 @@
 import * as rule from '../../rule'
+import { mk } from '../../rule/base'
+
 import { mkErrorRecorder } from '../../utils'
 
 const assert = require('assert')
@@ -7,7 +9,6 @@ const spec = it
 
 describe('rule/syntax', () => {
   const p = rule.parser
-  const mk = rule.mk
 
   const enableMark = flg => r => ({ ...r, enabled: flg})
   const enabled = enableMark(true)
