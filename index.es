@@ -4,19 +4,26 @@ import { AutoRefresherMain } from './ui/auto-refresher-main'
 import { mainSelector } from './selector'
 import { reducer, mapDispatchToProps } from './reducer'
 
-// TODO: to be removed after implementing profile switching
-// const ruleTableRaw = loadRules(join(__dirname,'default.csv'))
-
 /*
-   TODO: allow profile switching, each rule file is an individual profile,
-   we store its path, and its containing directory becomes the dir of profiles
-   and menu have access to all files (and perhaps a menu item for opening that directory)
-   this enable a quick way of toggling many auto-refresh rules at once
 
-   however we might store enable / disable flag for each sortie area,
-   it seems complicated to keep these flags with each config (besides profiles are
-   files, which can be modified externally), and leaving each sortie area just one enable/disable
-   flag sounds like the most sensible option.
+   TODO: to be implemented
+
+   strategy for profile switching:
+
+   Motivation: allow users to toggle multiple rules at once
+
+   Solution:
+
+   - have main config stored in localStorage, the point is to make this less
+     accesible to regular users, as any attempt of actually store main config
+     as a file will allow user to arbitrarily modify it, which is not desired
+
+   - Export dumps the whole config
+
+   - Import merges exported config as if it's typed in line by line.
+     and if two rules are the same, only "enable" flag is changed if necessary,
+     which allows toggling multiple rules at once.
+
 */
 
 const reactClass = connect(
