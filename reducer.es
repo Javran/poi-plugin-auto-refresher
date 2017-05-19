@@ -12,6 +12,7 @@ import {
   ruleAsId,
   addConfigLine,
   loadRuleConfig,
+  shouldTrigger,
 } from './rule'
 
 import { modifyArray } from './utils'
@@ -129,15 +130,10 @@ const reducer = (state = initState, action) => {
       : state.curMapId
     const edgeId = action.body.api_no
     const { ruleTable, disabledMapIds } = state
-    // map must not be disabled
-    if (disabledMapIds.indexOf(mapId) === -1 &&
-        Array.isArray(ruleTable[mapId]) ) {
-      // only enabled rules
-      const rules = ruleTable[mapId].filter(r => r.enabled)
-      if (rules.some(r => r.check(edgeId))) {
-        gameReloadFlash()
-      }
-    }
+
+    const checker = shouldTrigger({ruleTable, disabledMapIds})(mapId)
+    if (checker(edgeId))
+      gameReloadFlash()
 
     return {
       ...state,

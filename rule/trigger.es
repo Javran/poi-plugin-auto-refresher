@@ -3,9 +3,10 @@
 // you can store "shouldTrigger(<config structure>)(<mapId>)" somewhere
 // which avoids some unnessary costs of looking up the whole config
 const shouldTrigger = ({ruleTable, disabledMapIds}) => mapId => {
+  // length check is unnessary,
+  // plus we have removed entries that have empty list of rules
   const mapRules = ruleTable[mapId]
   if (Array.isArray(mapRules) &&
-      mapRules.length > 0 &&
       disabledMapIds.indexOf(mapId) === -1) {
     const validRules = ruleTable[mapId].filter(r =>
       r.enabled && typeof r.check === 'function')
