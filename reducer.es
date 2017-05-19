@@ -104,12 +104,13 @@ const reducer = (state = initState, action) => {
     })
   }
 
-  if (action.type === '@poi-plugin-auto-refresher@AddConfigLine') {
+  if (action.type === '@poi-plugin-auto-refresher@AddConfigLines') {
     const { ruleTable, disabledMapIds, ...remainingState } = state
-    const { configLine } = action
+    const { configLines } = action
 
-    const newConfig = addConfigLine(
-      { ruleTable, disabledMapIds }, configLine)
+    const newConfig = configLines.reduce(
+      addConfigLine,
+      { ruleTable, disabledMapIds })
 
     return saveStateConfig({
       ...remainingState,
@@ -187,10 +188,10 @@ const mapDispatchToProps = dispatch => ({
       mapId,
       ruleId,
     }),
-  onAddConfigLine: configLine =>
+  onAddConfigLines: configLines =>
     dispatch({
-      type: '@poi-plugin-auto-refresher@AddConfigLine',
-      configLine,
+      type: '@poi-plugin-auto-refresher@AddConfigLines',
+      configLines,
     }),
 })
 

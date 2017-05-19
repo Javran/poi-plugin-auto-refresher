@@ -7,22 +7,23 @@ import {
   FormControl,
 } from 'react-bootstrap'
 
-import { TriButton } from './tri-button'
-
 import { parser, prepareConfigLine } from '../rule'
+
+const { remote } = window
+const { dialog } = remote.require('electron')
 
 class ControlPanel extends Component {
   static propTypes = {
     fcdMap: PropTypes.object.isRequired,
-    onAddConfigLine: PropTypes.func.isRequired,
+    onAddConfigLines: PropTypes.func.isRequired,
   }
 
   handleAddRule = () => {
     const { fcdMap } = this.props
     const configLine = parser.parseLine( this.ruleInput.value || '')
     if (configLine !== null) {
-      this.props.onAddConfigLine(
-        prepareConfigLine(configLine,fcdMap))
+      this.props.onAddConfigLines(
+        [prepareConfigLine(configLine,fcdMap)])
       this.ruleInput.value = ''
     }
   }
@@ -33,6 +34,9 @@ class ControlPanel extends Component {
     }
   }
 
+  // TODO:
+  // - add a "Quick Import", keep track of most recent importing file paths.
+  // - enable / disable whole plugin
   render() {
     return (
       <Panel header="Control" >
@@ -42,21 +46,17 @@ class ControlPanel extends Component {
               <DropdownButton
                   style={{flex: 1, margin: '5px'}}
                   title="File" id="auto-refresher-file-dropdown">
-                <MenuItem eventKey="1">Load Config ...</MenuItem>
-                <MenuItem eventKey="2">Save Config ...</MenuItem>
-                <MenuItem eventKey="3">Quick Load</MenuItem>
+                <MenuItem eventKey="1" onClick={this.handleImportFile}>Import ...</MenuItem>
+                <MenuItem eventKey="2">Export ...</MenuItem>
               </DropdownButton>
               <DropdownButton
                   style={{flex: 1, margin: '5px'}}
                   title="View" id="auto-refresher-view-dropdown">
                 <MenuItem eventKey="1">Collapse All</MenuItem>
                 <MenuItem eventKey="2">Expand All</MenuItem>
+                <MenuItem eventKey="3">Only Current Sortie Area</MenuItem>
               </DropdownButton>
             </div>
-            <TriButton
-                style={{alignSelf: 'flex-end'}}
-                enabled={true}
-            />
           </div>
           <div style={{display: 'flex', marginTop: '5px', flex: 1, alignItems: 'center'}}>
             <FormControl
