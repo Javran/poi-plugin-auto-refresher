@@ -10,7 +10,6 @@
 
    - Rule object structure:
 
-
    - 'type': one of 'edge', 'edgeId', 'node'
    - 'node':
        - required when type is 'node', an uppercase letter indicating the node
@@ -29,6 +28,7 @@
  */
 
 import * as parser from './syntax'
+
 import {
   mk,
   mapIdToStr,
@@ -37,17 +37,8 @@ import {
   prettyRule,
 } from './base'
 
-// shouldTrigger(<prepared table>)(<mapId>)(<edgeId>)
-// returns true if we are suppose to trigger a refresh
-const shouldTrigger = preparedTable => mapId => {
-  if (preparedTable.has(mapId)) {
-    const mapRules = preparedTable.get(mapId)
-    return edgeId => mapRules.some( rule =>
-      typeof rule.check !== 'undefined' && rule.check(edgeId) )
-  } else {
-    return () => false
-  }
-}
+import { shouldTrigger } from './trigger'
+import { loadRuleConfig, addConfigLine } from './config'
 
 export {
   mk,
@@ -60,4 +51,7 @@ export {
 
   ruleAsId,
   prettyRule,
+
+  loadRuleConfig,
+  addConfigLine,
 }
