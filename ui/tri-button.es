@@ -5,6 +5,8 @@ import {
   Button,
 } from 'react-bootstrap'
 
+import { __ } from '../tr'
+
 class TriButton extends Component {
   static propTypes = {
     valid: PropTypes.bool,
@@ -37,7 +39,7 @@ class TriButton extends Component {
           onClick={this.handleClick}
       >
         {
-          valid ? (enabled ? 'Enabled' : 'Disabled') : 'Invalid'
+          __(valid ? (enabled ? 'Enabled' : 'Disabled') : 'Invalid')
         }
       </Button>
     )

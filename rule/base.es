@@ -33,21 +33,21 @@ const ruleAsId = destructRule(
   node => `n-${node}`)
 
 // rule pretty printer (to string)
-const prettyRule = destructRule(
+const prettyRule = (__ = x => x) => destructRule(
   (edgeId, r) => {
     const [begin,end] = [r.begin || '?', r.end || '?']
-    return `Match Edge Id: ${begin}->${end} (${edgeId})`
+    return `${__('Match Edge Id')}: ${begin}->${end} (${edgeId})`
   },
   (begin,end,r) => {
     const edgeId = r.edge || '?'
-    return `Match Edge: ${begin}->${end} (${edgeId})`
+    return `${__('Match Edge')}: ${begin}->${end} (${edgeId})`
   },
   (node,r) => {
     const edges =
       typeof r.edgeIds !== 'undefined'
       ? r.edgeIds.map(String).join(',')
       : '?'
-    return `Match End Node: *->${node} (${edges})`
+    return `${__('Match End Node')}: *->${node} (${edges})`
   }
 )
 

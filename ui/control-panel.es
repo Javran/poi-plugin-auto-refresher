@@ -8,6 +8,7 @@ import {
 } from 'react-bootstrap'
 
 import { parser, prepareConfigLine } from '../rule'
+import { __ } from '../tr'
 
 const { remote } = window
 const { dialog } = remote.require('electron')
@@ -39,8 +40,8 @@ class ControlPanel extends Component {
   handleImportFile = () => {
     const { fcdMap } = this.props
     const result = dialog.showOpenDialog({
-      title: 'Import Auto Refresher Config',
-      filters: [{name: 'Auto Refresher Config (*.csv)', extensions: ['csv']}],
+      title: __('Import Auto Refresher Config'),
+      filters: [{name: __('Auto Refresher Config (*.csv)'), extensions: ['csv']}],
       properties: ['openFile'],
     })
 
@@ -59,8 +60,8 @@ class ControlPanel extends Component {
 
   handleExportFile = () => {
     const exportFileName = dialog.showSaveDialog({
-      title: 'Export Auto Refresher Config',
-      filters: [{name: 'Auto Refresher Config (*.csv)', extensions: ['csv']}],
+      title: __('Export Auto Refresher Config'),
+      filters: [{name: __('Auto Refresher Config (*.csv)'), extensions: ['csv']}],
     })
 
     if (typeof exportFileName !== 'string')
@@ -74,23 +75,29 @@ class ControlPanel extends Component {
   // - enable / disable whole plugin
   render() {
     return (
-      <Panel header="Control" >
+      <Panel header={__('Control')}>
         <div style={{display: 'flex', flexDirection: 'column'}}>
           <div style={{display: 'flex', width: '100%', justifyContent: 'space-between', flex: 1}}>
             <div style={{display: 'flex', width: '100%', flex: 1}}>
               <DropdownButton
                   style={{flex: 1, margin: '5px'}}
-                  title="File" id="auto-refresher-file-dropdown">
-                <MenuItem eventKey="1" onClick={this.handleImportFile}>Import ...</MenuItem>
-                <MenuItem eventKey="2" onClick={this.handleExportFile}>Export ...</MenuItem>
+                  title={__('File')} id="auto-refresher-file-dropdown">
+                <MenuItem eventKey="1" onClick={this.handleImportFile}>
+                  {__('Import ...')}
+                </MenuItem>
+                <MenuItem eventKey="2" onClick={this.handleExportFile}>
+                  {__('Export ...')}
+                </MenuItem>
               </DropdownButton>
+              {/*
+              // TODO: impl
               <DropdownButton
                   style={{flex: 1, margin: '5px'}}
                   title="View" id="auto-refresher-view-dropdown">
                 <MenuItem eventKey="1">Collapse All</MenuItem>
                 <MenuItem eventKey="2">Expand All</MenuItem>
                 <MenuItem eventKey="3">Only Current Sortie Area</MenuItem>
-              </DropdownButton>
+              </DropdownButton>*/}
             </div>
           </div>
           <div style={{display: 'flex', marginTop: '5px', flex: 1, alignItems: 'center'}}>
@@ -98,12 +105,12 @@ class ControlPanel extends Component {
                 onKeyPress={this.handleRuleKeyPress}
                 type="text"
                 inputRef={ref => { this.ruleInput = ref }}
-                placeholder="Enter rule"
+                placeholder={__('Enter rule')}
             />
             <Button
                 onClick={this.handleAddRule}
             >
-              Add Rule
+              {__('Add Rule')}
             </Button>
           </div>
         </div>

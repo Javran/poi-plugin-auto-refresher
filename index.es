@@ -6,8 +6,6 @@ import { reducer, mapDispatchToProps } from './reducer'
 
 /*
 
-   TODO: to be implemented
-
    strategy for profile switching:
 
    Motivation: allow users to toggle multiple rules at once

@@ -1,0 +1,25 @@
+{
+  "Control": "控制",
+  "File": "文件",
+  "Import ...": "导入…",
+  "Export ...": "导出…",
+
+  "Enabled": "已启用",
+  "Disabled": "已禁用",
+  "Invalid": "无效",
+
+  "Add Rule": "添加规则",
+  "Enter rule": "输入规则",
+
+  "Import Auto Refresher Config": "导入自动刷新配置",
+  "Export Auto Refresher Config": "导出自动刷新配置",
+
+  "Auto Refresher Config (*.csv)": "自动刷新配置文件 (*.csv)",
+
+  "Match Edge Id": "匹配路径标识",
+  "Match Edge": "匹配路径",
+  "Match End Node": "匹配路径到达节点",
+
+  "Auto Refresher": "自动刷新",
+  "Avoid unwelcome nodes or edges by refreshing. Use at your own risk.": "自动刷新以避免不受欢迎的节点或路径，使用时请自行承担风险"
+}

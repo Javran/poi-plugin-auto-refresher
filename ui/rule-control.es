@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import {
-  Panel,
-  ListGroup,
   Button,
-  ListGroupItem,
 } from 'react-bootstrap'
 
-import { mapIdToStr, ruleAsId, prettyRule } from '../rule'
+import { prettyRule } from '../rule'
 import { TriButton } from './tri-button'
+import { __ } from '../tr'
 
 const { FontAwesome } = window
 
@@ -40,7 +38,7 @@ class RuleControl extends Component {
               name="close" />
         </Button>
         <div style={{flex: 1}}>
-          { prettyRule(rule) }
+          { prettyRule(__)(rule) }
         </div>
         <TriButton
             onClick={onToggleRule}
