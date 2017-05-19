@@ -24,9 +24,33 @@ class AutoRefresherMain extends Component {
     disabledMapIds: null,
   }
 
+  constructor(props) {
+    super(props)
+    this.state = { areaExpanded: {} }
+  }
+
   componentWillMount() {
     const { onInitialize, fcdMap } = this.props
     onInitialize(fcdMap)
+  }
+
+  isAreaExpanded = mapId => {
+    const e = this.state.areaExpanded[mapId]
+    if (e !== 'undefined') {
+      return e
+    } else {
+      const { disabledMapIds } = this.props
+      return disabledMapIds.indexOf( mapId ) === -1
+    }
+  }
+
+  handleToggleAreaCollapse = mapId => stateModifier => {
+    const { areaExpanded } = this.state
+    const expanded = this.isAreaExpanded(mapId)
+    this.setState(
+      { areaExpanded: {
+        ...areaExpanded,
+        [mapId]: stateModifier(expanded) } })
   }
 
   handleToggleArea = mapId => () =>
@@ -58,10 +82,13 @@ class AutoRefresherMain extends Component {
             .map( mapIdStr => {
               const mapId = parseInt(mapIdStr,10)
               const rules = ruleTable[mapIdStr]
+              const enabled = disabledMapIds.indexOf(mapId) === -1
               return rules.length > 0 && (
                 <AreaPanel
-                    enabled={disabledMapIds.indexOf(mapId) === -1}
+                    enabled={enabled}
+                    expanded={this.isAreaExpanded(mapId)}
                     onToggleArea={this.handleToggleArea(mapId)}
+                    onToggleAreaCollapse={this.handleToggleAreaCollapse(mapId)}
                     onToggleRule={onToggleRule}
                     onRemoveRule={onRemoveRule}
                     key={mapId}

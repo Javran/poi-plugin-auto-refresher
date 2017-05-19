@@ -13,27 +13,23 @@ class AreaPanel extends Component {
   static propTypes = {
     mapId: PropTypes.number.isRequired,
     rules: PropTypes.arrayOf(PropTypes.object).isRequired,
+    expanded: PropTypes.bool.isRequired,
     enabled: PropTypes.bool.isRequired,
+
     onToggleArea: PropTypes.func.isRequired,
+    onToggleAreaCollapse: PropTypes.func.isRequired,
     onToggleRule: PropTypes.func.isRequired,
     onRemoveRule: PropTypes.func.isRequired,
-  }
-
-  constructor(props) {
-    super(props)
-    const { enabled } = this.props
-    this.state = { expanded: enabled }
   }
 
   handleToggleArea = () => {
     const { onToggleArea, enabled } = this.props
     onToggleArea()
-    this.setState({ expanded: !enabled })
+    this.props.onToggleAreaCollapse( () => !enabled )
   }
 
   handleToggleCollapse = () =>
-    this.setState( state =>
-      ({ ...state, expanded: !state.expanded }))
+    this.props.onToggleAreaCollapse( x => !x )
 
   handleToggleRule = ruleId => () => {
     const { mapId, onToggleRule } = this.props
@@ -46,8 +42,7 @@ class AreaPanel extends Component {
   }
 
   render() {
-    const { mapId, rules, enabled } = this.props
-    const { expanded } = this.state
+    const { mapId, rules, enabled, expanded } = this.props
     const header = mapIdToStr(mapId)
     return (
       <Panel
