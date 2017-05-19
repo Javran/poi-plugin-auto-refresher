@@ -1,5 +1,3 @@
-import { join } from 'path-extra'
-
 import {
   // not reliable as it depends on process ordering of messages
   // we only use this when "curMapId" is not available
@@ -11,8 +9,9 @@ import { gameReloadFlash } from 'views/services/utils'
 import {
   ruleAsId,
   addConfigLine,
-  loadRuleConfig,
+  loadRuleConfigStr,
   shouldTrigger,
+  configToStr,
 } from './rule'
 
 import { modifyArray } from './utils'
@@ -25,6 +24,18 @@ const initState = {
   ruleTable: null,
   disabledMapIds: null,
   curMapId: null,
+}
+
+// return the state intact while saving the config part
+// of it to localStorage
+const saveStateConfig = state => {
+  const { ruleTable, disabledMapIds } = state
+
+  if (ruleTable !== null && disabledMapIds !== null)
+    localStorage.autoRefresherRawConfig =
+      configToStr({ruleTable, disabledMapIds})
+
+  return state
 }
 
 const reducer = (state = initState, action) => {
@@ -41,13 +52,15 @@ const reducer = (state = initState, action) => {
     const { disabledMapIds, ...remainingState } = state
     const { mapId } = action
     const isDisabled = disabledMapIds.indexOf(mapId) !== -1
-    return {
-      ...remainingState,
-      disabledMapIds:
-        isDisabled
+    return saveStateConfig(
+      {
+        ...remainingState,
+        disabledMapIds:
+          isDisabled
           ? disabledMapIds.filter( x => x !== mapId )
           : [...disabledMapIds, mapId],
-    }
+      }
+    )
   }
 
   if (action.type === '@poi-plugin-auto-refresher@ToggleRule') {
@@ -59,13 +72,15 @@ const reducer = (state = initState, action) => {
       return ruleInd !== -1 ? modifyArray(ruleInd,toggleRule)(rules) : rules
     }
 
-    return {
-      ...remainingState,
-      ruleTable: {
-        ...ruleTable,
-        [mapId]: modifyRuleList(ruleTable[mapId]),
-      },
-    }
+    return saveStateConfig(
+      {
+        ...remainingState,
+        ruleTable: {
+          ...ruleTable,
+          [mapId]: modifyRuleList(ruleTable[mapId]),
+        },
+      }
+    )
   }
 
   if (action.type === '@poi-plugin-auto-refresher@RemoveRule') {
@@ -80,13 +95,13 @@ const reducer = (state = initState, action) => {
       })
       return newObj
     }
-    return {
+    return saveStateConfig({
       ...remainingState,
       ruleTable: removeEmpty({
         ...ruleTable,
         [mapId]: modifyRuleList(ruleTable[mapId]),
       }),
-    }
+    })
   }
 
   if (action.type === '@poi-plugin-auto-refresher@AddConfigLine') {
@@ -96,11 +111,11 @@ const reducer = (state = initState, action) => {
     const newConfig = addConfigLine(
       { ruleTable, disabledMapIds }, configLine)
 
-    return {
+    return saveStateConfig({
       ...remainingState,
       ruleTable: newConfig.ruleTable,
       disabledMapIds: newConfig.disabledMapIds,
-    }
+    })
   }
 
   if (action.type === '@@Response/kcsapi/kcsapi/api_port/port') {
@@ -145,11 +160,16 @@ const reducer = (state = initState, action) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  onInitialize: fcdMap =>
+  onInitialize: fcdMap => {
+    let rawConfig = localStorage.autoRefresherRawConfig
+    if (typeof rawConfig === 'undefined')
+      rawConfig = ''
+
     dispatch({
       type: '@poi-plugin-auto-refresher@Init',
-      ...loadRuleConfig(join(__dirname,'default.csv'),fcdMap),
-    }),
+      ...loadRuleConfigStr(rawConfig,fcdMap),
+    })
+  },
   onToggleArea: mapId =>
     dispatch({
       type: '@poi-plugin-auto-refresher@ToggleArea',

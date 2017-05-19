@@ -39,8 +39,12 @@ import {
 import { shouldTrigger } from './trigger'
 import {
   loadRuleConfig,
+  loadRuleConfigStr,
   addConfigLine,
   prepareConfigLine,
+  parseRuleConfigStr,
+  parseRuleConfig,
+  configToStr,
 } from './config'
 
 export {
@@ -54,7 +58,11 @@ export {
   ruleAsId,
   prettyRule,
 
+  parseRuleConfig,
+  parseRuleConfigStr,
   prepareConfigLine,
   loadRuleConfig,
+  loadRuleConfigStr,
   addConfigLine,
+  configToStr,
 }

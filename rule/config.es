@@ -147,6 +147,9 @@ const prepareRuleConfig = ({ruleTable, disabledMapIds}, fcdMap) => {
 const loadRuleConfig = (filePath,fcdMap,errFunc=console.error) =>
   prepareRuleConfig(parseRuleConfig(filePath,errFunc),fcdMap)
 
+const loadRuleConfigStr = (filePath,fcdMap,errFunc=console.error) =>
+  prepareRuleConfig(parseRuleConfigStr(filePath,errFunc),fcdMap)
+
 const configToStr = ({ ruleTable, disabledMapIds}) => {
   // construct line of rules
   const ruleLines = Object.keys( ruleTable ).map( mapIdStr =>
@@ -172,6 +175,7 @@ const configToStr = ({ ruleTable, disabledMapIds}) => {
 export {
   addConfigLine,
   loadRuleConfig,
+  loadRuleConfigStr,
 
   parseRuleConfig,
   parseRuleConfigStr,
