@@ -17,6 +17,7 @@ const fs = require('fs')
 class ControlPanel extends Component {
   static propTypes = {
     fcdMap: PropTypes.object.isRequired,
+    onToggleAllArea: PropTypes.func.isRequired,
     onAddConfigLines: PropTypes.func.isRequired,
     onExportConfigFile: PropTypes.func.isRequired,
   }
@@ -89,15 +90,24 @@ class ControlPanel extends Component {
                   {__('Export ...')}
                 </MenuItem>
               </DropdownButton>
-              {/*
-              // TODO: impl
               <DropdownButton
                   style={{flex: 1, margin: '5px'}}
                   title="View" id="auto-refresher-view-dropdown">
-                <MenuItem eventKey="1">Collapse All</MenuItem>
-                <MenuItem eventKey="2">Expand All</MenuItem>
+                <MenuItem
+                    eventKey="1"
+                    onClick={this.props.onToggleAllArea(false)}>
+                  Collapse All
+                </MenuItem>
+                <MenuItem
+                    eventKey="2"
+                    onClick={this.props.onToggleAllArea(true)}>
+                  Expand All
+                </MenuItem>
+                {/*
                 <MenuItem eventKey="3">Only Current Sortie Area</MenuItem>
-              </DropdownButton>*/}
+                  */
+                }
+              </DropdownButton>
             </div>
           </div>
           <div style={{display: 'flex', marginTop: '5px', flex: 1, alignItems: 'center'}}>

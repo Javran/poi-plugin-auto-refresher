@@ -56,6 +56,22 @@ class AutoRefresherMain extends Component {
   handleToggleArea = mapId => () =>
     this.props.onToggleArea(mapId)
 
+  handleToggleAllArea = newVal => () => {
+    const mapIds = Object.keys(this.props.ruleTable)
+      .map(x => parseInt(x,10))
+
+    // try to minimize modification to areaExpanded
+    const update = (ae, mapId) =>
+      this.isAreaExpanded(mapId) !== newVal
+      ? { ...ae, [mapId]: newVal }
+      : ae
+
+    this.setState({
+      areaExpanded:
+        mapIds.reduce(update, this.state.areaExpanded),
+    })
+  }
+
   render() {
     const {
       ruleTable,
@@ -74,6 +90,7 @@ class AutoRefresherMain extends Component {
             fcdMap={fcdMap}
             onAddConfigLines={onAddConfigLines}
             onExportConfigFile={onExportConfigFile}
+            onToggleAllArea={this.handleToggleAllArea}
         />
         {
           Object.keys(ruleTable)
