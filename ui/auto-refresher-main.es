@@ -36,7 +36,7 @@ class AutoRefresherMain extends Component {
 
   isAreaExpanded = mapId => {
     const e = this.state.areaExpanded[mapId]
-    if (e !== 'undefined') {
+    if (typeof e !== 'undefined') {
       return e
     } else {
       const { disabledMapIds } = this.props
