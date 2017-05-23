@@ -127,7 +127,7 @@ const reducer = (state = initState, action) => {
     return state
   }
 
-  if (action.type === '@@Response/kcsapi/kcsapi/api_port/port') {
+  if (action.type === '@@Response/kcsapi/api_port/port') {
     return {
       ...state,
       curMapId: null,
