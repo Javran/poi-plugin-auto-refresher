@@ -44,3 +44,22 @@ There are three types of rules (all rules are case-insensitive):
 
     e.g. A complete rule line: `2-2,4` means edge
     that goes from `E` to `G` (indicated by `4`) of map `2-2`
+
+Prefixing an exclamation `!` right in front of a rule disables it, e.g. `!A` is a rule that matches
+node `A`, but it will not trigger due to being disabled.
+
+It is optional to prefix `r,` in front of any rule line, which has no different than without:
+`r,2-2,A` or `2-2,A` or `22,A` do not have any difference in semantics.
+
+## Toggle Line Syntax
+
+To toggle a line, use:
+
+```
+t,<map indicator>,<0 or 1>
+```
+
+Example: `t,22,0` disables all rules for map 2-2 (note that each rule has its own toggle,
+which is *not* affected by this toggle). And `t,22,1` enables it.
+
+You don't have to enable a map as every map is enabled by default.
