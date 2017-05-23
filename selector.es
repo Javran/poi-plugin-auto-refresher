@@ -13,11 +13,11 @@ const extSelector = extensionSelectorFactory('poi-plugin-auto-refresher')
 const mainSelector = createSelector(
   fcdMapSelector,
   extSelector,
-  (fcdMap,{ruleTable,disabledMapIds}) => ({
+  (fcdMap,{ruleTable,disabledMapIds,curMapId}) => ({
     fcdMap,
     ruleTable,
     disabledMapIds,
+    curMapId,
   }))
-
 
 export { mainSelector }

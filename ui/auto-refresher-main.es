@@ -10,6 +10,7 @@ class AutoRefresherMain extends Component {
     fcdMap: PropTypes.object.isRequired,
     ruleTable: PropTypes.object,
     disabledMapIds: PropTypes.arrayOf(PropTypes.number),
+    curMapId: PropTypes.number,
 
     onInitialize: PropTypes.func.isRequired,
     onToggleArea: PropTypes.func.isRequired,
@@ -22,6 +23,7 @@ class AutoRefresherMain extends Component {
   static defaultProps = {
     ruleTable: null,
     disabledMapIds: null,
+    curMapId: null,
   }
 
   constructor(props) {
@@ -77,6 +79,7 @@ class AutoRefresherMain extends Component {
       ruleTable,
       disabledMapIds,
       fcdMap,
+      curMapId,
 
       onToggleRule,
       onRemoveRule,
@@ -100,7 +103,8 @@ class AutoRefresherMain extends Component {
               const mapId = parseInt(mapIdStr,10)
               const rules = ruleTable[mapIdStr]
               const enabled = disabledMapIds.indexOf(mapId) === -1
-              return rules.length > 0 && (
+              const currentlyVisible = curMapId === null || curMapId === mapId
+              return rules.length > 0 && currentlyVisible && (
                 <AreaPanel
                     enabled={enabled}
                     expanded={this.isAreaExpanded(mapId)}
