@@ -1,6 +1,6 @@
 {
   "name": "poi-plugin-auto-refresher",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Avoid unwelcome nodes or edges by refreshing. Use at your own risk.",
   "main": "index.es",
   "scripts": {
