@@ -1,9 +1,11 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import {
   Panel,
   ListGroup,
   ListGroupItem,
 } from 'react-bootstrap'
+
+import PropTypes from 'prop-types'
 
 import { mapIdToStr, ruleAsId } from '../rule'
 import { AreaHeader } from './area-header'

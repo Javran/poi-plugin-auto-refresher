@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import {
   Button,
 } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 import { prettyRule } from '../rule'
 import { TriButton } from './tri-button'

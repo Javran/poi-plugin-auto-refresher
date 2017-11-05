@@ -1,9 +1,10 @@
 /* A simple button with triple states: Enabled / Disabled / Invalid */
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import {
   Button,
 } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 import { __ } from '../tr'
 
