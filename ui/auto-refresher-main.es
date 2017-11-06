@@ -64,9 +64,9 @@ class AutoRefresherMain extends Component {
 
     // try to minimize modification to areaExpanded
     const update = (ae, mapId) =>
-      this.isAreaExpanded(mapId) !== newVal
-      ? { ...ae, [mapId]: newVal }
-      : ae
+      this.isAreaExpanded(mapId) !== newVal ?
+        { ...ae, [mapId]: newVal } :
+        ae
 
     this.setState({
       areaExpanded:
@@ -90,10 +90,10 @@ class AutoRefresherMain extends Component {
       <div className="poi-plugin-auto-refresher">
         <link rel="stylesheet" href={join(__dirname, '..' , 'assets', 'auto-refresher.css')} />
         <ControlPanel
-            fcdMap={fcdMap}
-            onAddConfigLines={onAddConfigLines}
-            onExportConfigFile={onExportConfigFile}
-            onToggleAllArea={this.handleToggleAllArea}
+          fcdMap={fcdMap}
+          onAddConfigLines={onAddConfigLines}
+          onExportConfigFile={onExportConfigFile}
+          onToggleAllArea={this.handleToggleAllArea}
         />
         {
           Object.keys(ruleTable)
@@ -106,15 +106,15 @@ class AutoRefresherMain extends Component {
               const currentlyVisible = curMapId === null || curMapId === mapId
               return rules.length > 0 && currentlyVisible && (
                 <AreaPanel
-                    enabled={enabled}
-                    expanded={this.isAreaExpanded(mapId)}
-                    onToggleArea={this.handleToggleArea(mapId)}
-                    onToggleAreaCollapse={this.handleToggleAreaCollapse(mapId)}
-                    onToggleRule={onToggleRule}
-                    onRemoveRule={onRemoveRule}
-                    key={mapId}
-                    mapId={mapId}
-                    rules={rules}
+                  enabled={enabled}
+                  expanded={this.isAreaExpanded(mapId)}
+                  onToggleArea={this.handleToggleArea(mapId)}
+                  onToggleAreaCollapse={this.handleToggleAreaCollapse(mapId)}
+                  onToggleRule={onToggleRule}
+                  onRemoveRule={onRemoveRule}
+                  key={mapId}
+                  mapId={mapId}
+                  rules={rules}
                 />
               )
             })

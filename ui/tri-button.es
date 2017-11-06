@@ -34,10 +34,10 @@ class TriButton extends Component {
     const { valid, enabled, style } = this.props
     return (
       <Button
-          className="tri-button"
-          style={style}
-          bsStyle={valid ? (enabled ? 'primary' : 'warning') : 'danger'}
-          onClick={this.handleClick}
+        className="tri-button"
+        style={style}
+        bsStyle={valid ? (enabled ? 'primary' : 'warning') : 'danger'}
+        onClick={this.handleClick}
       >
         {
           __(valid ? (enabled ? 'Enabled' : 'Disabled') : 'Invalid')

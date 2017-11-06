@@ -82,8 +82,8 @@ class ControlPanel extends Component {
           <div style={{display: 'flex', width: '100%', justifyContent: 'space-between', flex: 1}}>
             <div style={{display: 'flex', width: '100%', flex: 1}}>
               <DropdownButton
-                  style={{flex: 1, margin: '5px'}}
-                  title={__('File')} id="auto-refresher-file-dropdown">
+                style={{flex: 1, margin: '5px'}}
+                title={__('File')} id="auto-refresher-file-dropdown">
                 <MenuItem eventKey="1" onClick={this.handleImportFile}>
                   {__('Import ...')}
                 </MenuItem>
@@ -92,20 +92,20 @@ class ControlPanel extends Component {
                 </MenuItem>
               </DropdownButton>
               <DropdownButton
-                  style={{flex: 1, margin: '5px'}}
-                  title="View" id="auto-refresher-view-dropdown">
+                style={{flex: 1, margin: '5px'}}
+                title="View" id="auto-refresher-view-dropdown">
                 <MenuItem
-                    eventKey="1"
-                    onClick={this.props.onToggleAllArea(false)}>
+                  eventKey="1"
+                  onClick={this.props.onToggleAllArea(false)}>
                   Collapse All
                 </MenuItem>
                 <MenuItem
-                    eventKey="2"
-                    onClick={this.props.onToggleAllArea(true)}>
+                  eventKey="2"
+                  onClick={this.props.onToggleAllArea(true)}>
                   Expand All
                 </MenuItem>
                 {/*
-                <MenuItem eventKey="3">Only Current Sortie Area</MenuItem>
+                    <MenuItem eventKey="3">Only Current Sortie Area</MenuItem>
                   */
                 }
               </DropdownButton>
@@ -113,13 +113,13 @@ class ControlPanel extends Component {
           </div>
           <div style={{display: 'flex', marginTop: '5px', flex: 1, alignItems: 'center'}}>
             <FormControl
-                onKeyPress={this.handleRuleKeyPress}
-                type="text"
-                inputRef={ref => { this.ruleInput = ref }}
-                placeholder={__('Enter rule')}
+              onKeyPress={this.handleRuleKeyPress}
+              type="text"
+              inputRef={ref => { this.ruleInput = ref }}
+              placeholder={__('Enter rule')}
             />
             <Button
-                onClick={this.handleAddRule}
+              onClick={this.handleAddRule}
             >
               {__('Add Rule')}
             </Button>

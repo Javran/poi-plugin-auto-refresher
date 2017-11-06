@@ -21,10 +21,12 @@ const mapIdToStr = mapId => {
 
 const destructRule = (onEdgeId, onEdge, onNode) =>
   rule =>
-      rule.type === 'edgeId' ? onEdgeId(rule.edge, rule)
-    : rule.type === 'edge' ? onEdge(rule.begin,rule.end, rule)
-    : rule.type === 'node' ? onNode(rule.node, rule)
-    : console.error(`Unknown rule type: ${rule.type}`)
+    /* eslint-disable indent */
+    rule.type === 'edgeId' ? onEdgeId(rule.edge, rule) :
+    rule.type === 'edge' ? onEdge(rule.begin,rule.end, rule) :
+    rule.type === 'node' ? onNode(rule.node, rule) :
+    console.error(`Unknown rule type: ${rule.type}`)
+    /* eslint-enable indent */
 
 // encode rule as id
 const ruleAsId = destructRule(
@@ -44,9 +46,9 @@ const prettyRule = (__ = x => x) => destructRule(
   },
   (node,r) => {
     const edges =
-      typeof r.edgeIds !== 'undefined'
-      ? r.edgeIds.map(String).join(',')
-      : '?'
+      typeof r.edgeIds !== 'undefined' ?
+        r.edgeIds.map(String).join(',') :
+        '?'
     return `${__('Match End Node')}: *->${node} (${edges})`
   }
 )

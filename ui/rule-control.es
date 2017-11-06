@@ -33,18 +33,18 @@ class RuleControl extends Component {
     return (
       <div style={{display: 'flex', alignItems: 'center'}}>
         <Button
-            onClick={this.handleRemoveRule}
-            className="rule-delete">
+          onClick={this.handleRemoveRule}
+          className="rule-delete">
           <FontAwesome
-              name="close" />
+            name="close" />
         </Button>
         <div style={{flex: 1}}>
           { prettyRule(__)(rule) }
         </div>
         <TriButton
-            onClick={onToggleRule}
-            enabled={enabled}
-            valid={valid} />
+          onClick={onToggleRule}
+          enabled={enabled}
+          valid={valid} />
       </div>
     )
   }

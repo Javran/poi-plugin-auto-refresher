@@ -1,3 +1,4 @@
+import fs from 'fs'
 import {
   // not reliable as it depends on process ordering of messages
   // we only use this when "curMapId" is not available
@@ -16,7 +17,6 @@ import {
 
 import { modifyArray } from './utils'
 
-const fs = require('fs')
 const { getStore } = window
 
 // 'null' as placeholders for both, the real initialization is done
@@ -57,9 +57,9 @@ const reducer = (state = initState, action) => {
       {
         ...remainingState,
         disabledMapIds:
-          isDisabled
-          ? disabledMapIds.filter( x => x !== mapId )
-          : [...disabledMapIds, mapId],
+          isDisabled ?
+            disabledMapIds.filter( x => x !== mapId ) :
+            [...disabledMapIds, mapId],
       }
     )
   }
@@ -149,9 +149,9 @@ const reducer = (state = initState, action) => {
     // when curMapId is not available upon plugin start,
     // mapId is obtained from store instead
     const mapId =
-      state.curMapId === null
-      ? parseInt(sortieMapIdSelector( getStore() ), 10)
-      : state.curMapId
+      state.curMapId === null ?
+        parseInt(sortieMapIdSelector(getStore()), 10) :
+        state.curMapId
     const edgeId = action.body.api_no
     const { ruleTable, disabledMapIds } = state
 

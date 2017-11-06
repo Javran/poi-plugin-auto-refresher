@@ -48,18 +48,20 @@ class AreaPanel extends Component {
     const header = mapIdToStr(mapId)
     return (
       <Panel
-          bsStyle="primary"
-          header={
-            <div>
-              <AreaHeader
-                onToggle={this.handleToggleArea}
-                header={header}
-                enabled={enabled} />
-            </div>}
-          content="content"
-          onClick={this.handleToggleCollapse}
-          expanded={expanded}
-          collapsible>
+        bsStyle="primary"
+        header={
+          <div>
+            <AreaHeader
+              onToggle={this.handleToggleArea}
+              header={header}
+              enabled={enabled}
+            />
+          </div>
+        }
+        content="content"
+        onClick={this.handleToggleCollapse}
+        expanded={expanded}
+        collapsible>
         <ListGroup>
           {
             rules.map( r => {
@@ -67,14 +69,14 @@ class AreaPanel extends Component {
               const ruleId = ruleAsId(r)
               return (
                 <ListGroupItem
-                    key={ruleId}
-                    style={{backgroundColor: 'initial'}}
-                    bsStyle={available ? 'success' : 'danger'}
+                  key={ruleId}
+                  style={{backgroundColor: 'initial'}}
+                  bsStyle={available ? 'success' : 'danger'}
                 >
                   <RuleControl
-                      onToggleRule={this.handleToggleRule(ruleId)}
-                      onRemoveRule={this.handleRemoveRule(ruleId)}
-                      rule={r} />
+                    onToggleRule={this.handleToggleRule(ruleId)}
+                    onRemoveRule={this.handleRemoveRule(ruleId)}
+                    rule={r} />
                 </ListGroupItem>
               )
             })

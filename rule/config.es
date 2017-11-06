@@ -14,7 +14,7 @@ import { ignore, modifyArray, konst } from '../utils'
 
 const fs = require('fs')
 
-const addConfigLine = (config, configLine/* parsed config line*/) => {
+const addConfigLine = (config, configLine/* parsed config line */) => {
   if (configLine === null)
     return config
 
@@ -25,14 +25,14 @@ const addConfigLine = (config, configLine/* parsed config line*/) => {
     return {
       ...config,
       disabledMapIds:
-        enabled
+        enabled ?
           // remove mapId from disabled list
-          ? disabledMapIds.filter( curMapId => curMapId !== mapId )
+          disabledMapIds.filter( curMapId => curMapId !== mapId ) :
           // try making sure mapId is in the resulting list
           // while avoiding duplicated values
-          : (disabledMapIds.indexOf(mapId) === -1
-              ? [...disabledMapIds, mapId]
-              : disabledMapIds),
+          (disabledMapIds.indexOf(mapId) === -1 ?
+            [...disabledMapIds, mapId] :
+            disabledMapIds),
     }
   }
 

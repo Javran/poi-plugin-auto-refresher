@@ -16,11 +16,11 @@ class AreaHeader extends Component {
       <div style={{width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
         <div style={{flex: '1',height: '100%'}}>{header}</div>
         <TriButton
-            enabled={enabled}
-            onClick={e => {
-              e.stopPropagation()
-              onToggle()
-            }}
+          enabled={enabled}
+          onClick={e => {
+            e.stopPropagation()
+            onToggle()
+          }}
         />
       </div>)
   }
