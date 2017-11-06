@@ -10,16 +10,18 @@ module.exports = {
     'es6': true,
     'node': true,
   },
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
   'parser': 'babel-eslint',
   'rules': {
     'semi': ['error', 'never'],
-    'import/no-unresolved': [2, { 'ignore': ['views/.*', 'reselect', 'react-*'] }],
+    'import/no-unresolved': [2, { 'ignore': ['views/.*', 'reselect', 'react-*', 'prop-types'] }],
     'react/jsx-filename-extension': 'off',
+    'react/jsx-max-props-per-line': 'off',
+    'no-restricted-syntax': ["error", {
+      'selector': 'ExportDefaultDeclaration',
+      'message': 'Always use named exports'
+    }],
+    'no-lonely-if': 'off',
+    'no-floating-decimal': 'off',
     'no-underscore-dangle': ['error', { 'allowAfterThis': true }],
     'import/extensions': ['error', { 'es': 'never' }],
     'import/no-extraneous-dependencies': 'off',
@@ -28,8 +30,9 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
     'arrow-parens': ['error', 'as-needed'],
-    'no-underscore-dangle': ['error', { 'allow': ['__'] }],
-    'no-console': ['error', { "allow": ["warn", "error"] }],
+    'no-underscore-dangle': ['error', { 'allow': ['__','__r','__n'] }],
+    'no-console': ['error', { 'allow': ['warn', 'error', 'info'] }],
+    'no-continue': 'off',
     'space-in-parens': 'off',
     'object-curly-spacing': 'off',
     'react/jsx-curly-spacing': 'off',
@@ -40,10 +43,20 @@ module.exports = {
     'object-property-newline': 'off',
     'space-infix-ops': 'off',
     'curly': 'off',
+    'quotes': 'off',
     'comma-spacing': 'off',
     'array-callback-return': 'off',
     'no-nested-ternary': 'off',
     'no-confusing-arrow': 'off',
+    'no-unused-vars':
+      [ 'error',
+        {
+          'vars': 'all',
+          'varsIgnorePattern': '^_[a-zA-Z].*',
+          'args': 'all',
+          'argsIgnorePattern': '^_[a-zA-Z].*'
+        }
+      ],
     'no-else-return': 'off',
     'react/forbid-prop-types': 'off',
     'react/prefer-stateless-function': 'off',

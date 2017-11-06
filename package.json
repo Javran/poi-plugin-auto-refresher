@@ -4,7 +4,12 @@
   "description": "Avoid unwelcome nodes or edges by refreshing. Use at your own risk.",
   "main": "index.es",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --recursive"
+    "test": "mocha --compilers js:babel-core/register --recursive",
+    "lint": "eslint '**/*.es'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Javran/poi-plugin-auto-refresher.git"
   },
   "keywords": [
     "kancolle",
@@ -21,22 +26,22 @@
     "icon": "refresh"
   },
   "devDependencies": {
-    "babel-core": "^6.24.1",
+    "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-es2015-node6": "^0.4.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^7.0.0",
+    "eslint": "^4.3.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
+    "fs-extra": "^4.0.2",
     "mocha": "^3.3.0",
-    "path-extra": "^4.1.0"
+    "path-extra": "^4.2.1"
   },
   "dependencies": {
-    "fs-extra": "^3.0.1",
     "parsimmon": "^1.2.0"
   }
 }
