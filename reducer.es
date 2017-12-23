@@ -135,7 +135,8 @@ const reducer = (state = initState, action) => {
   }
 
   if (action.type === '@@Request/kcsapi/api_req_map/start') {
-    const { api_maparea_id, api_mapinfo_no } = action.body
+    // eslint-disable-next-line camelcase
+    const {api_maparea_id, api_mapinfo_no} = action.body
     const parse = raw => parseInt(raw,10)
     const mapId = parse(api_maparea_id)*10+parse(api_mapinfo_no)
     return {
