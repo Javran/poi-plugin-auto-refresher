@@ -1,11 +1,14 @@
 import { join } from 'path-extra'
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+
 import { ControlPanel } from './control-panel'
 import { AreaPanel } from './area-panel'
+import { mainSelector } from '../selector'
+import { mapDispatchToProps } from '../reducer'
 
-class AutoRefresherMain extends Component {
+class AutoRefresherMainImpl extends Component {
   static propTypes = {
     fcdMap: PropTypes.object.isRequired,
     ruleTable: PropTypes.object,
@@ -122,5 +125,10 @@ class AutoRefresherMain extends Component {
       </div>)
   }
 }
+
+const AutoRefresherMain = connect(
+  mainSelector,
+  mapDispatchToProps,
+)(AutoRefresherMainImpl)
 
 export { AutoRefresherMain }

@@ -1,8 +1,5 @@
-import { connect } from 'react-redux'
-
-import { AutoRefresherMain } from './ui/auto-refresher-main'
-import { mainSelector } from './selector'
-import { reducer, mapDispatchToProps } from './reducer'
+import { AutoRefresherMain as reactClass } from './ui'
+import { reducer } from './reducer'
 
 /*
 
@@ -23,11 +20,6 @@ import { reducer, mapDispatchToProps } from './reducer'
      which allows toggling multiple rules at once.
 
 */
-
-const reactClass = connect(
-  mainSelector,
-  mapDispatchToProps,
-)(AutoRefresherMain)
 
 export {
   reactClass,
