@@ -1,9 +1,8 @@
 import { join } from 'path-extra'
+import assert from 'assert'
 
 import * as rule from '../../rule/config'
-import { mkErrorRecorder } from '../../utils'
-
-const assert = require('assert')
+import { mkErrorRecorder } from './test-common'
 
 const spec = it
 

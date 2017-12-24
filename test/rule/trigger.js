@@ -1,9 +1,8 @@
 import { join } from 'path-extra'
 import { readJsonSync } from 'fs-extra'
+import assert from 'assert'
 
 import * as rule from '../../rule'
-
-const assert = require('assert')
 
 const spec = it
 
@@ -17,7 +16,7 @@ describe('rule/trigger', () => {
     const f22 = gen(22)
     assert.deepEqual(
       [0,1,2,3,4,5,6,7,8].map( f22 ),
-      [false,true/* ->A*/,false,false/* A->B, disabled */,false,false,true/* B->D */,false,false])
+      [false,true/* ->A */,false,false/* A->B, disabled */,false,false,true/* B->D */,false,false])
 
     const f13 = gen(13)
     assert.deepEqual(

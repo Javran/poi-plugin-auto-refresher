@@ -46,14 +46,6 @@ const modifyArray = (index, f) => {
   }
 }
 
-const mkErrorRecorder = () => {
-  const errMsgLog = []
-  return {
-    recordError: msg => errMsgLog.push(msg),
-    get: () => errMsgLog,
-  }
-}
-
 export {
   enumFromTo,
   konst,
@@ -65,5 +57,4 @@ export {
   error,
 
   modifyArray,
-  mkErrorRecorder,
 }

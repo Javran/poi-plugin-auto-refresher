@@ -1,12 +1,11 @@
+import assert from 'assert'
 import * as rule from '../../rule/base'
-
-const assert = require('assert')
 
 const spec = it
 
 describe('rule/base', () => {
   spec('ruleAsId', () => {
-    const mk = rule.mk
+    const {mk} = rule
     assert.equal(
       rule.ruleAsId(mk.node('X')),
       'n-X')

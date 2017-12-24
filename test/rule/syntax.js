@@ -1,9 +1,9 @@
+import assert from 'assert'
+
 import * as rule from '../../rule'
 import { mk } from '../../rule/base'
 
-import { mkErrorRecorder } from '../../utils'
-
-const assert = require('assert')
+import { mkErrorRecorder } from './test-common'
 
 const spec = it
 
