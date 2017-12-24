@@ -13,9 +13,9 @@ import {
   loadRuleConfigStr,
   shouldTrigger,
   configToStr,
-} from './rule'
+} from '../rule'
 
-import { modifyArray } from './utils'
+import { modifyArray } from '../utils'
 
 const { getStore } = window
 

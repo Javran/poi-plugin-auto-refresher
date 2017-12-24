@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { ControlPanel } from './control-panel'
 import { AreaPanel } from './area-panel'
 import { mainSelector } from '../selector'
-import { mapDispatchToProps } from '../reducer'
+import { mapDispatchToProps } from '../store'
 
 class AutoRefresherMainImpl extends Component {
   static propTypes = {

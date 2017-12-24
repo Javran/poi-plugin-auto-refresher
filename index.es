@@ -1,5 +1,5 @@
 import { AutoRefresherMain as reactClass } from './ui'
-import { reducer } from './reducer'
+import { reducer } from './store'
 
 /*
 
