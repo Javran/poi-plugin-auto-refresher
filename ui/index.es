@@ -15,7 +15,6 @@ class AutoRefresherMainImpl extends Component {
     disabledMapIds: PropTypes.arrayOf(PropTypes.number),
     curMapId: PropTypes.number,
 
-    init: PropTypes.func.isRequired,
     toggleArea: PropTypes.func.isRequired,
     toggleRule: PropTypes.func.isRequired,
     removeRule: PropTypes.func.isRequired,
@@ -32,11 +31,6 @@ class AutoRefresherMainImpl extends Component {
   constructor(props) {
     super(props)
     this.state = { areaExpanded: {} }
-  }
-
-  componentWillMount() {
-    const { init, fcdMap } = this.props
-    init(fcdMap)
   }
 
   isAreaExpanded = mapId => {
@@ -91,7 +85,10 @@ class AutoRefresherMainImpl extends Component {
     } = this.props
     return ruleTable !== null && disabledMapIds !== null && (
       <div className="poi-plugin-auto-refresher">
-        <link rel="stylesheet" href={join(__dirname, '..' , 'assets', 'auto-refresher.css')} />
+        <link
+          rel="stylesheet"
+          href={join(__dirname, '..' , 'assets', 'auto-refresher.css')}
+        />
         <ControlPanel
           fcdMap={fcdMap}
           addConfigLines={addConfigLines}

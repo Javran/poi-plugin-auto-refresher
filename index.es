@@ -1,5 +1,6 @@
 import { AutoRefresherMain as reactClass } from './ui'
-import { reducer } from './store'
+import { reducer, boundActionCreators as bac } from './store'
+import { fcdMapSelector } from './selector'
 
 /*
 
@@ -20,6 +21,12 @@ import { reducer } from './store'
      which allows toggling multiple rules at once.
 
 */
+
+setTimeout(() => {
+  const {getStore} = window
+  const fcdMap = fcdMapSelector(getStore())
+  bac.init(fcdMap)
+})
 
 export {
   reactClass,

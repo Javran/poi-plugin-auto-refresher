@@ -20,4 +20,7 @@ const mainSelector = createSelector(
     curMapId,
   }))
 
-export { mainSelector }
+export {
+  fcdMapSelector,
+  mainSelector,
+}
