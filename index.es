@@ -22,7 +22,7 @@ import { fcdMapSelector } from './selector'
 
 */
 
-setTimeout(() => {
+const pluginDidLoad = () => setTimeout(() => {
   const {getStore} = window
   const fcdMap = fcdMapSelector(getStore())
   bac.init(fcdMap)
@@ -31,4 +31,5 @@ setTimeout(() => {
 export {
   reactClass,
   reducer,
+  pluginDidLoad,
 }

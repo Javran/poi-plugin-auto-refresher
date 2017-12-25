@@ -177,7 +177,6 @@ const actionCreators = ({
     let rawConfig = localStorage.autoRefresherRawConfig
     if (typeof rawConfig === 'undefined')
       rawConfig = ''
-
     return {
       type: '@poi-plugin-auto-refresher@Init',
       ...loadRuleConfigStr(rawConfig,fcdMap),
