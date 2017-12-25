@@ -18,29 +18,29 @@ class AreaPanel extends Component {
     expanded: PropTypes.bool.isRequired,
     enabled: PropTypes.bool.isRequired,
 
-    onToggleArea: PropTypes.func.isRequired,
-    onToggleAreaCollapse: PropTypes.func.isRequired,
-    onToggleRule: PropTypes.func.isRequired,
-    onRemoveRule: PropTypes.func.isRequired,
+    toggleArea: PropTypes.func.isRequired,
+    toggleAreaCollapse: PropTypes.func.isRequired,
+    toggleRule: PropTypes.func.isRequired,
+    removeRule: PropTypes.func.isRequired,
   }
 
   handleToggleArea = () => {
-    const { onToggleArea, enabled } = this.props
-    onToggleArea()
-    this.props.onToggleAreaCollapse( () => !enabled )
+    const { toggleArea, enabled } = this.props
+    toggleArea()
+    this.props.toggleAreaCollapse( () => !enabled )
   }
 
   handleToggleCollapse = () =>
-    this.props.onToggleAreaCollapse( x => !x )
+    this.props.toggleAreaCollapse( x => !x )
 
   handleToggleRule = ruleId => () => {
-    const { mapId, onToggleRule } = this.props
-    onToggleRule(mapId,ruleId)
+    const { mapId, toggleRule } = this.props
+    toggleRule(mapId,ruleId)
   }
 
   handleRemoveRule = ruleId => () => {
-    const { mapId, onRemoveRule } = this.props
-    onRemoveRule(mapId,ruleId)
+    const { mapId, removeRule } = this.props
+    removeRule(mapId,ruleId)
   }
 
   render() {
@@ -74,8 +74,8 @@ class AreaPanel extends Component {
                   bsStyle={available ? 'success' : 'danger'}
                 >
                   <RuleControl
-                    onToggleRule={this.handleToggleRule(ruleId)}
-                    onRemoveRule={this.handleRemoveRule(ruleId)}
+                    toggleRule={this.handleToggleRule(ruleId)}
+                    removeRule={this.handleRemoveRule(ruleId)}
                     rule={r} />
                 </ListGroupItem>
               )

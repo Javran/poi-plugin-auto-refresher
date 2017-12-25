@@ -17,17 +17,17 @@ class RuleControl extends Component {
       enabled: PropTypes.bool.isRequired,
       check: PropTypes.func,
     }).isRequired,
-    onToggleRule: PropTypes.func.isRequired,
-    onRemoveRule: PropTypes.func.isRequired,
+    toggleRule: PropTypes.func.isRequired,
+    removeRule: PropTypes.func.isRequired,
   }
 
   handleRemoveRule = e => {
     e.stopPropagation()
-    this.props.onRemoveRule()
+    this.props.removeRule()
   }
 
   render() {
-    const { onToggleRule, rule } = this.props
+    const { toggleRule, rule } = this.props
     const { enabled, check } = rule
     const valid = typeof check === 'function'
     return (
@@ -42,7 +42,7 @@ class RuleControl extends Component {
           { prettyRule(__)(rule) }
         </div>
         <TriButton
-          onClick={onToggleRule}
+          onClick={toggleRule}
           enabled={enabled}
           valid={valid} />
       </div>

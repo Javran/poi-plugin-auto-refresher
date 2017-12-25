@@ -19,15 +19,15 @@ class ControlPanel extends Component {
   static propTypes = {
     fcdMap: PropTypes.object.isRequired,
     onToggleAllArea: PropTypes.func.isRequired,
-    onAddConfigLines: PropTypes.func.isRequired,
-    onExportConfigFile: PropTypes.func.isRequired,
+    addConfigLines: PropTypes.func.isRequired,
+    exportConfigFile: PropTypes.func.isRequired,
   }
 
   handleAddRule = () => {
     const { fcdMap } = this.props
     const configLine = parser.parseLine( this.ruleInput.value || '')
     if (configLine !== null) {
-      this.props.onAddConfigLines(
+      this.props.addConfigLines(
         [prepareConfigLine(configLine,fcdMap)])
       this.ruleInput.value = ''
     }
@@ -57,7 +57,7 @@ class ControlPanel extends Component {
       .filter(x => x !== null)
       .map(l => prepareConfigLine(l,fcdMap))
 
-    this.props.onAddConfigLines( preparedRules )
+    this.props.addConfigLines( preparedRules )
   }
 
   handleExportFile = () => {
@@ -69,7 +69,7 @@ class ControlPanel extends Component {
     if (typeof exportFileName !== 'string')
       return
 
-    this.props.onExportConfigFile(exportFileName)
+    this.props.exportConfigFile(exportFileName)
   }
 
   // TODO:

@@ -15,12 +15,12 @@ class AutoRefresherMainImpl extends Component {
     disabledMapIds: PropTypes.arrayOf(PropTypes.number),
     curMapId: PropTypes.number,
 
-    onInitialize: PropTypes.func.isRequired,
-    onToggleArea: PropTypes.func.isRequired,
-    onToggleRule: PropTypes.func.isRequired,
-    onRemoveRule: PropTypes.func.isRequired,
-    onAddConfigLines: PropTypes.func.isRequired,
-    onExportConfigFile: PropTypes.func.isRequired,
+    init: PropTypes.func.isRequired,
+    toggleArea: PropTypes.func.isRequired,
+    toggleRule: PropTypes.func.isRequired,
+    removeRule: PropTypes.func.isRequired,
+    addConfigLines: PropTypes.func.isRequired,
+    exportConfigFile: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -35,8 +35,8 @@ class AutoRefresherMainImpl extends Component {
   }
 
   componentWillMount() {
-    const { onInitialize, fcdMap } = this.props
-    onInitialize(fcdMap)
+    const { init, fcdMap } = this.props
+    init(fcdMap)
   }
 
   isAreaExpanded = mapId => {
@@ -59,7 +59,7 @@ class AutoRefresherMainImpl extends Component {
   }
 
   handleToggleArea = mapId => () =>
-    this.props.onToggleArea(mapId)
+    this.props.toggleArea(mapId)
 
   handleToggleAllArea = newVal => () => {
     const mapIds = Object.keys(this.props.ruleTable)
@@ -84,18 +84,18 @@ class AutoRefresherMainImpl extends Component {
       fcdMap,
       curMapId,
 
-      onToggleRule,
-      onRemoveRule,
-      onAddConfigLines,
-      onExportConfigFile,
+      toggleRule,
+      removeRule,
+      addConfigLines,
+      exportConfigFile,
     } = this.props
     return ruleTable !== null && disabledMapIds !== null && (
       <div className="poi-plugin-auto-refresher">
         <link rel="stylesheet" href={join(__dirname, '..' , 'assets', 'auto-refresher.css')} />
         <ControlPanel
           fcdMap={fcdMap}
-          onAddConfigLines={onAddConfigLines}
-          onExportConfigFile={onExportConfigFile}
+          addConfigLines={addConfigLines}
+          exportConfigFile={exportConfigFile}
           onToggleAllArea={this.handleToggleAllArea}
         />
         {
@@ -111,10 +111,10 @@ class AutoRefresherMainImpl extends Component {
                 <AreaPanel
                   enabled={enabled}
                   expanded={this.isAreaExpanded(mapId)}
-                  onToggleArea={this.handleToggleArea(mapId)}
-                  onToggleAreaCollapse={this.handleToggleAreaCollapse(mapId)}
-                  onToggleRule={onToggleRule}
-                  onRemoveRule={onRemoveRule}
+                  toggleArea={this.handleToggleArea(mapId)}
+                  toggleAreaCollapse={this.handleToggleAreaCollapse(mapId)}
+                  toggleRule={toggleRule}
+                  removeRule={removeRule}
                   key={mapId}
                   mapId={mapId}
                   rules={rules}

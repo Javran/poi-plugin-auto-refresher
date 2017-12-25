@@ -1,4 +1,6 @@
 import fs from 'fs'
+import { bindActionCreators } from 'redux'
+
 import {
   // not reliable as it depends on process ordering of messages
   // we only use this when "curMapId" is not available
@@ -6,6 +8,7 @@ import {
   sortieMapIdSelector,
 } from 'views/utils/selectors'
 import { gameReloadFlash } from 'views/services/utils'
+import { store } from 'views/create-store'
 
 import {
   ruleAsId,
@@ -169,47 +172,49 @@ const reducer = (state = initState, action) => {
   return state
 }
 
-const mapDispatchToProps = dispatch => ({
-  onInitialize: fcdMap => {
+const actionCreators = ({
+  init: fcdMap => {
     let rawConfig = localStorage.autoRefresherRawConfig
     if (typeof rawConfig === 'undefined')
       rawConfig = ''
 
-    dispatch({
+    return {
       type: '@poi-plugin-auto-refresher@Init',
       ...loadRuleConfigStr(rawConfig,fcdMap),
-    })
+    }
   },
-  onToggleArea: mapId =>
-    dispatch({
-      type: '@poi-plugin-auto-refresher@ToggleArea',
-      mapId,
-    }),
-  onToggleRule: (mapId,ruleId) =>
-    dispatch({
-      type: '@poi-plugin-auto-refresher@ToggleRule',
-      mapId,
-      ruleId,
-    }),
-  onRemoveRule: (mapId,ruleId) =>
-    dispatch({
-      type: '@poi-plugin-auto-refresher@RemoveRule',
-      mapId,
-      ruleId,
-    }),
-  onAddConfigLines: configLines =>
-    dispatch({
-      type: '@poi-plugin-auto-refresher@AddConfigLines',
-      configLines,
-    }),
-  onExportConfigFile: exportFileName =>
-    dispatch({
-      type: '@poi-plugin-auto-refresher@ExportConfigFile',
-      exportFileName,
-    }),
+  toggleArea: mapId => ({
+    type: '@poi-plugin-auto-refresher@ToggleArea',
+    mapId,
+  }),
+  toggleRule: (mapId,ruleId) => ({
+    type: '@poi-plugin-auto-refresher@ToggleRule',
+    mapId,
+    ruleId,
+  }),
+  removeRule: (mapId,ruleId) => ({
+    type: '@poi-plugin-auto-refresher@RemoveRule',
+    mapId,
+    ruleId,
+  }),
+  addConfigLines: configLines => ({
+    type: '@poi-plugin-auto-refresher@AddConfigLines',
+    configLines,
+  }),
+  exportConfigFile: exportFileName => ({
+    type: '@poi-plugin-auto-refresher@ExportConfigFile',
+    exportFileName,
+  }),
 })
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(actionCreators, dispatch)
+
+const boundActionCreators =
+  mapDispatchToProps(store.dispatch)
 
 export {
   reducer,
   mapDispatchToProps,
+  boundActionCreators,
 }
