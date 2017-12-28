@@ -30,6 +30,24 @@ const initState = {
   curMapId: null,
 }
 
+const _newInitState = {
+  // TODO: ui related stuff (expand / collapse)
+  ui: {},
+  /* TODO: draft
+     Object from mapId to <MapRule>,
+
+     there MapRule is an Object:
+
+     {
+       enabled: <boolean>,
+       rules: <Array of Rule>,
+     }
+
+   */
+  mapRules: {},
+  // TODO: is curMapId necessary?
+}
+
 // return the state intact while saving the config part
 // of it to localStorage
 const saveStateConfig = state => {
