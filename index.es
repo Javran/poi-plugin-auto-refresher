@@ -31,6 +31,16 @@ import { fcdMapSelector } from './selector'
      we'll use files instead of localStorage for storage,
      that we things can still be easily backed up
 
+   - need to define a p-state which contains rules, ui states
+     and settings in a more structured way.
+
+   - will still keep the "user language" same way before,
+     but now there's a structured object underlying for easier processing.
+
+   - we don't have to show all rules, let's place a table of maps
+     and let user pick one from them (but we'll still make it so that
+     all rules can be shown at the same time)
+
  */
 
 const pluginDidLoad = () => setTimeout(() => {
