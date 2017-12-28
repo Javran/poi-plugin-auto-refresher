@@ -22,6 +22,17 @@ import { fcdMapSelector } from './selector'
 
 */
 
+/*
+   TODO
+   plan for new version:
+
+   - no more export / import,
+     and there will be only one profile to be mananged.
+     we'll use files instead of localStorage for storage,
+     that we things can still be easily backed up
+
+ */
+
 const pluginDidLoad = () => setTimeout(() => {
   const {getStore} = window
   const fcdMap = fcdMapSelector(getStore())
