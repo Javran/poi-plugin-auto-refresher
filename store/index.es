@@ -141,13 +141,6 @@ const reducer = (state = initState, action) => {
     })
   }
 
-  if (action.type === '@poi-plugin-auto-refresher@ExportConfigFile') {
-    const { ruleTable, disabledMapIds } = state
-    const { exportFileName } = action
-    fs.writeFile(exportFileName, configToStr({ruleTable, disabledMapIds}))
-    return state
-  }
-
   if (action.type === '@@Response/kcsapi/api_port/port') {
     return {
       ...state,
@@ -217,10 +210,6 @@ const actionCreators = ({
   addConfigLines: configLines => ({
     type: '@poi-plugin-auto-refresher@AddConfigLines',
     configLines,
-  }),
-  exportConfigFile: exportFileName => ({
-    type: '@poi-plugin-auto-refresher@ExportConfigFile',
-    exportFileName,
   }),
 })
 
