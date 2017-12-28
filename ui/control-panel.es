@@ -11,10 +11,6 @@ import {
 import { parser, prepareConfigLine } from '../rule'
 import { __ } from '../tr'
 
-const { remote } = window
-const { dialog } = remote.require('electron')
-const fs = require('fs')
-
 class ControlPanel extends Component {
   static propTypes = {
     fcdMap: PropTypes.object.isRequired,
@@ -36,27 +32,6 @@ class ControlPanel extends Component {
     if (target.charCode === 13) {
       this.handleAddRule()
     }
-  }
-
-  handleImportFile = () => {
-    const { fcdMap } = this.props
-    const result = dialog.showOpenDialog({
-      title: __('Import Auto Refresher Config'),
-      filters: [{name: __('Auto Refresher Config (*.csv)'), extensions: ['csv']}],
-      properties: ['openFile'],
-    })
-
-    if (! Array.isArray(result) || result.length !== 1)
-      return
-
-    const [importFileName] = result
-    const preparedRules = fs.readFileSync(importFileName,'utf8')
-      .split(/\r?\n/)
-      .map(parser.parseLine)
-      .filter(x => x !== null)
-      .map(l => prepareConfigLine(l,fcdMap))
-
-    this.props.addConfigLines( preparedRules )
   }
 
   // TODO:
