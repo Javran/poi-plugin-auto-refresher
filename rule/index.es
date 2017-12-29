@@ -1,5 +1,7 @@
 /*
 
+   TODO: see docs/rule.md, the following content will be removed in future
+
    terms:
 
    - mapId: number. worldId 'concatenated' with areaId
