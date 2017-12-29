@@ -1,6 +1,7 @@
 import { AutoRefresherMain as reactClass } from './ui'
 import { reducer, boundActionCreators as bac } from './store'
 import { fcdMapSelector } from './selector'
+import { globalSubscribe, globalUnsubscribe } from './observers'
 
 /*
 
@@ -44,13 +45,20 @@ import { fcdMapSelector } from './selector'
  */
 
 const pluginDidLoad = () => setTimeout(() => {
+  globalSubscribe()
+
   const {getStore} = window
   const fcdMap = fcdMapSelector(getStore())
   bac.init(fcdMap)
 })
 
+const pluginWillUnload = () => {
+  globalUnsubscribe()
+}
+
 export {
   reactClass,
   reducer,
   pluginDidLoad,
+  pluginWillUnload,
 }
