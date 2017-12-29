@@ -42,6 +42,9 @@ import { globalSubscribe, globalUnsubscribe } from './observers'
      and let user pick one from them (but we'll still make it so that
      all rules can be shown at the same time)
 
+   - representation as JSON, do not put functions there.
+     use selectors to "compile" rules
+
  */
 
 const pluginDidLoad = () => setTimeout(() => {
