@@ -58,7 +58,6 @@
  */
 import * as P from 'parsimmon'
 import { mk } from './base'
-import { ignore } from '../utils'
 
 // transforms the parser so that it not only yields the expected result
 // but also consumes all following spaces of the input string
@@ -135,7 +134,7 @@ const mapToggleLine = P
     token(P.regexp(/t/i)).skip(comma),
     world.skip(comma),
     token(P.regexp(/[01]/)))
-  .map( ([t,mapId,rawFlg]) => ignore(t) && (
+  .map( ([_t,mapId,rawFlg]) => (
     {
       type: 'toggle',
       mapId,

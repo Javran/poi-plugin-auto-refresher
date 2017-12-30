@@ -1,4 +1,4 @@
-import fs from 'fs'
+import { modifyArray } from 'subtender'
 import { bindActionCreators } from 'redux'
 
 import {
@@ -17,8 +17,6 @@ import {
   shouldTrigger,
   configToStr,
 } from '../rule'
-
-import { modifyArray } from '../utils'
 
 const { getStore } = window
 

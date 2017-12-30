@@ -8,9 +8,9 @@
      to produce the final result in one call.
 
  */
+import { modifyArray } from 'subtender'
 import { destructRule, mapIdToStr, ruleAsId } from './base'
 import { parseLine } from './syntax'
-import { ignore, modifyArray, konst } from '../utils'
 
 const fs = require('fs')
 
@@ -43,7 +43,7 @@ const addConfigLine = (config, configLine/* parsed config line */) => {
     const addRule = (curRules, rule) => {
       const ruleId = ruleAsId(rule)
       const ruleInd = curRules.findIndex(r => ruleAsId(r) === ruleId)
-      return ruleInd === -1 ? [...curRules, rule] : modifyArray(ruleInd,konst(rule))(curRules)
+      return ruleInd === -1 ? [...curRules, rule] : modifyArray(ruleInd, () => rule)(curRules)
     }
 
     return {
@@ -97,8 +97,7 @@ const prepareRule = route => destructRule(
   (node,rule) => {
     const edgeIds = []
     Object.keys( route ).map( edgeIdStr => {
-      const [thisBegin,thisEnd] = route[edgeIdStr]
-      ignore(thisBegin)
+      const [_thisBegin,thisEnd] = route[edgeIdStr]
       if (thisEnd === node) {
         edgeIds.push(parseInt(edgeIdStr,10))
       }
