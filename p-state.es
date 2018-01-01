@@ -2,6 +2,8 @@ import _ from 'lodash'
 import { ensureDirSync, readJsonSync } from 'fs-extra'
 import { join } from 'path-extra'
 
+import { parseRuleConfigStr } from './rule'
+
 const getPStateFilePath = () => {
   const { APPDATA_PATH } = window
   const configPath = join(APPDATA_PATH,'auto-refresher')
@@ -43,7 +45,11 @@ const migratePStateAndLoad = () => {
           ('autoRefresherRawConfig' in localStorage) &&
           localStorage.autoRefresherRawConfig
         ) {
-          // TODO
+          /*
+             TODO: modify resulting structure.
+             - current one is {disabledMapIds, ruleTable: {[mapId]: <Rule> ...}}
+           */
+          parseRuleConfigStr(localStorage.autoRefresherRawConfig)
         } else {
           // either there is no legacy config or config does not exist at all
           // in both case default value should be used.
