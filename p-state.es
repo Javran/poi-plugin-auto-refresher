@@ -33,6 +33,7 @@ const latestVersion = '0.3.0'
    and in this case, default state values should be used.
  */
 const migratePStateAndLoad = () => {
+  // TODO: this nested structure looks terrible and we'd better do something about it.
   try {
     // if file exists and can be loaded successfully,
     // then it should have been at least 0.3.0
@@ -75,4 +76,28 @@ const migratePStateAndLoad = () => {
       return null
     }
   }
+}
+
+const updatePState = oldPState => {
+  // should use default.
+  if (oldPState === null)
+    return null
+
+  if (oldPState.$version === '0.3.0') {
+    const {$version: _ignored, ...pState} = oldPState
+    return pState
+  }
+
+  console.warn(`invalid p-state structure, using default.`)
+  console.warn(`the loaded p-state:`, oldPState)
+  return null
+}
+
+const loadPState = () => {
+  const oldPState = migratePStateAndLoad()
+  return updatePState(oldPState)
+}
+
+export {
+  loadPState,
 }
