@@ -2,7 +2,7 @@
 import { reducer, boundActionCreators as bac } from './store'
 import { fcdMapSelector } from './selector'
 import { globalSubscribe, globalUnsubscribe } from './observers'
-import {} from './p-state'
+import { loadPState } from './p-state'
 
 /*
 
@@ -53,6 +53,7 @@ const pluginDidLoad = () => setTimeout(() => {
 
   const {getStore} = window
   const fcdMap = fcdMapSelector(getStore())
+  // console.log(loadPState())
   bac.init(fcdMap)
 })
 

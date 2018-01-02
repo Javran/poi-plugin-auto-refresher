@@ -20,21 +20,32 @@ import {
 
 const { getStore } = window
 
-// 'null' as placeholders for both, the real initialization is done
-// after we have acquired enough info
 const initState = {
-  ruleTable: null,
-  disabledMapIds: null,
-  curMapId: null,
-}
-
-const _newInitState = {
   // TODO: ui related stuff (expand / collapse)
-  ui: {},
-  /* TODO: draft
-     Object from mapId to <MapRule>,
+  ui: {
+    /*
+       indicates the focusing map for displaying rules.
+       possible values:
 
-     here MapRule is an Object:
+       - 'auto': 'all' if not during sortie, otherwise, focus on the sortieing map
+       - 'all': show rules for all maps
+       - <mapId>: only show rules for a specific map
+     */
+    mapFocus: 'auto',
+    /*
+       TODO
+       `rules` is an Object, `rules[<mapId>]` is an Object for indicating
+       UI state of a specific rule.
+
+       defaults to `{expanded: true}`
+     */
+    rules: {},
+  },
+  /*
+     mapRules is an Object,
+     which maps mapId to <MapRule>.
+
+     a MapRule is an Object:
 
      {
        enabled: <boolean>,
@@ -43,7 +54,20 @@ const _newInitState = {
 
    */
   mapRules: {},
-  // TODO: is curMapId necessary?
+}
+
+const reducer = (state = initState, _action) => state
+
+const actionCreators = {}
+
+/*
+
+// 'null' as placeholders for both, the real initialization is done
+// after we have acquired enough info
+const initState = {
+  ruleTable: null,
+  disabledMapIds: null,
+  curMapId: null,
 }
 
 // return the state intact while saving the config part
@@ -210,6 +234,8 @@ const actionCreators = ({
     configLines,
   }),
 })
+
+*/
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actionCreators, dispatch)
