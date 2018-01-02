@@ -45,11 +45,22 @@ const migratePStateAndLoad = () => {
           ('autoRefresherRawConfig' in localStorage) &&
           localStorage.autoRefresherRawConfig
         ) {
-          /*
-             TODO: modify resulting structure.
-             - current one is {disabledMapIds, ruleTable: {[mapId]: <Rule> ...}}
-           */
-          parseRuleConfigStr(localStorage.autoRefresherRawConfig)
+          const parseResult = parseRuleConfigStr(localStorage.autoRefresherRawConfig)
+          if (parseResult) {
+            const {disabledMapIds, ruleTable} = parseResult
+            const mapRules = _.mapValues(
+              ruleTable,
+              (rules, mapIdStr) => ({
+                rules,
+                enabled: !disabledMapIds.includes(Number(mapIdStr)),
+              }))
+            return {
+              mapRules,
+              $version: '0.3.0',
+            }
+          } else {
+            return null
+          }
         } else {
           // either there is no legacy config or config does not exist at all
           // in both case default value should be used.

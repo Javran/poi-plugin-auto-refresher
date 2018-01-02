@@ -34,7 +34,7 @@ const _newInitState = {
   /* TODO: draft
      Object from mapId to <MapRule>,
 
-     there MapRule is an Object:
+     here MapRule is an Object:
 
      {
        enabled: <boolean>,
