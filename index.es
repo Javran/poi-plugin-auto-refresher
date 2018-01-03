@@ -1,6 +1,5 @@
 // import { AutoRefresherMain as reactClass } from './ui'
 import { reducer, boundActionCreators as bac } from './store'
-import { fcdMapSelector } from './selector'
 import { globalSubscribe, globalUnsubscribe } from './observers'
 import { loadPState } from './p-state'
 
