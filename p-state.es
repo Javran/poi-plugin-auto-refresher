@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { ensureDirSync, readJsonSync } from 'fs-extra'
+import { ensureDirSync, readJsonSync, writeJsonSync } from 'fs-extra'
 import { join } from 'path-extra'
 
 import { parseRuleConfigStr } from './rule'
@@ -25,6 +25,23 @@ const getPStateFilePath = () => {
   const configPath = join(APPDATA_PATH,'auto-refresher')
   ensureDirSync(configPath)
   return join(configPath,'p-state.json')
+}
+
+const extStateToPState = extState => {
+  const {ui, mapRules} = extState
+  return {ui, mapRules}
+}
+
+const savePState = pState => {
+  try {
+    const pStateWithVer = {
+      ...pState,
+      $version: latestVersion,
+    }
+    writeJsonSync(getPStateFilePath(),pStateWithVer)
+  } catch (err) {
+    console.error('Error while writing to p-state file', err)
+  }
 }
 
 /*
@@ -123,5 +140,7 @@ const loadPState = () => {
 }
 
 export {
+  extStateToPState,
+  savePState,
   loadPState,
 }
