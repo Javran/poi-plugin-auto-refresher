@@ -1,4 +1,4 @@
-// import { AutoRefresherMain as reactClass } from './ui'
+import { AutoRefresherMain as reactClass } from './ui'
 import { reducer, boundActionCreators as bac } from './store'
 import { globalSubscribe, globalUnsubscribe } from './observers'
 import { loadPState } from './p-state'
@@ -49,7 +49,7 @@ const pluginWillUnload = () => {
 }
 
 export {
-  // reactClass,
+  reactClass,
   reducer,
   pluginDidLoad,
   pluginWillUnload,
