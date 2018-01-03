@@ -289,6 +289,7 @@ const boundActionCreators =
   mapDispatchToProps(store.dispatch)
 
 export {
+  initState,
   reducer,
   mapDispatchToProps,
   boundActionCreators,
