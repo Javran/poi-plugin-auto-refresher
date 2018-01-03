@@ -103,6 +103,10 @@ const actionCreators = {
     type: '@@poi-plugin-auto-refresher@Modify',
     modifier,
   }),
+  modifyUI: modifier =>
+    actionCreators.modify(modifyObject('ui', modifier)),
+  changeMapFocus: mapFocus =>
+    actionCreators.modifyUI(modifyObject('mapFocus', () => mapFocus)),
 }
 
 /*
@@ -291,6 +295,7 @@ const boundActionCreators =
 export {
   initState,
   reducer,
+  actionCreators,
   mapDispatchToProps,
   boundActionCreators,
 }

@@ -3,14 +3,18 @@ import { not, modifyObject, projectorToComparator } from 'subtender'
 import { splitMapId, mapIdToStr } from 'subtender/kc'
 
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import {
   Panel,
   Button,
   Dropdown,
   MenuItem,
 } from 'react-bootstrap'
-
 import FontAwesome from 'react-fontawesome'
+
+import { PTyp } from '../ptyp'
+import { uiSelector } from '../selectors'
+import { mapDispatchToProps } from '../store'
 
 // TODO: connect store
 const mapIds = [
@@ -31,7 +35,15 @@ const grouppedMapInfoList = _.toPairs(
   projectorToComparator(x => x.area)
 )
 
-class ViewControlPanel extends PureComponent {
+class ViewControlPanelImpl extends PureComponent {
+  static propTypes = {
+    mapFocus: PTyp.oneOfType([
+      PTyp.oneOf(['auto', 'all']),
+      PTyp.number,
+    ]).isRequired,
+    changeMapFocus: PTyp.func.isRequired,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -43,14 +55,14 @@ class ViewControlPanel extends PureComponent {
     this.setState(modifyObject('menuOpened',not))
   }
 
-  handleSelectMap = (_k,e) => {
+  handleSelectMap = (key,e) => {
     e.stopPropagation()
-    // TODO: key
-
+    this.props.changeMapFocus(key)
     this.setState({menuOpened: false})
   }
 
   render() {
+    const {mapFocus} = this.props
     return (
       <Panel>
         <div
@@ -65,7 +77,7 @@ class ViewControlPanel extends PureComponent {
             <Dropdown.Toggle
               style={{width: '100%'}}
             >
-              TODO
+              {mapFocus}
             </Dropdown.Toggle>
             <Dropdown.Menu
               style={{width: '100%'}}
@@ -132,5 +144,7 @@ class ViewControlPanel extends PureComponent {
     )
   }
 }
+
+const ViewControlPanel = connect(uiSelector, mapDispatchToProps)(ViewControlPanelImpl)
 
 export { ViewControlPanel }
