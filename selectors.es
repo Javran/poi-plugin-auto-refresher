@@ -8,7 +8,11 @@ import {
   sortieSelector,
 } from 'views/utils/selectors'
 
-import { initState } from './store'
+import {
+  initState,
+  defaultMapRuleData,
+  defaultMapRuleUIData,
+} from './store'
 
 const fcdMapSelector = createSelector(
   fcdSelector,
@@ -108,13 +112,13 @@ const visibleMapIdsSelector = createSelector(
 const getMapRuleFuncSelector = createSelector(
   mapRulesSelector,
   mapRules => mapId =>
-    _.get(mapRules, mapId, {enabled: true, rules: []})
+    _.get(mapRules, mapId, defaultMapRuleData)
 )
 
 const getMapRuleUIFuncSelector = createSelector(
   uiSelector,
   ui => mapId =>
-    _.get(ui, ['rules', mapId], {expanded: true})
+    _.get(ui, ['rules', mapId], defaultMapRuleUIData)
 )
 
 const getMapRuleInfoFuncSelector = createSelector(

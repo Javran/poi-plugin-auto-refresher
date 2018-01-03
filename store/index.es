@@ -89,6 +89,9 @@ const reducer = (state = initState, action) => {
   return state
 }
 
+const defaultMapRuleData = {enabled: true, rules: []}
+const defaultMapRuleUIData = {expanded: true}
+
 const actionCreators = {
   /*
      initiate the state with a loaded p-state
@@ -111,15 +114,13 @@ const actionCreators = {
     actionCreators.modify(
       modifyObject(
         'mapRules',
-        // TODO: ensure consistency between this and selector
-        modifyObject(mapId, (data = {enabled: true, rules: []}) => modifier(data))
+        modifyObject(mapId, (data = defaultMapRuleData) => modifier(data))
       )
     ),
   modifyMapRuleUI: (mapId, modifier) =>
     actionCreators.modifyUI(
       modifyObject('rules',
-        // TODO: ensure consistency
-        modifyObject(mapId, (data = {expanded: true}) => modifier(data))
+        modifyObject(mapId, (data = defaultMapRuleUIData) => modifier(data))
       )
     ),
 }
@@ -309,6 +310,8 @@ const boundActionCreators =
 
 export {
   initState,
+  defaultMapRuleData,
+  defaultMapRuleUIData,
   reducer,
   actionCreators,
   mapDispatchToProps,
