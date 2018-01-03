@@ -72,11 +72,15 @@ class ViewControlPanel extends PureComponent {
             >
               <div style={{display: 'flex', justifyContent: 'space-around'}}>
                 <MenuItem
+                  className="menu-item"
+                  style={{width: '50%'}}
                   onSelect={this.handleSelectMap}
                   eventKey="auto">
                   Auto
                 </MenuItem>
                 <MenuItem
+                  className="menu-item"
+                  style={{width: '50%'}}
                   onSelect={this.handleSelectMap}
                   eventKey="all">
                   All
@@ -89,8 +93,8 @@ class ViewControlPanel extends PureComponent {
                 style={{
                   display: 'grid',
                   grid: `auto / repeat(${grouppedMapInfoList.length}, 1fr)`,
-                  justifyItems: 'center',
-                  alignItems: 'center',
+                  justifyItems: 'stretch',
+                  alignItems: 'stretch',
                   marginLeft: 10,
                   marginRight: 10,
                 }}
@@ -100,6 +104,7 @@ class ViewControlPanel extends PureComponent {
                     const {area, num} = splitMapId(mapId)
                     return (
                       <MenuItem
+                        className="menu-item"
                         onSelect={this.handleSelectMap}
                         style={{
                           fontSize: '120%',

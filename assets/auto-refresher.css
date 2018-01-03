@@ -24,3 +24,9 @@
 .poi-plugin-auto-refresher .btn.tri-button {
     width: 7em;
 }
+
+#poi-plugin-auto-refresher [aria-labelledby="auto-refresher-select-map"] .menu-item > a {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
