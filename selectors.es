@@ -128,6 +128,11 @@ const getMapRuleInfoFuncSelector = createSelector(
   (getMapRule, getMapRuleUI, validMapIds) => _.memoize(mapId => ({
     // whether the current map is valid from master data
     valid: validMapIds.includes(mapId),
+    /*
+       TODO: getMapRule => getProcessedMapRule
+       "Processed" means the data will be combined with fcdMap and have
+       additional info available.
+     */
     ...getMapRule(mapId),
     ui: getMapRuleUI(mapId),
   }))
