@@ -81,13 +81,27 @@ const reducer = (state = initState, action) => {
   if (!state.ready)
     return state
 
+  if (action.type === '@@poi-plugin-auto-refresher@Modify') {
+    const {modifier} = action
+    return modifier(state)
+  }
+
   return state
 }
 
 const actionCreators = {
+  /*
+     initiate the state with a loaded p-state
+     this also has the effect of setting state to 'ready'.
+     when the state is 'ready', all other actions are ignored.
+   */
   init: pState => ({
     type: '@@poi-plugin-auto-refresher@Init',
     pState,
+  }),
+  modify: modifier => ({
+    type: '@@poi-plugin-auto-refresher@Modify',
+    modifier,
   }),
 }
 
