@@ -115,6 +115,13 @@ const actionCreators = {
         modifyObject(mapId, (data = {enabled: true, rules: []}) => modifier(data))
       )
     ),
+  modifyMapRuleUI: (mapId, modifier) =>
+    actionCreators.modifyUI(
+      modifyObject('rules',
+        // TODO: ensure consistency
+        modifyObject(mapId, (data = {expanded: true}) => modifier(data))
+      )
+    ),
 }
 
 /*
