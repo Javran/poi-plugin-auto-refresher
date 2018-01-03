@@ -72,10 +72,12 @@ class ViewControlPanel extends PureComponent {
             >
               <div style={{display: 'flex', justifyContent: 'space-around'}}>
                 <MenuItem
+                  onSelect={this.handleSelectMap}
                   eventKey="auto">
                   Auto
                 </MenuItem>
                 <MenuItem
+                  onSelect={this.handleSelectMap}
                   eventKey="all">
                   All
                 </MenuItem>
@@ -98,11 +100,13 @@ class ViewControlPanel extends PureComponent {
                     const {area, num} = splitMapId(mapId)
                     return (
                       <MenuItem
+                        onSelect={this.handleSelectMap}
                         style={{
                           fontSize: '120%',
                           margin: '2px 5px',
                           gridArea: `${num} / ${area} / span 1 / span 1`,
                         }}
+                        eventKey={mapId}
                         key={mapId}>
                         {mapIdToStr(mapId)}
                       </MenuItem>
