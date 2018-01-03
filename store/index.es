@@ -107,6 +107,14 @@ const actionCreators = {
     actionCreators.modify(modifyObject('ui', modifier)),
   changeMapFocus: mapFocus =>
     actionCreators.modifyUI(modifyObject('mapFocus', () => mapFocus)),
+  modifyMapRule: (mapId, modifier) =>
+    actionCreators.modify(
+      modifyObject(
+        'mapRules',
+        // TODO: ensure consistency between this and selector
+        modifyObject(mapId, (data = {enabled: true, rules: []}) => modifier(data))
+      )
+    ),
 }
 
 /*

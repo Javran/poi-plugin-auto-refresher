@@ -105,6 +105,30 @@ const visibleMapIdsSelector = createSelector(
     mapFocus === 'all' ? rMapIds : [mapFocus]
 )
 
+const getMapRuleFuncSelector = createSelector(
+  mapRulesSelector,
+  mapRules => mapId =>
+    _.get(mapRules, mapId, {enabled: true, rules: []})
+)
+
+const getMapRuleUIFuncSelector = createSelector(
+  uiSelector,
+  ui => mapId =>
+    _.get(ui, ['rules', mapId], {expanded: true})
+)
+
+const getMapRuleInfoFuncSelector = createSelector(
+  getMapRuleFuncSelector,
+  getMapRuleUIFuncSelector,
+  validMapIdsSelector,
+  (getMapRule, getMapRuleUI, validMapIds) => _.memoize(mapId => ({
+    // whether the current map is valid from master data
+    valid: validMapIds.includes(mapId),
+    ...getMapRule(mapId),
+    ui: getMapRuleUI(mapId),
+  }))
+)
+
 export {
   fcdMapSelector,
   extSelector,
@@ -117,4 +141,5 @@ export {
   validMapIdsSelector,
   effectiveMapFocusSelector,
   visibleMapIdsSelector,
+  getMapRuleInfoFuncSelector,
 }

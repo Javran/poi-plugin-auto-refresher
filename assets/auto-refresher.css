@@ -2,6 +2,8 @@
     margin-left: 5px;
     margin-right: 5px;
     margin-top: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
 .poi-plugin-auto-refresher .panel {
@@ -29,4 +31,13 @@
     display: inline-block;
     width: 100%;
     text-align: center;
+}
+
+#poi-plugin-auto-refresher.poi-app-tabpane {
+    display: flex;
+    flex-direction: column;
+}
+
+#poi-plugin-auto-refresher .map-rule-panel > .panel-heading {
+    padding: 5px 10px;
 }

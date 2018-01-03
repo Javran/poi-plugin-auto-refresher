@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import { not, modifyObject, projectorToComparator } from 'subtender'
 import { splitMapId, mapIdToStr } from 'subtender/kc'
-import { createStructuredSelector } from 'reselect'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import {
