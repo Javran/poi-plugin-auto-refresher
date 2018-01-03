@@ -27,14 +27,6 @@ import { loadPState } from './p-state'
    TODO
    plan for new version:
 
-   - no more export / import,
-     and there will be only one profile to be mananged.
-     we'll use files instead of localStorage for storage,
-     that we things can still be easily backed up
-
-   - need to define a p-state which contains rules, ui states
-     and settings in a more structured way.
-
    - will still keep the "user language" same way before,
      but now there's a structured object underlying for easier processing.
 
