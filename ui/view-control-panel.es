@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { not, modifyObject, projectorToComparator } from 'subtender'
 import { splitMapId, mapIdToStr } from 'subtender/kc'
-
+import { createStructuredSelector } from 'reselect'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import {
@@ -13,7 +13,7 @@ import {
 import FontAwesome from 'react-fontawesome'
 
 import { PTyp } from '../ptyp'
-import { uiSelector } from '../selectors'
+import { mapFocusSelector, effectiveMapFocusSelector } from '../selectors'
 import { mapDispatchToProps } from '../store'
 
 // TODO: connect store
@@ -37,10 +37,7 @@ const grouppedMapInfoList = _.toPairs(
 
 class ViewControlPanelImpl extends PureComponent {
   static propTypes = {
-    mapFocus: PTyp.oneOfType([
-      PTyp.oneOf(['auto', 'all']),
-      PTyp.number,
-    ]).isRequired,
+    mapFocusDesc: PTyp.string.isRequired,
     changeMapFocus: PTyp.func.isRequired,
   }
 
@@ -62,7 +59,7 @@ class ViewControlPanelImpl extends PureComponent {
   }
 
   render() {
-    const {mapFocus} = this.props
+    const {mapFocusDesc} = this.props
     return (
       <Panel>
         <div
@@ -77,7 +74,7 @@ class ViewControlPanelImpl extends PureComponent {
             <Dropdown.Toggle
               style={{width: '100%'}}
             >
-              {mapFocus}
+              {mapFocusDesc}
             </Dropdown.Toggle>
             <Dropdown.Menu
               style={{width: '100%'}}
@@ -146,13 +143,19 @@ class ViewControlPanelImpl extends PureComponent {
 }
 
 const ViewControlPanel = connect(
-  uiSelector,
+  state => {
+    const mapFocus = mapFocusSelector(state)
+    const effMapFocus = effectiveMapFocusSelector(state)
+    const effMapFocusText =
+      effMapFocus === 'all' ? 'All' : mapIdToStr(effMapFocus)
+
+    const mapFocusDesc =
+      mapFocus === 'auto' ?
+        `${effMapFocusText} (Auto)` :
+        effMapFocusText
+    return {mapFocusDesc}
+  },
   mapDispatchToProps,
-  ({mapFocus}, {changeMapFocus}, ownProps) => ({
-    mapFocus,
-    changeMapFocus,
-    ...ownProps,
-  })
 )(ViewControlPanelImpl)
 
 export { ViewControlPanel }
