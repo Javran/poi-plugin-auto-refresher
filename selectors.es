@@ -2,8 +2,10 @@ import _ from 'lodash'
 import { projectorToComparator } from 'subtender'
 import { createSelector } from 'reselect'
 import {
+  constSelector,
   fcdSelector,
   extensionSelectorFactory,
+  sortieSelector,
 } from 'views/utils/selectors'
 
 import { initState } from './store'
@@ -25,6 +27,11 @@ const readySelector = createSelector(
 const uiSelector = createSelector(
   extSelector,
   ext => ext.ui,
+)
+
+const mapFocusSelector = createSelector(
+  uiSelector,
+  ui => ui.mapFocus
 )
 
 const mapRulesSelector = createSelector(
@@ -55,12 +62,59 @@ const ruleMapIdsSelector = createSelector(
   ).sort(projectorToComparator(_.identity))
 )
 
+// null or a number indicating mapId of current sortieing map
+const sortieMapIdSelector = createSelector(
+  sortieSelector,
+  poiSortie => {
+    const {sortieMapId} = poiSortie
+    if (!sortieMapId)
+      return null
+    return Number(sortieMapId)
+  }
+)
+
+// all valid value of mapId from master data
+const validMapIdsSelector = createSelector(
+  constSelector,
+  ({$maps}) =>
+    _.keys($maps).map(Number).sort(projectorToComparator(_.identity))
+)
+
+/*
+   use this selector to eliminate "auto" from mapFocus,
+   which is interpreted at runtime:
+
+   - if we are not in a sortie, it's the same as "all"
+   - otherwise, the sortieing map is focused.
+
+ */
+const effectiveMapFocusSelector = createSelector(
+  sortieMapIdSelector,
+  mapFocusSelector,
+  (mapId, mapFocus) => {
+    if (mapFocus !== 'auto')
+      return mapFocus
+    return mapId || 'all'
+  }
+)
+
+const visibleMapIdsSelector = createSelector(
+  effectiveMapFocusSelector,
+  ruleMapIdsSelector,
+  (mapFocus, rMapIds) =>
+    mapFocus === 'all' ? rMapIds : [mapFocus]
+)
+
 export {
   fcdMapSelector,
   extSelector,
   readySelector,
   mapRulesSelector,
   uiSelector,
+  mapFocusSelector,
   mainSelector,
   ruleMapIdsSelector,
+  validMapIdsSelector,
+  effectiveMapFocusSelector,
+  visibleMapIdsSelector,
 }

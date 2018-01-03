@@ -145,6 +145,14 @@ class ViewControlPanelImpl extends PureComponent {
   }
 }
 
-const ViewControlPanel = connect(uiSelector, mapDispatchToProps)(ViewControlPanelImpl)
+const ViewControlPanel = connect(
+  uiSelector,
+  mapDispatchToProps,
+  ({mapFocus}, {changeMapFocus}, ownProps) => ({
+    mapFocus,
+    changeMapFocus,
+    ...ownProps,
+  })
+)(ViewControlPanelImpl)
 
 export { ViewControlPanel }
