@@ -4,14 +4,28 @@ import { join } from 'path-extra'
 
 import { parseRuleConfigStr } from './rule'
 
+/*
+   the data structure used by latest version of auto-refresher:
+
+   {
+     $version: <string>,
+     ui: <same as extStore.ui> (optional)
+     mapRules: <same as extStore.mapRules>
+   }
+
+   note that 'ui' part is optional - any falsy value means
+   the default values should be used.
+
+ */
+
+const latestVersion = '0.3.0'
+
 const getPStateFilePath = () => {
   const { APPDATA_PATH } = window
   const configPath = join(APPDATA_PATH,'auto-refresher')
   ensureDirSync(configPath)
   return join(configPath,'p-state.json')
 }
-
-const latestVersion = '0.3.0'
 
 /*
    TODO:
@@ -78,12 +92,22 @@ const migratePStateAndLoad = () => {
   }
 }
 
+/*
+   this function updates a p-state structure of at least version 0.3.0
+   to the latest one, and then returns p-state without `$version` property.
+
+   any failure happens inside of this function results in `null`.
+   in addition, it's allowed to pass `oldPState = null` to this function,
+   in which case `null` is returned.
+
+   whenever a `null` is returns, the default values should be used instead.
+ */
 const updatePState = oldPState => {
   // should use default.
   if (oldPState === null)
     return null
 
-  if (oldPState.$version === '0.3.0') {
+  if (oldPState.$version === latestVersion) {
     const {$version: _ignored, ...pState} = oldPState
     return pState
   }
