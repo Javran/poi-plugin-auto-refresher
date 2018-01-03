@@ -50,11 +50,7 @@ import { loadPState } from './p-state'
 
 const pluginDidLoad = () => setTimeout(() => {
   globalSubscribe()
-
-  const {getStore} = window
-  const fcdMap = fcdMapSelector(getStore())
-  // console.log(loadPState())
-  bac.init(fcdMap)
+  bac.init(loadPState())
 })
 
 const pluginWillUnload = () => {

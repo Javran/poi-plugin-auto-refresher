@@ -1,4 +1,5 @@
-import { modifyArray } from 'subtender'
+import _ from 'lodash'
+import { modifyArray, modifyObject } from 'subtender'
 import { bindActionCreators } from 'redux'
 
 import {
@@ -54,11 +55,41 @@ const initState = {
 
    */
   mapRules: {},
+  // a flag for indicating whether p-state is loaded.
+  ready: false,
 }
 
-const reducer = (state = initState, _action) => state
+const reducer = (state = initState, action) => {
+  // put pState back into state, set ready flag
+  if (action.type === '@@poi-plugin-auto-refresher@Init') {
+    const {pState} = action
+    // using _.get because pState could be null
+    const ui = _.get(pState,'ui')
+    const mapRules = _.get(pState, 'mapRules')
+    return _.flow(
+      ui ?
+        modifyObject('ui', () => ui) :
+        _.identity,
+      mapRules ?
+        modifyObject('mapRules', () => mapRules) :
+        _.identity,
+      modifyObject('ready', () => true)
+    )(state)
+  }
 
-const actionCreators = {}
+  // ignore all actions except "Init" if the state is not ready.
+  if (!state.ready)
+    return state
+
+  return state
+}
+
+const actionCreators = {
+  init: pState => ({
+    type: '@@poi-plugin-auto-refresher@Init',
+    pState,
+  }),
+}
 
 /*
 
