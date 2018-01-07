@@ -32,7 +32,8 @@ const destructRule = (onEdgeId, onEdge, onNode) =>
 const ruleAsId = destructRule(
   edgeId => `d-${edgeId}`,
   (begin,end) => `e-${begin}-${end}`,
-  node => `n-${node}`)
+  node => `n-${node}`
+)
 
 // rule pretty printer (to string)
 const prettyRule = (__ = x => x) => destructRule(

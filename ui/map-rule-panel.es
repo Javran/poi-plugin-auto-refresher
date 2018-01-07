@@ -6,6 +6,7 @@ import FontAwesome from 'react-fontawesome'
 import { modifyObject, not, modifyArray } from 'subtender'
 import { mapIdToStr } from 'subtender/kc'
 
+import { ruleAsId } from '../rule'
 import { getMapRuleInfoFuncSelector } from '../selectors'
 import { mapDispatchToProps } from '../store'
 import { PTyp } from '../ptyp'
@@ -69,12 +70,13 @@ class MapRulePanelImpl extends PureComponent {
         expanded={expanded}
       >
         {
-          _.flatMap(rules, (rule,ind) => {
+          _.flatMap(rules, (rule, ind) => {
             const {enabled: rEnabled} = rule
+            const rId = ruleAsId(rule)
             return [
               (
                 <Button
-                  key={`${ind}-remove`}
+                  key={`${rId}-remove`}
                   bsStyle="danger"
                   style={{
                     width: '3em',
@@ -90,14 +92,14 @@ class MapRulePanelImpl extends PureComponent {
                   style={{
                     gridArea: `${ind} / 2 / span 1 / span 1`,
                   }}
-                  key={`${ind}-desc`}>
+                  key={`${rId}-desc`}>
                   {JSON.stringify(rule)}
                 </div>
               ),
               (
                 <Button
                   onClick={this.handleToggleRule(ind)}
-                  key={`${ind}-toggle`}
+                  key={`${rId}-toggle`}
                   bsStyle={rEnabled ? 'success' : 'danger'}
                   style={{
                     width: '3em',
