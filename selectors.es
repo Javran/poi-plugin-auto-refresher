@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { projectorToComparator } from 'subtender'
+import { mapIdToStr } from 'subtender/kc'
 import { createSelector } from 'reselect'
 import {
   constSelector,
@@ -7,6 +8,7 @@ import {
   extensionSelectorFactory,
   sortieSelector,
 } from 'views/utils/selectors'
+
 
 import {
   initState,
@@ -138,6 +140,16 @@ const getMapRuleInfoFuncSelector = createSelector(
   }))
 )
 
+const getFcdMapRoutesFuncSelector = createSelector(
+  fcdSelector,
+  fcd => _.memoize(mapId => {
+    const mapStr = mapIdToStr(mapId)
+    if (!mapStr)
+      return []
+    return _.get(fcd, ['map', mapStr, 'route'], [])
+  })
+)
+
 export {
   fcdMapSelector,
   extSelector,
@@ -151,4 +163,5 @@ export {
   effectiveMapFocusSelector,
   visibleMapIdsSelector,
   getMapRuleInfoFuncSelector,
+  getFcdMapRoutesFuncSelector,
 }
