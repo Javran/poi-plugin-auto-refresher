@@ -182,4 +182,5 @@ export {
   prepareConfigLine,
 
   configToStr,
+  prepareRule,
 }
