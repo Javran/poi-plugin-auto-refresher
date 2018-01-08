@@ -19,7 +19,7 @@ import {
   configToStr,
 } from '../rule'
 
-const { getStore } = window
+const { getStore, dispatch } = window
 
 const initState = {
   // TODO: ui related stuff (expand / collapse)
@@ -84,6 +84,17 @@ const reducer = (state = initState, action) => {
   if (action.type === '@@poi-plugin-auto-refresher@Modify') {
     const {modifier} = action
     return modifier(state)
+  }
+
+  if (
+    action.type === '@@Response/kcsapi/api_req_map/next' ||
+    action.type === '@@Response/kcsapi/api_req_map/start'
+  ) {
+    // TODO: action that follows: determine whether we should trigger a refresh
+    dispatch(() => {
+      // TODO
+    })
+    return state
   }
 
   return state
