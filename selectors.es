@@ -72,6 +72,8 @@ const ruleMapIdsSelector = createSelector(
 const sortieMapIdSelector = createSelector(
   sortieSelector,
   poiSortie => {
+    if (!poiSortie || typeof poiSortie !== 'object')
+      return null
     const {sortieMapId} = poiSortie
     if (!sortieMapId)
       return null
@@ -162,6 +164,24 @@ const getMapRuleInfoFuncSelector = createSelector(
   }))
 )
 
+const shouldTriggerFuncSelector = createSelector(
+  sortieMapIdSelector,
+  getProcessedMapRuleFuncSelector,
+  (sortieMapId, getProcessedMapRule) => _.memoize(edgeId => {
+    // this should not happen, as we only call this function during sorties
+    if (!sortieMapId) {
+      // TODO: weird, not sure why this branch gets hit
+      console.warn(`sortieMapId should not be falsy`)
+      return false
+    }
+    const processedMapRule = getProcessedMapRule(sortieMapId)
+    // when the whole map is disabled
+    if (!processedMapRule.enabled)
+      return false
+    console.log(processedMapRule)
+  })
+)
+
 export {
   fcdMapSelector,
   extSelector,
@@ -176,4 +196,5 @@ export {
   visibleMapIdsSelector,
   getMapRuleInfoFuncSelector,
   getFcdMapRoutesFuncSelector,
+  shouldTriggerFuncSelector,
 }

@@ -19,6 +19,9 @@ import {
   configToStr,
 } from '../rule'
 
+// TODO: resolve cyclic dep on this
+import { shouldTriggerFuncSelector } from '../selectors'
+
 const { getStore, dispatch } = window
 
 const initState = {
@@ -92,7 +95,13 @@ const reducer = (state = initState, action) => {
   ) {
     // TODO: action that follows: determine whether we should trigger a refresh
     dispatch(() => {
-      // TODO
+      const edgeId = action.body.api_no
+      console.log(shouldTriggerFuncSelector)
+      const shouldTrigger = shouldTriggerFuncSelector(state)
+      
+      if (shouldTrigger(edgeId)) {
+        // TODO: trigger
+      }
     })
     return state
   }
