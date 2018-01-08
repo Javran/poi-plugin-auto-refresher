@@ -171,6 +171,8 @@ const shouldTriggerFuncSelector = createSelector(
     // this should not happen, as we only call this function during sorties
     if (!sortieMapId) {
       // TODO: weird, not sure why this branch gets hit
+      // TODO: it seems we need to keep record of sortieMapId because one in main app
+      // gets messed up
       console.warn(`sortieMapId should not be falsy`)
       return false
     }

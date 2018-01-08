@@ -95,9 +95,10 @@ const reducer = (state = initState, action) => {
   ) {
     // TODO: action that follows: determine whether we should trigger a refresh
     dispatch(() => {
+      const newState = getStore()
       const edgeId = action.body.api_no
       console.log(shouldTriggerFuncSelector)
-      const shouldTrigger = shouldTriggerFuncSelector(state)
+      const shouldTrigger = shouldTriggerFuncSelector(newState)
       
       if (shouldTrigger(edgeId)) {
         // TODO: trigger
