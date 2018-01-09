@@ -97,7 +97,7 @@ const reducer = (state = initState, action) => {
     dispatch(() => {
       const newState = getStore()
       const edgeId = action.body.api_no
-      console.log(shouldTriggerFuncSelector)
+      // console.log(shouldTriggerFuncSelector)
       const shouldTrigger = shouldTriggerFuncSelector(newState)
       
       if (shouldTrigger(edgeId)) {
