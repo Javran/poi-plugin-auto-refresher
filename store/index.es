@@ -72,6 +72,7 @@ const reducer = (state = initState, action) => {
       const shouldTrigger = shouldTriggerFuncSelector(poiState)
       if (shouldTrigger(edgeId)) {
         // TODO: trigger
+
       }
     })
 

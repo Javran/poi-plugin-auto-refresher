@@ -122,9 +122,6 @@ const shouldTriggerFuncSelector = createSelector(
   (mapId, getProcessedMapRule) => _.memoize(edgeId => {
     // this should not happen, as we only call this function during sorties
     if (!mapId) {
-      // TODO: weird, not sure why this branch gets hit
-      // TODO: it seems we need to keep record of sortieMapId because one in main app
-      // gets messed up
       console.warn(`mapId should not be falsy`)
       return false
     }
@@ -132,7 +129,8 @@ const shouldTriggerFuncSelector = createSelector(
     // when the whole map is disabled
     if (!processedMapRule.enabled)
       return false
-    console.log(processedMapRule)
+    const enabledRules = processedMapRule.rules.filter(x => x.enabled)
+    return enabledRules.some(x => x.check(edgeId))
   })
 )
 
