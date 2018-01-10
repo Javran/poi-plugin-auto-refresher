@@ -5,60 +5,21 @@ import { createSelector } from 'reselect'
 import {
   constSelector,
   fcdSelector,
-  extensionSelectorFactory,
   sortieSelector,
 } from 'views/utils/selectors'
 
-import { prepareRule } from './rule/config'
+import { prepareRule } from '../rule/config'
 import {
-  initState,
   defaultMapRuleData,
   defaultMapRuleUIData,
-} from './store'
+} from '../store'
 
-const fcdMapSelector = createSelector(
-  fcdSelector,
-  fcd => fcd.map
-)
-
-const extSelector = createSelector(
-  extensionSelectorFactory('poi-plugin-auto-refresher'),
-  ext => _.isEmpty(ext) ? initState : ext)
-
-const readySelector = createSelector(
-  extSelector,
-  ext => ext.ready
-)
-
-const uiSelector = createSelector(
-  extSelector,
-  ext => ext.ui,
-)
-
-const mapFocusSelector = createSelector(
+import {
+  mapRulesSelector,
+  mapFocusSelector,
+  mapIdSelector,
   uiSelector,
-  ui => ui.mapFocus
-)
-
-const mapRulesSelector = createSelector(
-  extSelector,
-  ext => ext.mapRules
-)
-
-const mapIdSelector = createSelector(
-  extSelector,
-  ext => ext.mapId
-)
-
-const mainSelector = createSelector(
-  fcdMapSelector,
-  extSelector,
-  (fcdMap,{ruleTable,disabledMapIds,curMapId}) => ({
-    fcdMap,
-    ruleTable,
-    disabledMapIds,
-    curMapId,
-  }))
+} from './common'
 
 /*
    a sorted Array of all mapIds that have defined rules.
@@ -189,15 +150,9 @@ const shouldTriggerFuncSelector = createSelector(
   })
 )
 
+export * from './common'
+
 export {
-  fcdMapSelector,
-  extSelector,
-  readySelector,
-  mapRulesSelector,
-  uiSelector,
-  mapFocusSelector,
-  mapIdSelector,
-  mainSelector,
   ruleMapIdsSelector,
   validMapIdsSelector,
   effectiveMapFocusSelector,

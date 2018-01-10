@@ -1,71 +1,24 @@
 import _ from 'lodash'
-import { modifyArray, modifyObject } from 'subtender'
+import {
+  modifyArray,
+  modifyObject,
+} from 'subtender'
 import { bindActionCreators } from 'redux'
 
-import { gameReloadFlash } from 'views/services/utils'
+// import { gameReloadFlash } from 'views/services/utils'
 import { store } from 'views/create-store'
 
 import {
-  ruleAsId,
-  addConfigLine,
-  loadRuleConfigStr,
-  configToStr,
-} from '../rule'
+  sortieMapIdSelector,
+} from '../selectors/common'
 
-// TODO: resolve cyclic dep on this
 import {
   shouldTriggerFuncSelector,
-  sortieMapIdSelector,
 } from '../selectors'
 
+import { initState } from './common'
+
 const { getStore, dispatch } = window
-
-const initState = {
-  // TODO: ui related stuff (expand / collapse)
-  ui: {
-    /*
-       indicates the focusing map for displaying rules.
-       possible values:
-
-       - 'auto': 'all' if not during sortie, otherwise, focus on the sortieing map
-       - 'all': show rules for all maps
-       - <mapId>: only show rules for a specific map
-     */
-    mapFocus: 'auto',
-    /*
-       TODO
-       `rules` is an Object, `rules[<mapId>]` is an Object for indicating
-       UI state of a specific rule.
-
-       defaults to `{expanded: true}`
-     */
-    rules: {},
-  },
-  /*
-     mapRules is an Object,
-     which maps mapId to <MapRule>.
-
-     a MapRule is an Object:
-
-     {
-       enabled: <boolean>,
-       rules: <Array of Rule>,
-     }
-
-   */
-  mapRules: {},
-  /*
-     not present in p-state, we have to keep track of mapId ourselves
-     because <store>.sortie.sortieMapId is not reliable: both us and <store>.sortie
-     reacts to /start api and by the time we are processing it,
-     <store>.sortie is not yet updated.
-
-     INVARIANT: mapId should either be a valid mapId, or null, can never be 0.
-   */
-  mapId: null,
-  // a flag for indicating whether p-state is loaded.
-  ready: false,
-}
 
 const reducer = (state = initState, action) => {
   // put pState back into state, set ready flag
@@ -366,8 +319,9 @@ const mapDispatchToProps = dispatch1 =>
 const boundActionCreators =
   mapDispatchToProps(store.dispatch)
 
+export * from './common'
+
 export {
-  initState,
   defaultMapRuleData,
   defaultMapRuleUIData,
   reducer,
