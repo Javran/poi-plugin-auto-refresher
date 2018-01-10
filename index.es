@@ -30,12 +30,8 @@ import { loadPState } from './p-state'
    - will still keep the "user language" same way before,
      but now there's a structured object underlying for easier processing.
 
-   - we don't have to show all rules, let's place a table of maps
-     and let user pick one from them (but we'll still make it so that
-     all rules can be shown at the same time)
-
-   - representation as JSON, do not put functions there.
-     use selectors to "compile" rules
+   - it makes sense to make "expanded" togglable only in "all" mode,
+     and in all other modes, we just force expansion
 
  */
 
