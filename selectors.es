@@ -45,6 +45,11 @@ const mapRulesSelector = createSelector(
   ext => ext.mapRules
 )
 
+const mapIdSelector = createSelector(
+  extSelector,
+  ext => ext.mapId
+)
+
 const mainSelector = createSelector(
   fcdMapSelector,
   extSelector,
@@ -97,7 +102,7 @@ const validMapIdsSelector = createSelector(
 
  */
 const effectiveMapFocusSelector = createSelector(
-  sortieMapIdSelector,
+  mapIdSelector,
   mapFocusSelector,
   (mapId, mapFocus) => {
     if (mapFocus !== 'auto')
@@ -165,18 +170,18 @@ const getMapRuleInfoFuncSelector = createSelector(
 )
 
 const shouldTriggerFuncSelector = createSelector(
-  sortieMapIdSelector,
+  mapIdSelector,
   getProcessedMapRuleFuncSelector,
-  (sortieMapId, getProcessedMapRule) => _.memoize(edgeId => {
+  (mapId, getProcessedMapRule) => _.memoize(edgeId => {
     // this should not happen, as we only call this function during sorties
-    if (!sortieMapId) {
+    if (!mapId) {
       // TODO: weird, not sure why this branch gets hit
       // TODO: it seems we need to keep record of sortieMapId because one in main app
       // gets messed up
-      console.warn(`sortieMapId should not be falsy`)
+      console.warn(`mapId should not be falsy`)
       return false
     }
-    const processedMapRule = getProcessedMapRule(sortieMapId)
+    const processedMapRule = getProcessedMapRule(mapId)
     // when the whole map is disabled
     if (!processedMapRule.enabled)
       return false
@@ -191,6 +196,7 @@ export {
   mapRulesSelector,
   uiSelector,
   mapFocusSelector,
+  mapIdSelector,
   mainSelector,
   ruleMapIdsSelector,
   validMapIdsSelector,
@@ -199,4 +205,5 @@ export {
   getMapRuleInfoFuncSelector,
   getFcdMapRoutesFuncSelector,
   shouldTriggerFuncSelector,
+  sortieMapIdSelector,
 }

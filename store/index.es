@@ -2,12 +2,6 @@ import _ from 'lodash'
 import { modifyArray, modifyObject } from 'subtender'
 import { bindActionCreators } from 'redux'
 
-import {
-  // not reliable as it depends on process ordering of messages
-  // we only use this when "curMapId" is not available
-  // (this happens when the plugin is just loaded)
-  sortieMapIdSelector,
-} from 'views/utils/selectors'
 import { gameReloadFlash } from 'views/services/utils'
 import { store } from 'views/create-store'
 
@@ -15,12 +9,14 @@ import {
   ruleAsId,
   addConfigLine,
   loadRuleConfigStr,
-  shouldTrigger,
   configToStr,
 } from '../rule'
 
 // TODO: resolve cyclic dep on this
-import { shouldTriggerFuncSelector } from '../selectors'
+import {
+  shouldTriggerFuncSelector,
+  sortieMapIdSelector,
+} from '../selectors'
 
 const { getStore, dispatch } = window
 
@@ -58,6 +54,15 @@ const initState = {
 
    */
   mapRules: {},
+  /*
+     not present in p-state, we have to keep track of mapId ourselves
+     because <store>.sortie.sortieMapId is not reliable: both us and <store>.sortie
+     reacts to /start api and by the time we are processing it,
+     <store>.sortie is not yet updated.
+
+     INVARIANT: mapId should either be a valid mapId, or null, can never be 0.
+   */
+  mapId: null,
   // a flag for indicating whether p-state is loaded.
   ready: false,
 }
@@ -89,22 +94,54 @@ const reducer = (state = initState, action) => {
     return modifier(state)
   }
 
+  if (action.type === '@@Response/kcsapi/api_port/port') {
+    return {
+      ...state,
+      mapId: null,
+    }
+  }
+
+  // note that we are watching for "@@Request" so don't need to worry about
+  // having to deal with actual edgeId tests here.
+  if (action.type === '@@Request/kcsapi/api_req_map/start') {
+    // eslint-disable-next-line camelcase
+    const {api_maparea_id, api_mapinfo_no} = action.body
+    const mapId = Number(api_maparea_id)*10 + Number(api_mapinfo_no)
+    return {
+      ...state,
+      mapId,
+    }
+  }
+
   if (
     action.type === '@@Response/kcsapi/api_req_map/next' ||
     action.type === '@@Response/kcsapi/api_req_map/start'
   ) {
-    // TODO: action that follows: determine whether we should trigger a refresh
+    let newState = state
+    const {mapId} = newState
+
+    if (!mapId) {
+      // when mapId is not available upon plugin start,
+      // mapId is obtained from store instead
+      const poiMapId = Number(sortieMapIdSelector(getStore()))
+      if (poiMapId) {
+        newState = {
+          ...state,
+          mapId: poiMapId,
+        }
+      }
+    }
+
     dispatch(() => {
-      const newState = getStore()
+      const newState1 = getStore()
       const edgeId = action.body.api_no
       // console.log(shouldTriggerFuncSelector)
-      const shouldTrigger = shouldTriggerFuncSelector(newState)
-      
+      const shouldTrigger = shouldTriggerFuncSelector(newState1)
       if (shouldTrigger(edgeId)) {
         // TODO: trigger
       }
     })
-    return state
+    return newState
   }
 
   return state
@@ -323,8 +360,8 @@ const actionCreators = ({
 
 */
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(actionCreators, dispatch)
+const mapDispatchToProps = dispatch1 =>
+  bindActionCreators(actionCreators, dispatch1)
 
 const boundActionCreators =
   mapDispatchToProps(store.dispatch)
