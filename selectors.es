@@ -73,7 +73,7 @@ const ruleMapIdsSelector = createSelector(
   ).sort(projectorToComparator(_.identity))
 )
 
-// null or a number indicating mapId of current sortieing map
+// null or a non-zero number indicating mapId of current sortieing map
 const sortieMapIdSelector = createSelector(
   sortieSelector,
   poiSortie => {
