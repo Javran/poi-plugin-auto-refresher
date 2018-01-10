@@ -1,8 +1,10 @@
 import _ from 'lodash'
 import { ensureDirSync, readJsonSync, writeJsonSync } from 'fs-extra'
 import { join } from 'path-extra'
+import { createSelector } from 'reselect'
 
 import { parseRuleConfigStr } from './rule'
+import { uiSelector, mapRulesSelector } from './selectors/common'
 
 /*
    the data structure used by latest version of auto-refresher:
@@ -27,10 +29,12 @@ const getPStateFilePath = () => {
   return join(configPath,'p-state.json')
 }
 
-const extStateToPState = extState => {
-  const {ui, mapRules} = extState
-  return {ui, mapRules}
-}
+// using selector so we get diff detection for free
+const pStateSelector = createSelector(
+  uiSelector,
+  mapRulesSelector,
+  (ui, mapRules) => ({ui, mapRules})
+)
 
 const savePState = pState => {
   try {
@@ -140,7 +144,7 @@ const loadPState = () => {
 }
 
 export {
-  extStateToPState,
+  pStateSelector,
   savePState,
   loadPState,
 }

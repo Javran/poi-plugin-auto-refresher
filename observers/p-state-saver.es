@@ -1,25 +1,23 @@
 import _ from 'lodash'
 import { observer } from 'redux-observers'
 import {
-  createSelector,
   createStructuredSelector,
 } from 'reselect'
 
 import {
   savePState,
-  extStateToPState,
+  pStateSelector,
 } from '../p-state'
 import {
   readySelector,
-  extSelector,
-} from '../selectors'
+} from '../selectors/common'
 
 const debouncedSavePState = _.debounce(
   pStateData => setTimeout(() => savePState(pStateData)),
   500)
 
 const extPStateSelector = createStructuredSelector({
-  pState: createSelector(extSelector, extStateToPState),
+  pState: pStateSelector,
   ready: readySelector,
 })
 
