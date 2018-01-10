@@ -9,16 +9,12 @@ import { bindActionCreators } from 'redux'
 import { store } from 'views/create-store'
 
 import {
-  sortieMapIdSelector,
-} from '../selectors/common'
-
-import {
   shouldTriggerFuncSelector,
 } from '../selectors'
 
 import { initState } from './common'
 
-const { getStore, dispatch } = window
+const { getStore } = window
 
 const reducer = (state = initState, action) => {
   // put pState back into state, set ready flag
@@ -54,47 +50,32 @@ const reducer = (state = initState, action) => {
     }
   }
 
-  // note that we are watching for "@@Request" so don't need to worry about
-  // having to deal with actual edgeId tests here.
-  if (action.type === '@@Request/kcsapi/api_req_map/start') {
-    // eslint-disable-next-line camelcase
-    const {api_maparea_id, api_mapinfo_no} = action.body
-    const mapId = Number(api_maparea_id)*10 + Number(api_mapinfo_no)
-    return {
-      ...state,
-      mapId,
-    }
-  }
-
+  /*
+     get mapId and immediately start testing whether we should trigger a refresh
+   */
   if (
     action.type === '@@Response/kcsapi/api_req_map/next' ||
     action.type === '@@Response/kcsapi/api_req_map/start'
   ) {
-    let newState = state
-    const {mapId} = newState
-
-    if (!mapId) {
-      // when mapId is not available upon plugin start,
-      // mapId is obtained from store instead
-      const poiMapId = Number(sortieMapIdSelector(getStore()))
-      if (poiMapId) {
-        newState = {
-          ...state,
-          mapId: poiMapId,
-        }
-      }
+    let extNewState = state
+    {
+      // eslint-disable-next-line camelcase
+      const {api_maparea_id, api_mapinfo_no} = action.body
+      const mapId = Number(api_maparea_id)*10 + Number(api_mapinfo_no)
+      extNewState = modifyObject('mapId', () => mapId)(extNewState)
     }
 
-    dispatch(() => {
-      const newState1 = getStore()
+    // execute after update is done
+    setTimeout(() => {
+      const poiState = getStore()
       const edgeId = action.body.api_no
-      // console.log(shouldTriggerFuncSelector)
-      const shouldTrigger = shouldTriggerFuncSelector(newState1)
+      const shouldTrigger = shouldTriggerFuncSelector(poiState)
       if (shouldTrigger(edgeId)) {
         // TODO: trigger
       }
     })
-    return newState
+
+    return extNewState
   }
 
   return state

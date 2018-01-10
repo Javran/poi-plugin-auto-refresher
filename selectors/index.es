@@ -5,7 +5,6 @@ import { createSelector } from 'reselect'
 import {
   constSelector,
   fcdSelector,
-  sortieSelector,
 } from 'views/utils/selectors'
 
 import { prepareRule } from '../rule/config'
@@ -32,19 +31,6 @@ const ruleMapIdsSelector = createSelector(
     ([mapIdStr, {rules}]) =>
       rules.length > 0 ? [Number(mapIdStr)] : []
   ).sort(projectorToComparator(_.identity))
-)
-
-// null or a non-zero number indicating mapId of current sortieing map
-const sortieMapIdSelector = createSelector(
-  sortieSelector,
-  poiSortie => {
-    if (!poiSortie || typeof poiSortie !== 'object')
-      return null
-    const {sortieMapId} = poiSortie
-    if (!sortieMapId)
-      return null
-    return Number(sortieMapId)
-  }
 )
 
 // all valid value of mapId from master data
@@ -160,5 +146,4 @@ export {
   getMapRuleInfoFuncSelector,
   getFcdMapRoutesFuncSelector,
   shouldTriggerFuncSelector,
-  sortieMapIdSelector,
 }
