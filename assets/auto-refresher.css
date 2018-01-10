@@ -43,10 +43,13 @@
 }
 
 #poi-plugin-auto-refresher .map-rule-panel .panel-body {
-    padding: 10px 8px 5px;
-    display: grid;
+    padding: 10px 10px 5px;
+    display: flex;
+    flex-direction: column;
+    /*
     grid: auto / 3em 1fr 3em;
     grid-gap: 5px 5px;
+    */
 }
 
 #poi-plugin-auto-refresher .map-rule-panel > .panel-heading > div > a {

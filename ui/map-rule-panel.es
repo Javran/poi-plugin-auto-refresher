@@ -70,13 +70,20 @@ class MapRulePanelImpl extends PureComponent {
         expanded={expanded}
       >
         {
-          _.flatMap(rules, (rule, ind) => {
+          _.map(rules, (rule, ind) => {
             const {enabled: rEnabled} = rule
-            const rId = ruleAsId(rule)
-            return [
-              (
+            // we need to use ind here as we actually allow to have
+            // identical rules within one map
+            const key = _.identity(ind)
+            return (
+              <div
+                key={key}
+                style={{
+                  display: 'flex',
+                  ...(ind !== 0 ? {marginTop: 4} : {}),
+                }}
+              >
                 <Button
-                  key={`${rId}-remove`}
                   bsStyle="danger"
                   style={{
                     width: '3em',
@@ -85,21 +92,19 @@ class MapRulePanelImpl extends PureComponent {
                   bsSize="xsmall">
                   <FontAwesome name="trash" />
                 </Button>
-              ),
-              (
                 <div
                   className={(enabled && rEnabled) ? '' : 'text-muted'}
                   style={{
-                    gridArea: `${ind} / 2 / span 1 / span 1`,
+                    flex: 1,
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
                   }}
-                  key={`${rId}-desc`}>
+                >
                   {JSON.stringify(rule)}
                 </div>
-              ),
-              (
                 <Button
                   onClick={this.handleToggleRule(ind)}
-                  key={`${rId}-toggle`}
                   bsStyle={rEnabled ? 'success' : 'danger'}
                   style={{
                     width: '3em',
@@ -108,10 +113,9 @@ class MapRulePanelImpl extends PureComponent {
                   bsSize="xsmall">
                   <FontAwesome name={rEnabled ? 'check' : 'ban'} />
                 </Button>
-              ),
-            ]
-            }
-          )
+              </div>
+            )
+          })
         }
       </Panel>
     )
