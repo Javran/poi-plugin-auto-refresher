@@ -7,8 +7,16 @@ import { loadPState } from './p-state'
    TODO
    plan for new version:
 
-   - will still keep the "user language" same way before,
-     but now there's a structured object underlying for easier processing.
+   - alternative refresh action:
+
+       - refresh the game: optional delay.
+
+           - clamp: min, max
+           - method:
+             - uni,<mean>
+             - norm,<mean>,<var>
+
+       - popping up an alert
 
  */
 
