@@ -5,6 +5,8 @@ import {
   extensionSelectorFactory,
   constSelector,
 } from 'views/utils/selectors'
+import { generalComparator } from 'subtender'
+import { splitMapId } from 'subtender/kc'
 
 // for breaking circular dep
 import { initState } from '../store/common'
@@ -43,10 +45,32 @@ const mapIdSelector = createSelector(
   ext => ext.mapId
 )
 
+// return a sorted list of all mapIds known
 const allMapIdsSelector = createSelector(
   constSelector,
   ({$maps}) =>
-    _.values($maps).map(x => x.api_id).sort((x,y) => x-y)
+    _.values($maps).map(x => x.api_id).sort(generalComparator)
+)
+
+/*
+   return an Array of pairs: [area : Number, Array of {mapId, area, num}]
+   due to the invariant held by allMapIdsSelector,
+   the Array should be naturally sorted by area.
+ */
+const grouppedMapInfoListSelector = createSelector(
+  allMapIdsSelector,
+  allMapIds => {
+    const mapInfoList = allMapIds.map(mapId => ({
+      mapId,
+      ...splitMapId(mapId),
+    }))
+    const grouppedMapInfoList = _.toPairs(
+      _.groupBy(mapInfoList, 'area')
+    ).map(([mS, v]) =>
+      [Number(mS), v]
+    )
+    return grouppedMapInfoList
+  }
 )
 
 export {
@@ -58,4 +82,5 @@ export {
   mapFocusSelector,
   mapIdSelector,
   allMapIdsSelector,
+  grouppedMapInfoListSelector,
 }

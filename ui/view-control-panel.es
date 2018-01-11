@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { not, modifyObject, projectorToComparator } from 'subtender'
-import { splitMapId, mapIdToStr } from 'subtender/kc'
+import { not, modifyObject } from 'subtender'
+import { mapIdToStr } from 'subtender/kc'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import {
@@ -15,7 +15,7 @@ import { PTyp } from '../ptyp'
 import {
   mapFocusSelector,
   effectiveMapFocusSelector,
-  allMapIdsSelector,
+  grouppedMapInfoListSelector,
 } from '../selectors'
 import { mapDispatchToProps } from '../store'
 
@@ -24,7 +24,7 @@ class ViewControlPanelImpl extends PureComponent {
   static propTypes = {
     mapFocusDesc: PTyp.string.isRequired,
     changeMapFocus: PTyp.func.isRequired,
-    allMapIds: PTyp.array.isRequired,
+    grouppedMapInfoList: PTyp.array.isRequired,
   }
 
   constructor(props) {
@@ -45,16 +45,7 @@ class ViewControlPanelImpl extends PureComponent {
   }
 
   render() {
-    const {mapFocusDesc, allMapIds} = this.props
-    const mapInfoList = allMapIds.map(mapId => ({
-      mapId,
-      ...splitMapId(mapId),
-    }))
-    const grouppedMapInfoList = _.toPairs(
-      _.groupBy(mapInfoList, 'area')
-    ).map(([mS, v]) =>
-      [Number(mS), v]
-    )
+    const {mapFocusDesc, grouppedMapInfoList} = this.props
 
     return (
       <Panel>
@@ -105,23 +96,24 @@ class ViewControlPanelImpl extends PureComponent {
                 }}
               >
                 {
-                  allMapIds.map(mapId => {
-                    const {area, num} = splitMapId(mapId)
-                    return (
-                      <MenuItem
-                        className="menu-item"
-                        onSelect={this.handleSelectMap}
-                        style={{
-                          fontSize: '120%',
-                          margin: '2px 5px',
-                          gridArea: `${num} / ${area} / span 1 / span 1`,
-                        }}
-                        eventKey={mapId}
-                        key={mapId}>
-                        {mapIdToStr(mapId)}
-                      </MenuItem>
-                    )
-                  })
+
+                  _.flatMap(
+                    grouppedMapInfoList, ([_areaNum, mapInfoList]) =>
+                      mapInfoList.map(({area, num, mapId}) => (
+                        <MenuItem
+                          className="menu-item"
+                          onSelect={this.handleSelectMap}
+                          style={{
+                            fontSize: '120%',
+                            margin: '2px 5px',
+                            gridArea: `${num} / ${area} / span 1 / span 1`,
+                          }}
+                          eventKey={mapId}
+                          key={mapId}>
+                          {mapIdToStr(mapId)}
+                        </MenuItem>
+                      ))
+                  )
                 }
               </div>
             </Dropdown.Menu>
@@ -142,7 +134,7 @@ const ViewControlPanel = connect(
   state => {
     const mapFocus = mapFocusSelector(state)
     const effMapFocus = effectiveMapFocusSelector(state)
-    const allMapIds = allMapIdsSelector(state)
+    const grouppedMapInfoList = grouppedMapInfoListSelector(state)
     const effMapFocusText =
       effMapFocus === 'all' ? 'All' : mapIdToStr(effMapFocus)
 
@@ -150,7 +142,7 @@ const ViewControlPanel = connect(
       mapFocus === 'auto' ?
         `${effMapFocusText} (Auto)` :
         effMapFocusText
-    return {mapFocusDesc, allMapIds}
+    return {mapFocusDesc, grouppedMapInfoList}
   },
   mapDispatchToProps,
 )(ViewControlPanelImpl)
