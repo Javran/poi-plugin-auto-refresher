@@ -7,13 +7,8 @@ import { loadPState } from './p-state'
    TODO
    plan for new version:
 
-   - enforce that rule id should be unique in `rules` property
-
    - will still keep the "user language" same way before,
      but now there's a structured object underlying for easier processing.
-
-   - it makes sense to make "expanded" togglable only in "all" mode,
-     and in all other modes, we just force expansion
 
  */
 

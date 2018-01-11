@@ -6,10 +6,11 @@ import FontAwesome from 'react-fontawesome'
 import { modifyObject, not, modifyArray } from 'subtender'
 import { mapIdToStr } from 'subtender/kc'
 
-import { ruleAsId } from '../rule'
-import { getMapRuleInfoFuncSelector } from '../selectors'
+import { ruleAsId, prettyRule } from '../rule'
+import { getMapRuleInfoFuncSelector, effectiveMapFocusSelector } from '../selectors'
 import { mapDispatchToProps } from '../store'
 import { PTyp } from '../ptyp'
+import { __ } from '../tr'
 
 class MapRulePanelImpl extends PureComponent {
   static propTypes = {
@@ -17,6 +18,7 @@ class MapRulePanelImpl extends PureComponent {
     ui: PTyp.object.isRequired,
     rules: PTyp.array.isRequired,
     enabled: PTyp.bool.isRequired,
+    effMapFocus: PTyp.oneOfType([PTyp.number, PTyp.string]).isRequired,
     // note: avoid using this directly, use this.modifyMapRule instead.
     modifyMapRule: PTyp.func.isRequired,
     // note: avoid using this directly, use this.modifyMapRuleUI instead.
@@ -36,8 +38,12 @@ class MapRulePanelImpl extends PureComponent {
   handleToggleMap = () =>
     this.modifyMapRule(modifyObject('enabled', not))
 
-  handleToggleExpanded = () =>
-    this.modifyMapRuleUI(modifyObject('expanded', not))
+  handleToggleExpanded = () => {
+    const {effMapFocus} = this.props
+    // only togglable when we are in 'all' mode
+    if (effMapFocus === 'all')
+      this.modifyMapRuleUI(modifyObject('expanded', not))
+  }
 
   handleToggleRule = ruleId => () =>
     this.modifyMapRule(
@@ -52,7 +58,8 @@ class MapRulePanelImpl extends PureComponent {
     )
 
   render() {
-    const {mapId, ui: {expanded}, enabled, rules} = this.props
+    const {mapId, ui: {expanded}, enabled, rules, effMapFocus} = this.props
+    const effExpanded = effMapFocus === 'all' ? expanded : true
     return (
       <Panel
         className="map-rule-panel"
@@ -73,7 +80,7 @@ class MapRulePanelImpl extends PureComponent {
           </div>
         )}
         collapsible
-        expanded={expanded}
+        expanded={effExpanded}
       >
         {
           _.map(rules, (rule, ind) => {
@@ -105,9 +112,10 @@ class MapRulePanelImpl extends PureComponent {
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
+                    marginLeft: '.4em',
                   }}
                 >
-                  {JSON.stringify(rule)}
+                  {prettyRule(__)(rule)}
                 </div>
                 <Button
                   onClick={this.handleToggleRule(key)}
@@ -115,6 +123,7 @@ class MapRulePanelImpl extends PureComponent {
                   style={{
                     width: '3em',
                     gridArea: `${ind} / 3 / span 1 / span 1`,
+                    marginLeft: '.4em',
                   }}
                   bsSize="xsmall">
                   <FontAwesome name={rEnabled ? 'check' : 'ban'} />
@@ -129,8 +138,10 @@ class MapRulePanelImpl extends PureComponent {
 }
 
 const MapRulePanel = connect(
-  (state, {mapId}) =>
-    getMapRuleInfoFuncSelector(state)(mapId),
+  (state, {mapId}) => ({
+    effMapFocus: effectiveMapFocusSelector(state),
+    ...getMapRuleInfoFuncSelector(state)(mapId),
+  }),
   mapDispatchToProps,
 )(MapRulePanelImpl)
 

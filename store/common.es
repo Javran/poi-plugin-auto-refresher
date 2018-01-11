@@ -14,6 +14,12 @@ const initState = {
        UI state of a specific rule.
 
        defaults to `{expanded: true}`
+
+       note that "expanded" represents a user choice: a user might choose
+       to collapse rules for a specific map in "All" view, but it'll be forced
+       to be expanded when we are viewing a specific map, otherwise this doesn't
+       make good sense.
+
      */
     rules: {},
   },
