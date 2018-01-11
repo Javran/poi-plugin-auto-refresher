@@ -71,7 +71,7 @@ const reducer = (state = initState, action) => {
       const edgeId = action.body.api_no
       const shouldTrigger = shouldTriggerFuncSelector(poiState)
       if (shouldTrigger(edgeId)) {
-        // TODO: trigger
+        // TODO: alternative trigger
         gameReloadFlash()
       }
     })

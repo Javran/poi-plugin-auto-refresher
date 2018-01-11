@@ -19,7 +19,6 @@ import {
 } from '../selectors'
 import { mapDispatchToProps } from '../store'
 
-
 class ViewControlPanelImpl extends PureComponent {
   static propTypes = {
     mapFocusDesc: PTyp.string.isRequired,

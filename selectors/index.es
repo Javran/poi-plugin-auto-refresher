@@ -129,7 +129,11 @@ const shouldTriggerFuncSelector = createSelector(
     // when the whole map is disabled
     if (!processedMapRule.enabled)
       return false
-    const enabledRules = processedMapRule.rules.filter(x => x.enabled)
+    const enabledRules = processedMapRule.rules.filter(x =>
+      x.enabled &&
+      // making sure that it's a processed rule.
+      ('check' in x) && typeof x.check === 'function'
+    )
     return enabledRules.some(x => x.check(edgeId))
   })
 )

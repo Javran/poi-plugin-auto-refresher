@@ -1,5 +1,4 @@
 const initState = {
-  // TODO: ui related stuff (expand / collapse)
   ui: {
     /*
        indicates the focusing map for displaying rules.
@@ -11,7 +10,6 @@ const initState = {
      */
     mapFocus: 'auto',
     /*
-       TODO
        `rules` is an Object, `rules[<mapId>]` is an Object for indicating
        UI state of a specific rule.
 
