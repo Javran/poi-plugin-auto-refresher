@@ -1,23 +1,13 @@
 import _ from 'lodash'
-import { projectorToComparator, modifyObject } from 'subtender'
-import { mapIdToStr } from 'subtender/kc'
 import { createSelector } from 'reselect'
 import {
-  constSelector,
   fcdSelector,
   extensionSelectorFactory,
-  sortieSelector,
+  constSelector,
 } from 'views/utils/selectors'
-
-import { prepareRule } from '../rule/config'
 
 // for breaking circular dep
 import { initState } from '../store/common'
-
-import {
-  defaultMapRuleData,
-  defaultMapRuleUIData,
-} from '../store'
 
 const extSelector = createSelector(
   extensionSelectorFactory('poi-plugin-auto-refresher'),
@@ -53,6 +43,12 @@ const mapIdSelector = createSelector(
   ext => ext.mapId
 )
 
+const allMapIdsSelector = createSelector(
+  constSelector,
+  ({$maps}) =>
+    _.values($maps).map(x => x.api_id).sort((x,y) => x-y)
+)
+
 export {
   extSelector,
   fcdMapSelector,
@@ -61,4 +57,5 @@ export {
   uiSelector,
   mapFocusSelector,
   mapIdSelector,
+  allMapIdsSelector,
 }

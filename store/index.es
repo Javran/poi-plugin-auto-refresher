@@ -5,7 +5,7 @@ import {
 } from 'subtender'
 import { bindActionCreators } from 'redux'
 
-// import { gameReloadFlash } from 'views/services/utils'
+import { gameReloadFlash } from 'views/services/utils'
 import { store } from 'views/create-store'
 
 import {
@@ -72,7 +72,7 @@ const reducer = (state = initState, action) => {
       const shouldTrigger = shouldTriggerFuncSelector(poiState)
       if (shouldTrigger(edgeId)) {
         // TODO: trigger
-
+        gameReloadFlash()
       }
     })
 

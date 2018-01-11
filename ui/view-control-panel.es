@@ -12,32 +12,19 @@ import {
 import FontAwesome from 'react-fontawesome'
 
 import { PTyp } from '../ptyp'
-import { mapFocusSelector, effectiveMapFocusSelector } from '../selectors'
+import {
+  mapFocusSelector,
+  effectiveMapFocusSelector,
+  allMapIdsSelector,
+} from '../selectors'
 import { mapDispatchToProps } from '../store'
 
-// TODO: connect store
-const mapIds = [
-  "11", "12", "13", "14", "15", "16",
-  "21", "22", "23", "24", "25",
-  "31", "32", "33", "34", "35",
-  "41", "42", "43", "44", "45",
-  "51", "52", "53", "54", "55",
-  "61", "62", "63", "64", "65",
-].map(Number)
-
-const mapInfoList = mapIds.map(splitMapId)
-const grouppedMapInfoList = _.toPairs(
-  _.groupBy(mapInfoList, 'area')
-).map(([mS, v]) =>
-  [Number(mS), v.map(x => x.area*10 + x.num)]
-).sort(
-  projectorToComparator(x => x.area)
-)
 
 class ViewControlPanelImpl extends PureComponent {
   static propTypes = {
     mapFocusDesc: PTyp.string.isRequired,
     changeMapFocus: PTyp.func.isRequired,
+    allMapIds: PTyp.array.isRequired,
   }
 
   constructor(props) {
@@ -58,7 +45,17 @@ class ViewControlPanelImpl extends PureComponent {
   }
 
   render() {
-    const {mapFocusDesc} = this.props
+    const {mapFocusDesc, allMapIds} = this.props
+    const mapInfoList = allMapIds.map(mapId => ({
+      mapId,
+      ...splitMapId(mapId),
+    }))
+    const grouppedMapInfoList = _.toPairs(
+      _.groupBy(mapInfoList, 'area')
+    ).map(([mS, v]) =>
+      [Number(mS), v]
+    )
+
     return (
       <Panel>
         <div
@@ -108,7 +105,7 @@ class ViewControlPanelImpl extends PureComponent {
                 }}
               >
                 {
-                  mapIds.map(mapId => {
+                  allMapIds.map(mapId => {
                     const {area, num} = splitMapId(mapId)
                     return (
                       <MenuItem
@@ -145,6 +142,7 @@ const ViewControlPanel = connect(
   state => {
     const mapFocus = mapFocusSelector(state)
     const effMapFocus = effectiveMapFocusSelector(state)
+    const allMapIds = allMapIdsSelector(state)
     const effMapFocusText =
       effMapFocus === 'all' ? 'All' : mapIdToStr(effMapFocus)
 
@@ -152,7 +150,7 @@ const ViewControlPanel = connect(
       mapFocus === 'auto' ?
         `${effMapFocusText} (Auto)` :
         effMapFocusText
-    return {mapFocusDesc}
+    return {mapFocusDesc, allMapIds}
   },
   mapDispatchToProps,
 )(ViewControlPanelImpl)
