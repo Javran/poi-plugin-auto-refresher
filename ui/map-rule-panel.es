@@ -39,11 +39,17 @@ class MapRulePanelImpl extends PureComponent {
   handleToggleExpanded = () =>
     this.modifyMapRuleUI(modifyObject('expanded', not))
 
-  handleToggleRule = ruleInd => () =>
+  handleToggleRule = ruleId => () =>
     this.modifyMapRule(
-      modifyObject('rules',
-        modifyArray(ruleInd,
-          modifyObject('enabled', not))))
+      modifyObject('rules', rules => {
+        const ruleInd = rules.findIndex(r => ruleAsId(r) === ruleId)
+        if (ruleInd === -1) {
+          console.warn(`Rule with id ${ruleId} is not found`)
+          return rules
+        }
+        return modifyArray(ruleInd, modifyObject('enabled', not))(rules)
+      })
+    )
 
   render() {
     const {mapId, ui: {expanded}, enabled, rules} = this.props
@@ -74,7 +80,7 @@ class MapRulePanelImpl extends PureComponent {
             const {enabled: rEnabled} = rule
             // we need to use ind here as we actually allow to have
             // identical rules within one map
-            const key = _.identity(ind)
+            const key = ruleAsId(rule)
             return (
               <div
                 key={key}
@@ -104,7 +110,7 @@ class MapRulePanelImpl extends PureComponent {
                   {JSON.stringify(rule)}
                 </div>
                 <Button
-                  onClick={this.handleToggleRule(ind)}
+                  onClick={this.handleToggleRule(key)}
                   bsStyle={rEnabled ? 'success' : 'danger'}
                   style={{
                     width: '3em',

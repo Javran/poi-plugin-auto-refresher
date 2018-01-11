@@ -49,8 +49,6 @@ const savePState = pState => {
 }
 
 /*
-   TODO:
-
    loading strategy:
 
    - prefer file if it can be found
@@ -59,7 +57,6 @@ const savePState = pState => {
 
    in doing so we intentionally preserve the old rules in localStorage,
    as this is supposed to be a massive refactor, we need to be able to go back.
-
  */
 
 /*

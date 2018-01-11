@@ -28,6 +28,10 @@ const initState = {
        rules: <Array of Rule>,
      }
 
+     note that `rules` property has one more invariant:
+     the id of any rule in same array should be unique.
+     a rule id is computed using `ruleAsId` function.
+
    */
   mapRules: {},
   /*
