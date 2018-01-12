@@ -57,6 +57,14 @@ class MapRulePanelImpl extends PureComponent {
       })
     )
 
+  handleRemoveRule = ruleId => () =>
+    this.modifyMapRule(
+      modifyObject(
+        'rules',
+        rules => rules.filter(r => ruleAsId(r) !== ruleId)
+      )
+    )
+
   render() {
     const {mapId, ui: {expanded}, enabled, rules, effMapFocus} = this.props
     const effExpanded = effMapFocus === 'all' ? expanded : true
@@ -102,6 +110,7 @@ class MapRulePanelImpl extends PureComponent {
                     width: '3em',
                     gridArea: `${ind} / 1 / span 1 / span 1`,
                   }}
+                  onClick={this.handleRemoveRule(key)}
                   bsSize="xsmall">
                   <FontAwesome name="trash" />
                 </Button>
