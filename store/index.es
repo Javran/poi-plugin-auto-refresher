@@ -11,6 +11,7 @@ import { store } from 'views/create-store'
 import {
   shouldTriggerFuncSelector,
 } from '../selectors'
+import { ruleAsId } from '../rule'
 
 import { initState } from './common'
 
@@ -129,7 +130,34 @@ const actionCreators = {
         modifyObject('enabled', () => enabled)
       )
     } else if (conf.type === 'line') {
-      console.log('TODO')
+      const {mapId, rules: newRules} = conf
+      return actionCreators.modifyMapRule(
+        mapId,
+        modifyObject(
+          'rules',
+          /*
+             create modifiers to rules and chain these
+             modifiers together using _.flow
+           */
+          _.flow(newRules.map(newRule =>
+            /* rules modifier */
+            rules => {
+              const rId = ruleAsId(newRule)
+              const rInd = rules.findIndex(r => ruleAsId(r) === rId)
+              if (rInd === -1) {
+                // not found, creating new one
+                return [...rules, newRule]
+              } else {
+                // found, just modify 'enabled' if necessary
+                return modifyArray(
+                  rInd,
+                  modifyObject('enabled', () => newRule.enabled)
+                )(rules)
+              }
+            }
+          ))
+        )
+      )
     } else {
       console.error(`unexpected toggle type: ${conf.type}`)
     }
