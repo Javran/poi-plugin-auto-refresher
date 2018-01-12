@@ -11,12 +11,17 @@ import { loadPState } from './p-state'
 
        - refresh the game: optional delay.
 
-           - clamp: min, max
+           - clamp: min, max (inclusive)
            - method:
-             - uni,<mean>
-             - norm,<mean>,<var>
+             - uni,<mean> for uniform distribution
+             - norm,<mean>,<var> for normal distribution
 
        - popping up an alert
+
+   - learning mode:
+
+       - refresh detection
+       - get <mean> and <var> from data
 
  */
 
