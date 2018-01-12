@@ -22,8 +22,9 @@ import { mapDispatchToProps } from '../store'
 class ViewControlPanelImpl extends PureComponent {
   static propTypes = {
     mapFocusDesc: PTyp.string.isRequired,
-    changeMapFocus: PTyp.func.isRequired,
     grouppedMapInfoList: PTyp.array.isRequired,
+    changeMapFocus: PTyp.func.isRequired,
+    modifyUI: PTyp.func.isRequired,
   }
 
   constructor(props) {
@@ -42,6 +43,16 @@ class ViewControlPanelImpl extends PureComponent {
     this.props.changeMapFocus(key)
     this.setState({menuOpened: false})
   }
+
+  handleExpandedValToAllMaps = expanded => () =>
+    this.props.modifyUI(
+      modifyObject('rules', rules =>
+        /*
+           TODO: this is incomplete, we need to connect to all mapIds
+           that has at least one rule defined.
+         */
+        _.mapValues(rules, modifyObject('expanded', () => expanded)))
+    )
 
   render() {
     const {mapFocusDesc, grouppedMapInfoList} = this.props
@@ -117,10 +128,17 @@ class ViewControlPanelImpl extends PureComponent {
               </div>
             </Dropdown.Menu>
           </Dropdown>
-          <Button bsSize="small" style={{marginRight: 2}}>
+          <Button
+            bsSize="small"
+            style={{marginRight: 2}}
+            onClick={this.handleExpandedValToAllMaps(false)}
+          >
             <FontAwesome name="angle-double-up" />
           </Button>
-          <Button bsSize="small">
+          <Button
+            bsSize="small"
+            onClick={this.handleExpandedValToAllMaps(true)}
+          >
             <FontAwesome name="angle-double-down" />
           </Button>
         </div>
