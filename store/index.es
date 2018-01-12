@@ -164,63 +164,6 @@ const actionCreators = {
   },
 }
 
-/*
-
-const reducer = (state = initState, action) => {
-
-  if (action.type === '@poi-plugin-auto-refresher@RemoveRule') {
-    const { ruleTable, ...remainingState } = state
-    const { mapId, ruleId } = action
-    const modifyRuleList = rules => rules.filter( r => ruleAsId(r) !== ruleId )
-    const removeEmpty = obj => {
-      const newObj = { ...obj }
-      Object.keys(obj).map( k => {
-        if (newObj[k].length === 0)
-          delete newObj[k]
-      })
-      return newObj
-    }
-    return saveStateConfig({
-      ...remainingState,
-      ruleTable: removeEmpty({
-        ...ruleTable,
-        [mapId]: modifyRuleList(ruleTable[mapId]),
-      }),
-    })
-  }
-
-  if (action.type === '@poi-plugin-auto-refresher@AddConfigLines') {
-    const { ruleTable, disabledMapIds, ...remainingState } = state
-    const { configLines } = action
-
-    const newConfig = configLines.reduce(
-      addConfigLine,
-      { ruleTable, disabledMapIds })
-
-    return saveStateConfig({
-      ...remainingState,
-      ruleTable: newConfig.ruleTable,
-      disabledMapIds: newConfig.disabledMapIds,
-    })
-  }
-
-  return state
-}
-
-const actionCreators = ({
-  removeRule: (mapId,ruleId) => ({
-    type: '@poi-plugin-auto-refresher@RemoveRule',
-    mapId,
-    ruleId,
-  }),
-  addConfigLines: configLines => ({
-    type: '@poi-plugin-auto-refresher@AddConfigLines',
-    configLines,
-  }),
-})
-
-*/
-
 const mapDispatchToProps = dispatch1 =>
   bindActionCreators(actionCreators, dispatch1)
 
