@@ -22,7 +22,7 @@ import { mapDispatchToProps } from '../store'
 
 class ViewControlPanelImpl extends PureComponent {
   static propTypes = {
-    effMapFocus: PTyp.oneOfType([PTyp.number, PTyp.string]).isRequired,
+    disableExpandedMod: PTyp.bool.isRequired,
     mapFocusDesc: PTyp.string.isRequired,
     grouppedMapInfoList: PTyp.array.isRequired,
     changeMapFocus: PTyp.func.isRequired,
@@ -57,9 +57,11 @@ class ViewControlPanelImpl extends PureComponent {
   }
 
   render() {
-    const {mapFocusDesc, grouppedMapInfoList, effMapFocus} = this.props
-    // only available in 'all' view
-    const disableExpandedMod = effMapFocus !== 'all'
+    const {
+      mapFocusDesc,
+      grouppedMapInfoList,
+      disableExpandedMod,
+    } = this.props
     return (
       <Panel>
         <div
@@ -160,12 +162,13 @@ const ViewControlPanel = connect(
     const allMapIds = ruleMapIdsSelector(state)
     const effMapFocusText =
       effMapFocus === 'all' ? 'All' : mapIdToStr(effMapFocus)
+    const disableExpandedMod = effMapFocus !== 'all'
 
     const mapFocusDesc =
       mapFocus === 'auto' ?
         `${effMapFocusText} (Auto)` :
         effMapFocusText
-    return {mapFocusDesc, grouppedMapInfoList, allMapIds, effMapFocus}
+    return {mapFocusDesc, grouppedMapInfoList, allMapIds, disableExpandedMod}
   },
   mapDispatchToProps,
 )(ViewControlPanelImpl)
