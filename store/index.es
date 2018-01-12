@@ -116,6 +116,24 @@ const actionCreators = {
         modifyObject(mapId, (data = defaultMapRuleUIData) => modifier(data))
       )
     ),
+  applyParsedConfig: conf => {
+    if (!conf) {
+      console.error(`unexpected falsy config`)
+      return
+    }
+
+    if (conf.type === 'toggle') {
+      const {mapId, enabled} = conf
+      return actionCreators.modifyMapRule(
+        mapId,
+        modifyObject('enabled', () => enabled)
+      )
+    } else if (conf.type === 'line') {
+      console.log('TODO')
+    } else {
+      console.error(`unexpected toggle type: ${conf.type}`)
+    }
+  },
 }
 
 /*
