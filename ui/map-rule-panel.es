@@ -93,6 +93,7 @@ class MapRulePanelImpl extends PureComponent {
         {
           _.map(rules, (rule, ind) => {
             const {enabled: rEnabled} = rule
+            const processed = typeof rule.check === 'function'
             // we need to use ind here as we actually allow to have
             // identical rules within one map
             const key = ruleAsId(rule)
@@ -128,7 +129,11 @@ class MapRulePanelImpl extends PureComponent {
                 </div>
                 <Button
                   onClick={this.handleToggleRule(key)}
-                  bsStyle={rEnabled ? 'success' : 'danger'}
+                  bsStyle={
+                    processed ?
+                      (rEnabled ? 'success' : 'danger') :
+                      'warning'
+                  }
                   style={{
                     width: '3em',
                     gridArea: `${ind} / 3 / span 1 / span 1`,
