@@ -40,10 +40,15 @@ class RuleAddingPanelImpl extends PureComponent {
     this.setState({rawConf: ''})
   }
 
+  handleRuleKeyPress = conf => target => {
+    if (target.charCode === 13) {
+      this.handleApplyConfig(conf)()
+    }
+  }
+
   render() {
     const {rawConf} = this.state
     const conf = parseLine(rawConf, _.noop /* suppress warning */)
-    const cannotAdd = !conf
     return (
       <Panel>
         <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -56,13 +61,14 @@ class RuleAddingPanelImpl extends PureComponent {
           >
             <FormControl
               onChange={this.handleChangeRawConf}
+              onKeyPress={this.handleRuleKeyPress(conf)}
               type="text"
               placeholder={__('Enter rule')}
               value={rawConf}
             />
             <Button
               onClick={this.handleApplyConfig(conf)}
-              disabled={cannotAdd}
+              disabled={!conf}
               style={{
                 marginLeft: 5,
                 marginTop: 0,
