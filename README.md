@@ -6,3 +6,13 @@ This works by matching edges or nodes according to some preset rules,
 then call poi's own functionality to reload Flash.
 
 For details about how configs are written, see [`docs/config.md`](docs/config.md)
+
+## Changelog
+
+### 0.3.0
+
+- UI and rework on underlying mechanism.
+
+- Config import / export feature are removed due to rarely being used.
+
+- Migrate to a file-based config (no action required for users)
