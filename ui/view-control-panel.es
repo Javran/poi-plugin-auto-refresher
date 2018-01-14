@@ -122,6 +122,7 @@ class ViewControlPanelImpl extends PureComponent {
                           className="menu-item"
                           onSelect={this.handleSelectMap}
                           style={{
+                            ...(getMapRule(mapId).rules.length > 0 ? {fontWeight: 'bold'} : {}),
                             fontSize: '120%',
                             margin: '2px 5px',
                             gridArea: `${num} / ${area} / span 1 / span 1`,

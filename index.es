@@ -23,8 +23,6 @@ import { loadPState } from './p-state'
        - refresh detection
        - get <mean> and <var> from data
 
-   - "this map has some rules" indication in map picker
-
  */
 
 const pluginDidLoad = () => setTimeout(() => {

@@ -9,6 +9,10 @@ For details about how configs are written, see [`docs/config.md`](docs/config.md
 
 ## Changelog
 
+### 0.3.1 (pending)
+
+- Use a different font in map picker if a map already contains some rules.
+
 ### 0.3.0
 
 - UI and rework on underlying mechanism.
