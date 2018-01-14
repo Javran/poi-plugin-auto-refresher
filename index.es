@@ -18,7 +18,12 @@ import { loadPState } from './p-state'
 
        - popping up an alert
 
-   - learning mode:
+       - do nothing (almost like disabling, but this allows
+         user to edit and view rules)
+
+   - learning mode
+
+      this mode cannot be active when "refresh" method is used
 
        - refresh detection
        - get <mean> and <var> from data
