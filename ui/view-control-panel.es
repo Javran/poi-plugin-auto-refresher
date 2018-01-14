@@ -17,6 +17,7 @@ import {
   effectiveMapFocusSelector,
   grouppedMapInfoListSelector,
   ruleMapIdsSelector,
+  getMapRuleFuncSelector,
 } from '../selectors'
 import { mapDispatchToProps } from '../store'
 
@@ -27,6 +28,7 @@ class ViewControlPanelImpl extends PureComponent {
     grouppedMapInfoList: PTyp.array.isRequired,
     changeMapFocus: PTyp.func.isRequired,
     allMapIds: PTyp.array.isRequired,
+    getMapRule: PTyp.func.isRequired,
     modifyMapRuleUI: PTyp.func.isRequired,
   }
 
@@ -61,6 +63,7 @@ class ViewControlPanelImpl extends PureComponent {
       mapFocusDesc,
       grouppedMapInfoList,
       disableExpandedMod,
+      getMapRule,
     } = this.props
     return (
       <Panel>
@@ -160,6 +163,7 @@ const ViewControlPanel = connect(
     const effMapFocus = effectiveMapFocusSelector(state)
     const grouppedMapInfoList = grouppedMapInfoListSelector(state)
     const allMapIds = ruleMapIdsSelector(state)
+    const getMapRule = getMapRuleFuncSelector(state)
     const effMapFocusText =
       effMapFocus === 'all' ? 'All' : mapIdToStr(effMapFocus)
     const disableExpandedMod = effMapFocus !== 'all'
@@ -168,7 +172,13 @@ const ViewControlPanel = connect(
       mapFocus === 'auto' ?
         `${effMapFocusText} (Auto)` :
         effMapFocusText
-    return {mapFocusDesc, grouppedMapInfoList, allMapIds, disableExpandedMod}
+    return {
+      mapFocusDesc,
+      grouppedMapInfoList,
+      allMapIds,
+      disableExpandedMod,
+      getMapRule,
+    }
   },
   mapDispatchToProps,
 )(ViewControlPanelImpl)

@@ -145,6 +145,7 @@ export {
   validMapIdsSelector,
   effectiveMapFocusSelector,
   visibleMapIdsSelector,
+  getMapRuleFuncSelector,
   getMapRuleInfoFuncSelector,
   getFcdMapRoutesFuncSelector,
   shouldTriggerFuncSelector,
