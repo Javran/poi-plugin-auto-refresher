@@ -51,33 +51,35 @@ class RuleAddingPanelImpl extends PureComponent {
     const conf = parseLine(rawConf, _.noop /* suppress warning */)
     return (
       <Panel>
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-          <div
-            style={{
-              display: 'flex',
-              flex: 1,
-              alignItems: 'baseline',
-            }}
-          >
-            <FormControl
-              onChange={this.handleChangeRawConf}
-              onKeyPress={this.handleRuleKeyPress(conf)}
-              type="text"
-              placeholder={__('Enter rule')}
-              value={rawConf}
-            />
-            <Button
-              onClick={this.handleApplyConfig(conf)}
-              disabled={!conf}
+        <Panel.Body>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div
               style={{
-                marginLeft: 5,
-                marginTop: 0,
+                display: 'flex',
+                flex: 1,
+                alignItems: 'baseline',
               }}
             >
-              {__('Add Rule')}
-            </Button>
+              <FormControl
+                onChange={this.handleChangeRawConf}
+                onKeyPress={this.handleRuleKeyPress(conf)}
+                type="text"
+                placeholder={__('Enter rule')}
+                value={rawConf}
+              />
+              <Button
+                onClick={this.handleApplyConfig(conf)}
+                disabled={!conf}
+                style={{
+                  marginLeft: 5,
+                  marginTop: 0,
+                }}
+              >
+                {__('Add Rule')}
+              </Button>
+            </div>
           </div>
-        </div>
+        </Panel.Body>
       </Panel>
     )
   }

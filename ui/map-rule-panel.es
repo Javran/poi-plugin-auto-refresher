@@ -71,7 +71,10 @@ class MapRulePanelImpl extends PureComponent {
     return (
       <Panel
         className="map-rule-panel"
-        header={(
+        collapsible
+        expanded={effExpanded}
+      >
+        <Panel.Heading>
           <div style={{display: 'flex', alignItems: 'center'}}>
             <div
               onClick={this.handleToggleExpanded}
@@ -86,66 +89,67 @@ class MapRulePanelImpl extends PureComponent {
               <FontAwesome name={enabled ? 'check' : 'ban'} />
             </Button>
           </div>
-        )}
-        collapsible
-        expanded={effExpanded}
-      >
-        {
-          _.map(rules, (rule, ind) => {
-            const {enabled: rEnabled} = rule
-            const processed = typeof rule.check === 'function'
-            // we need to use ind here as we actually allow to have
-            // identical rules within one map
-            const key = ruleAsId(rule)
-            return (
-              <div
-                key={key}
-                style={{
-                  display: 'flex',
-                  ...(ind !== 0 ? {marginTop: 4} : {}),
-                }}
-              >
-                <Button
-                  bsStyle="danger"
-                  style={{
-                    width: '3em',
-                    gridArea: `${ind} / 1 / span 1 / span 1`,
-                  }}
-                  onClick={this.handleRemoveRule(key)}
-                  bsSize="xsmall">
-                  <FontAwesome name="trash" />
-                </Button>
-                <div
-                  className={(enabled && rEnabled) ? '' : 'text-muted'}
-                  style={{
-                    flex: 1,
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    marginLeft: '.4em',
-                  }}
-                >
-                  {prettyRule(__)(rule)}
-                </div>
-                <Button
-                  onClick={this.handleToggleRule(key)}
-                  bsStyle={
-                    processed ?
-                      (rEnabled ? 'success' : 'danger') :
-                      'warning'
-                  }
-                  style={{
-                    width: '3em',
-                    gridArea: `${ind} / 3 / span 1 / span 1`,
-                    marginLeft: '.4em',
-                  }}
-                  bsSize="xsmall">
-                  <FontAwesome name={rEnabled ? 'check' : 'ban'} />
-                </Button>
-              </div>
-            )
-          })
-        }
+        </Panel.Heading>
+        <Panel.Collapse>
+          <Panel.Body>
+            {
+              _.map(rules, (rule, ind) => {
+                const {enabled: rEnabled} = rule
+                const processed = typeof rule.check === 'function'
+                // we need to use ind here as we actually allow to have
+                // identical rules within one map
+                const key = ruleAsId(rule)
+                return (
+                  <div
+                    key={key}
+                    style={{
+                      display: 'flex',
+                      ...(ind !== 0 ? {marginTop: 4} : {}),
+                    }}
+                    >
+                    <Button
+                      bsStyle="danger"
+                      style={{
+                        width: '3em',
+                        gridArea: `${ind} / 1 / span 1 / span 1`,
+                      }}
+                      onClick={this.handleRemoveRule(key)}
+                      bsSize="xsmall">
+                      <FontAwesome name="trash" />
+                    </Button>
+                    <div
+                      className={(enabled && rEnabled) ? '' : 'text-muted'}
+                      style={{
+                        flex: 1,
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        marginLeft: '.4em',
+                      }}
+                    >
+                      {prettyRule(__)(rule)}
+                    </div>
+                    <Button
+                      onClick={this.handleToggleRule(key)}
+                      bsStyle={
+                        processed ?
+                               (rEnabled ? 'success' : 'danger') :
+                               'warning'
+                      }
+                      style={{
+                        width: '3em',
+                        gridArea: `${ind} / 3 / span 1 / span 1`,
+                        marginLeft: '.4em',
+                      }}
+                      bsSize="xsmall">
+                      <FontAwesome name={rEnabled ? 'check' : 'ban'} />
+                    </Button>
+                  </div>
+                )
+              })
+            }
+          </Panel.Body>
+        </Panel.Collapse>
       </Panel>
     )
   }

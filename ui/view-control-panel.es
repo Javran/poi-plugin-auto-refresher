@@ -67,92 +67,94 @@ class ViewControlPanelImpl extends PureComponent {
     } = this.props
     return (
       <Panel>
-        <div
-          style={{display: 'flex', alignItems: 'center'}}
-        >
-          <div style={{marginRight: 5}}>Map</div>
-          <Dropdown
-            open={this.state.menuOpened}
-            onToggle={this.handleToggleMenu}
-            id="auto-refresher-select-map"
-            style={{flex: 1, marginRight: 2}}>
-            <Dropdown.Toggle
+        <Panel.Body>
+          <div
+            style={{display: 'flex', alignItems: 'center'}}
+          >
+            <div style={{marginRight: 5}}>Map</div>
+            <Dropdown
+              open={this.state.menuOpened}
+              onToggle={this.handleToggleMenu}
+              id="auto-refresher-select-map"
+              style={{flex: 1, marginRight: 2}}>
+              <Dropdown.Toggle
               style={{width: '100%'}}
-            >
-              {mapFocusDesc}
-            </Dropdown.Toggle>
-            <Dropdown.Menu
-              style={{width: '100%'}}
-            >
-              <div style={{display: 'flex', justifyContent: 'space-around'}}>
-                <MenuItem
-                  className="menu-item"
-                  style={{width: '50%'}}
-                  onSelect={this.handleSelectMap}
-                  eventKey="auto">
-                  Auto
-                </MenuItem>
-                <MenuItem
-                  className="menu-item"
-                  style={{width: '50%'}}
-                  onSelect={this.handleSelectMap}
-                  eventKey="all">
-                  All
-                </MenuItem>
-              </div>
-              <MenuItem
-                style={{margin: '5px 0'}}
-                divider />
-              <div
-                style={{
-                  display: 'grid',
-                  grid: `auto / repeat(${grouppedMapInfoList.length}, 1fr)`,
-                  justifyItems: 'stretch',
-                  alignItems: 'stretch',
-                  marginLeft: 10,
-                  marginRight: 10,
-                }}
               >
-                {
+                {mapFocusDesc}
+              </Dropdown.Toggle>
+              <Dropdown.Menu
+              style={{width: '100%'}}
+              >
+                <div style={{display: 'flex', justifyContent: 'space-around'}}>
+                  <MenuItem
+                    className="menu-item"
+                    style={{width: '50%'}}
+                    onSelect={this.handleSelectMap}
+                    eventKey="auto">
+                    Auto
+                  </MenuItem>
+                  <MenuItem
+                    className="menu-item"
+                    style={{width: '50%'}}
+                    onSelect={this.handleSelectMap}
+                    eventKey="all">
+                    All
+                  </MenuItem>
+                </div>
+                <MenuItem
+                  style={{margin: '5px 0'}}
+                  divider />
+                <div
+                  style={{
+                    display: 'grid',
+                    grid: `auto / repeat(${grouppedMapInfoList.length}, 1fr)`,
+                    justifyItems: 'stretch',
+                    alignItems: 'stretch',
+                    marginLeft: 10,
+                    marginRight: 10,
+                  }}
+                >
+                  {
 
-                  _.flatMap(
-                    grouppedMapInfoList, ([_areaNum, mapInfoList]) =>
-                      mapInfoList.map(({area, num, mapId}) => (
-                        <MenuItem
-                          className="menu-item"
-                          onSelect={this.handleSelectMap}
-                          style={{
-                            ...(getMapRule(mapId).rules.length > 0 ? {fontWeight: 'bold'} : {}),
-                            fontSize: '120%',
-                            margin: '2px 5px',
-                            gridArea: `${num} / ${area} / span 1 / span 1`,
-                          }}
-                          eventKey={mapId}
-                          key={mapId}>
-                          {mapIdToStr(mapId)}
-                        </MenuItem>
-                      ))
-                  )
-                }
-              </div>
-            </Dropdown.Menu>
-          </Dropdown>
-          <Button
-            disabled={disableExpandedMod}
-            bsSize="small"
-            style={{marginRight: 2}}
-            onClick={this.handleExpandedValToAllMaps(false)}
-          >
-            <FontAwesome name="angle-double-up" />
-          </Button>
-          <Button
-            disabled={disableExpandedMod}
-            bsSize="small"
-            onClick={this.handleExpandedValToAllMaps(true)}
-          >
-            <FontAwesome name="angle-double-down" />
-          </Button>
-        </div>
+                    _.flatMap(
+                      grouppedMapInfoList, ([_areaNum, mapInfoList]) =>
+                        mapInfoList.map(({area, num, mapId}) => (
+                          <MenuItem
+                            className="menu-item"
+                            onSelect={this.handleSelectMap}
+                            style={{
+                              ...(getMapRule(mapId).rules.length > 0 ? {fontWeight: 'bold'} : {}),
+                              fontSize: '120%',
+                              margin: '2px 5px',
+                              gridArea: `${num} / ${area} / span 1 / span 1`,
+                            }}
+                            eventKey={mapId}
+                            key={mapId}>
+                            {mapIdToStr(mapId)}
+                          </MenuItem>
+                        ))
+                    )
+                  }
+                </div>
+              </Dropdown.Menu>
+            </Dropdown>
+            <Button
+              disabled={disableExpandedMod}
+              bsSize="small"
+              style={{marginRight: 2}}
+              onClick={this.handleExpandedValToAllMaps(false)}
+            >
+              <FontAwesome name="angle-double-up" />
+            </Button>
+            <Button
+              disabled={disableExpandedMod}
+              bsSize="small"
+              onClick={this.handleExpandedValToAllMaps(true)}
+            >
+              <FontAwesome name="angle-double-down" />
+            </Button>
+          </div>
+        </Panel.Body>
       </Panel>
     )
   }
