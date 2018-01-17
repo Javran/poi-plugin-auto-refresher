@@ -9,7 +9,9 @@ For details about how configs are written, see [`docs/config.md`](docs/config.md
 
 ## Changelog
 
-### 0.3.1 (pending)
+### 0.3.1
+
+- Update for react-bootstrap
 
 - Use a different font in map picker if a map already contains some rules.
 
