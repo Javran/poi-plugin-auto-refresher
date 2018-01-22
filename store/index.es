@@ -162,6 +162,18 @@ const actionCreators = {
       console.error(`unexpected toggle type: ${conf.type}`)
     }
   },
+  notifyGameStart: () => {
+    const lastGameStart = Number(new Date())
+    return actionCreators.modify(
+      modifyObject('lastGameStart', () => lastGameStart)
+    )
+  },
+  notifyFlashLoad: () => {
+    const lastFlashLoad = Number(new Date())
+    return actionCreators.modify(
+      modifyObject('lastFlashLoad', () => lastFlashLoad)
+    )
+  },
 }
 
 const mapDispatchToProps = dispatch1 =>

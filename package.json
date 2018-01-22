@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "parsimmon": "^1.2.0",
+    "shallowequal": "^1.0.2",
     "subtender": "^0.12.4"
   }
 }

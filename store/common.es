@@ -49,6 +49,10 @@ const initState = {
      INVARIANT: mapId should either be a valid mapId, or null, can never be 0.
    */
   mapId: null,
+  // timestamp of receiving mainD2.swf
+  lastGameStart: null,
+  // timestamp of most recent api_start2 request
+  lastFlashLoad: null,
   // a flag for indicating whether p-state is loaded.
   ready: false,
 }

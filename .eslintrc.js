@@ -91,7 +91,8 @@ module.exports = {
       'react-dom',
       'redux',
       'semver',
-      'i18n-2'
+      'i18n-2',
+      'moment'
     ],
   },
 }

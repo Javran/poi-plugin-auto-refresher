@@ -45,6 +45,16 @@ const mapIdSelector = createSelector(
   ext => ext.mapId
 )
 
+const lastFlashLoadSelector = createSelector(
+  extSelector,
+  ext => ext.lastFlashLoad
+)
+
+const lastGameStartSelector = createSelector(
+  extSelector,
+  ext => ext.lastGameStart
+)
+
 // return a sorted list of all mapIds known
 const allMapIdsSelector = createSelector(
   constSelector,
@@ -83,4 +93,6 @@ export {
   mapIdSelector,
   allMapIdsSelector,
   grouppedMapInfoListSelector,
+  lastGameStartSelector,
+  lastFlashLoadSelector,
 }

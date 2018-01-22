@@ -2,6 +2,7 @@ import { join } from 'path-extra'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import { InfoPanel } from './info-panel'
 import { RuleAddingPanel } from './rule-adding-panel'
 import { ViewControlPanel } from './view-control-panel'
 import { MapRulePanel } from './map-rule-panel'
@@ -22,6 +23,7 @@ class AutoRefresherMainImpl extends PureComponent {
           rel="stylesheet"
           href={join(__dirname, '..' , 'assets', 'auto-refresher.css')}
         />
+        <InfoPanel />
         <RuleAddingPanel />
         <ViewControlPanel />
         <div style={{flex: 1, overflowY: 'auto'}}>

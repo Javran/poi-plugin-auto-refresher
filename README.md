@@ -9,6 +9,10 @@ For details about how configs are written, see [`docs/config.md`](docs/config.md
 
 ## Changelog
 
+### 0.3.2 (pending)
+
+- Display duration since last game start and flash load.
+
 ### 0.3.1
 
 - Update for react-bootstrap
