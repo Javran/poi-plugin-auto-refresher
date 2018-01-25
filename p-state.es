@@ -137,7 +137,7 @@ const updatePState = oldPState => {
   if (newPState.$version === '0.3.0') {
     newPState = {
       ...newPState,
-      triggerAction: 'reload-flash',
+      triggerAction: 'reloadFlash',
       $version: '0.3.2',
     }
   }

@@ -1,4 +1,5 @@
 import { AutoRefresherMain as reactClass } from './ui'
+import { Settings as settingsClass } from './ui/settings'
 import { reducer, boundActionCreators as bac } from './store'
 import { globalSubscribe, globalUnsubscribe } from './observers'
 import { loadPState } from './p-state'
@@ -50,6 +51,7 @@ const pluginWillUnload = () => {
 
 export {
   reactClass,
+  settingsClass,
   reducer,
   pluginDidLoad,
   pluginWillUnload,
