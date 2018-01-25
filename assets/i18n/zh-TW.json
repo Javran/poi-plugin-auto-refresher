@@ -1,25 +1,46 @@
 {
-  "Control": "控制",
-  "File": "文件",
-  "Import ...": "導入…",
-  "Export ...": "導出…",
-
   "Enabled": "已啓用",
   "Disabled": "已禁用",
   "Invalid": "無效",
 
-  "Add Rule": "添加規則",
-  "Enter rule": "輸入規則",
+  "AddRule": "添加規則",
+  "EnterRule": "輸入規則",
 
-  "Import Auto Refresher Config": "導入自動刷新配置",
-  "Export Auto Refresher Config": "導出自動刷新配置",
+  "MatchEdgeId": "匹配路徑標識",
+  "MatchEdge": "匹配路徑",
+  "MatchEndNode": "匹配路徑到達節點",
 
-  "Auto Refresher Config (*.csv)": "自動刷新配置文件 (*.csv)",
+  "Hours": "小時",
+  "Mins": "分鐘",
+  "Secs": "秒",
 
-  "Match Edge Id": "匹配路徑標識",
-  "Match Edge": "匹配路徑",
-  "Match End Node": "匹配路徑到達節點",
+  "ViewControl": {
+    "Map": "海域",
+    "All": "全部",
+    "Auto": "自動"
+  },
 
-  "Auto Refresher": "自動刷新",
-  "Avoid unwelcome nodes or edges by refreshing. Use at your own risk.": "自動刷新以避免不受歡迎的節點或路徑，使用時請自行承擔風險"
+  "Info": {
+    "LastGameStart": "最近頁面載入",
+    "LastFlashLoad": "最近Flash載入"
+  },
+
+  "Message": {
+    "GoingOffroute": "航向偏離"
+  },
+
+  "TriggerAction": {
+    "Desc": "觸發動作",
+    "Options": {
+      "reloadFlash": "重載Flash",
+      "refreshPage": "刷新頁面",
+      "toast": "彈出消息",
+      "noop": "無動作"
+    }
+  },
+
+  "Package": {
+    "Name": "自動刷新",
+    "Desc": "自動刷新以避免不受歡迎的節點或路徑，使用時請自行承擔風險"
+  }
 }

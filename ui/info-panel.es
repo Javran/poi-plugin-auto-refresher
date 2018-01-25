@@ -12,6 +12,7 @@ import {
   lastFlashLoadSelector,
 } from '../selectors'
 import { PTyp } from '../ptyp'
+import { __ } from '../tr'
 
 const { ticker } = window
 const tickLabel = 'auto-refresher'
@@ -28,14 +29,14 @@ const pprDuration = mills => {
   const minutePart = minutes - hourPart*60
   const output = []
   if (hourPart > 0) {
-    output.push(`${hourPart} hours`)
+    output.push(`${hourPart} ${__('Hours')}`)
   }
   if (minutePart > 0) {
-    output.push(`${minutePart} mins`)
+    output.push(`${minutePart} ${__('Mins')}`)
   }
   // insufficient as a minute
   if (output.length === 0) {
-    output.push(`${seconds} secs`)
+    output.push(`${seconds} ${__('Secs')}`)
   }
   return output.join(' ')
 }
@@ -97,7 +98,7 @@ class InfoPanelImpl extends Component {
             <span
               style={{width: '8em'}}
             >
-              Last game start:
+              {__('Info.LastGameStart')}:
             </span>
             <span
               style={{
@@ -122,7 +123,7 @@ class InfoPanelImpl extends Component {
             <span
               style={{width: '8em'}}
             >
-              Last flash load:
+              {__('Info.LastFlashLoad')}:
             </span>
             <span
               style={{

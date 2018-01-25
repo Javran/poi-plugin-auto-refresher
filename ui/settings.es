@@ -10,8 +10,7 @@ import {
 } from '../selectors'
 import { mapDispatchToProps } from '../store'
 import { PTyp } from '../ptyp'
-
-// TODO: i18n
+import { __ } from '../tr'
 
 class SettingsImpl extends PureComponent {
   static propTypes = {
@@ -36,19 +35,21 @@ class SettingsImpl extends PureComponent {
               maxWidth: '25em',
             }}
           >
-            Trigger Action
+            {__('TriggerAction.Desc')}
           </div>
           <div style={{flex: 1}}>
             <ButtonGroup justified>
               <DropdownButton
                 id="auto-refresher-setting-trigger-action"
-                title={triggerAction}
+                title={__(`TriggerAction.Options.${triggerAction}`)}
                 disabled={!ready}
                 onSelect={this.handleSelectTriggerAction}
               >
                 {
                   words('reloadFlash refreshPage toast noop').map(w => (
-                    <MenuItem key={w} eventKey={w}>{w}</MenuItem>
+                    <MenuItem key={w} eventKey={w}>
+                      {__(`TriggerAction.Options.${w}`)}
+                    </MenuItem>
                   ))
                 }
               </DropdownButton>

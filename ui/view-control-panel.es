@@ -20,6 +20,7 @@ import {
   getMapRuleFuncSelector,
 } from '../selectors'
 import { mapDispatchToProps } from '../store'
+import { __ } from '../tr'
 
 class ViewControlPanelImpl extends PureComponent {
   static propTypes = {
@@ -71,19 +72,20 @@ class ViewControlPanelImpl extends PureComponent {
           <div
             style={{display: 'flex', alignItems: 'center'}}
           >
-            <div style={{marginRight: 5}}>Map</div>
+            <div style={{marginRight: 5}}>{__('ViewControl.Map')}</div>
             <Dropdown
               open={this.state.menuOpened}
               onToggle={this.handleToggleMenu}
               id="auto-refresher-select-map"
-              style={{flex: 1, marginRight: 2}}>
+              style={{flex: 1, marginRight: 2}}
+            >
               <Dropdown.Toggle
-              style={{width: '100%'}}
+                style={{width: '100%'}}
               >
                 {mapFocusDesc}
               </Dropdown.Toggle>
               <Dropdown.Menu
-              style={{width: '100%'}}
+                style={{width: '100%'}}
               >
                 <div style={{display: 'flex', justifyContent: 'space-around'}}>
                   <MenuItem
@@ -91,14 +93,14 @@ class ViewControlPanelImpl extends PureComponent {
                     style={{width: '50%'}}
                     onSelect={this.handleSelectMap}
                     eventKey="auto">
-                    Auto
+                    {__('ViewControl.Auto')}
                   </MenuItem>
                   <MenuItem
                     className="menu-item"
                     style={{width: '50%'}}
                     onSelect={this.handleSelectMap}
                     eventKey="all">
-                    All
+                    {__('ViewControl.All')}
                   </MenuItem>
                 </div>
                 <MenuItem
@@ -168,12 +170,12 @@ const ViewControlPanel = connect(
     const allMapIds = ruleMapIdsSelector(state)
     const getMapRule = getMapRuleFuncSelector(state)
     const effMapFocusText =
-      effMapFocus === 'all' ? 'All' : mapIdToStr(effMapFocus)
+      effMapFocus === 'all' ? __('ViewControl.All') : mapIdToStr(effMapFocus)
     const disableExpandedMod = effMapFocus !== 'all'
 
     const mapFocusDesc =
       mapFocus === 'auto' ?
-        `${effMapFocusText} (Auto)` :
+        `${effMapFocusText} (${__('ViewControl.Auto')})` :
         effMapFocusText
     return {
       mapFocusDesc,

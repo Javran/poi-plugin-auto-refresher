@@ -1,1 +1,46 @@
-{}
+{
+  "Enabled": "Enabled",
+  "Disabled": "Disabled",
+  "Invalid": "Invalid",
+
+  "AddRule": "Add Rule",
+  "EnterRule": "Enter Rule",
+
+  "MatchEdgeId": "Match Edge Id",
+  "MatchEdge": "Match Edge",
+  "MatchEndNode": "Match End Edge",
+
+  "Hours": "hours",
+  "Mins": "mins",
+  "Secs": "secs",
+
+  "ViewControl": {
+    "Map": "Map",
+    "All": "All",
+    "Auto": "Auto"
+  },
+
+  "Info": {
+    "LastGameStart": "Last Game Start",
+    "LastFlashLoad": "Last Flash Reload"
+  },
+
+  "Message": {
+    "GoingOffroute": "Going Offroute"
+  },
+
+  "TriggerAction": {
+    "Desc": "Trigger Action",
+    "Options": {
+      "reloadFlash": "Reload Flash",
+      "refreshPage": "Refresh Page",
+      "toast": "Popup Message",
+      "noop": "Do nothing"
+    }
+  },
+
+  "Package": {
+    "Name": "Auto Refresher",
+    "Desc": "Avoid unwelcome nodes or edges by refreshing. Use at your own risk."
+  }
+}

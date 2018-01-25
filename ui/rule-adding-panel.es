@@ -64,7 +64,7 @@ class RuleAddingPanelImpl extends PureComponent {
                 onChange={this.handleChangeRawConf}
                 onKeyPress={this.handleRuleKeyPress(conf)}
                 type="text"
-                placeholder={__('Enter rule')}
+                placeholder={__('EnterRule')}
                 value={rawConf}
               />
               <Button
@@ -75,7 +75,7 @@ class RuleAddingPanelImpl extends PureComponent {
                   marginTop: 0,
                 }}
               >
-                {__('Add Rule')}
+                {__('AddRule')}
               </Button>
             </div>
           </div>

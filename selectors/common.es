@@ -14,6 +14,7 @@ import {
 
 // for breaking circular dep
 import { initState } from '../store/common'
+import { __ } from '../tr'
 
 const extSelector = createSelector(
   extensionSelectorFactory('poi-plugin-auto-refresher'),
@@ -104,7 +105,7 @@ const performTriggerActionFuncSelector = createSelector(
     if (triggerAction === 'toast') {
       return () => {
         const {toast} = window
-        toast('Going offroute')
+        toast(__('Message.GoingOffroute'), {type: 'warning'})
       }
     }
     if (triggerAction === 'noop') {

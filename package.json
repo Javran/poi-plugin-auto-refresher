@@ -21,7 +21,8 @@
   },
   "license": "MIT",
   "poiPlugin": {
-    "title": "Auto Refresher",
+    "title": "Package.Name",
+    "description": "Package.Desc",
     "priority": 20,
     "icon": "refresh",
     "apiVer": {

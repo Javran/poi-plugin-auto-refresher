@@ -133,8 +133,8 @@ class MapRulePanelImpl extends PureComponent {
                       onClick={this.handleToggleRule(key)}
                       bsStyle={
                         processed ?
-                               (rEnabled ? 'success' : 'danger') :
-                               'warning'
+                          (rEnabled ? 'success' : 'danger') :
+                          'warning'
                       }
                       style={{
                         width: '3em',

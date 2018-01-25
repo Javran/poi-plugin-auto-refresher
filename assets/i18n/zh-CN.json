@@ -1,25 +1,46 @@
 {
-  "Control": "控制",
-  "File": "文件",
-  "Import ...": "导入…",
-  "Export ...": "导出…",
-
   "Enabled": "已启用",
   "Disabled": "已禁用",
   "Invalid": "无效",
 
-  "Add Rule": "添加规则",
-  "Enter rule": "输入规则",
+  "AddRule": "添加规则",
+  "EnterRule": "输入规则",
 
-  "Import Auto Refresher Config": "导入自动刷新配置",
-  "Export Auto Refresher Config": "导出自动刷新配置",
+  "MatchEdgeId": "匹配路径标识",
+  "MatchEdge": "匹配路径",
+  "MatchEndNode": "匹配路径到达节点",
 
-  "Auto Refresher Config (*.csv)": "自动刷新配置文件 (*.csv)",
+  "Hours": "小时",
+  "Mins": "分钟",
+  "Secs": "秒",
 
-  "Match Edge Id": "匹配路径标识",
-  "Match Edge": "匹配路径",
-  "Match End Node": "匹配路径到达节点",
+  "ViewControl": {
+    "Map": "海域",
+    "All": "全部",
+    "Auto": "自动"
+  },
 
-  "Auto Refresher": "自动刷新",
-  "Avoid unwelcome nodes or edges by refreshing. Use at your own risk.": "自动刷新以避免不受欢迎的节点或路径，使用时请自行承担风险"
+  "Info": {
+    "LastGameStart": "最近页面载入",
+    "LastFlashLoad": "最近Flash载入"
+  },
+
+  "Message": {
+    "GoingOffroute": "航向偏离"
+  },
+
+  "TriggerAction": {
+    "Desc": "触发动作",
+    "Options": {
+      "reloadFlash": "重载Flash",
+      "refreshPage": "刷新页面",
+      "toast": "弹出消息",
+      "noop": "无动作"
+    }
+  },
+
+  "Package": {
+    "Name": "自动刷新",
+    "Desc": "自动刷新以避免不受欢迎的节点或路径，使用时请自行承担风险"
+  }
 }
