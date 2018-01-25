@@ -41,6 +41,16 @@ const initState = {
    */
   mapRules: {},
   /*
+     action to trigger upon a match:
+
+     - 'reload-flash' (default)
+     - 'refresh-page'
+     - 'toast': use window.toast to pop up a message
+     - 'noop': do nothing
+
+   */
+  triggerAction: 'reload-flash',
+  /*
      not present in p-state, we have to keep track of mapId ourselves
      because <store>.sortie.sortieMapId is not reliable: both us and <store>.sortie
      reacts to /start api and by the time we are processing it,

@@ -4,7 +4,11 @@ import { join } from 'path-extra'
 import { createSelector } from 'reselect'
 
 import { parseRuleConfigStr } from './rule'
-import { uiSelector, mapRulesSelector } from './selectors/common'
+import {
+  uiSelector,
+  mapRulesSelector,
+  triggerActionSelector,
+} from './selectors/common'
 
 /*
    the data structure used by latest version of auto-refresher:
@@ -13,6 +17,7 @@ import { uiSelector, mapRulesSelector } from './selectors/common'
      $version: <string>,
      ui: <same as extStore.ui> (optional)
      mapRules: <same as extStore.mapRules>
+     triggerAction: <same as extStore.triggerAction>
    }
 
    note that 'ui' part is optional - any falsy value means
@@ -20,7 +25,7 @@ import { uiSelector, mapRulesSelector } from './selectors/common'
 
  */
 
-const latestVersion = '0.3.0'
+const latestVersion = '0.3.2'
 
 const getPStateFilePath = () => {
   const { APPDATA_PATH } = window
@@ -33,7 +38,8 @@ const getPStateFilePath = () => {
 const pStateSelector = createSelector(
   uiSelector,
   mapRulesSelector,
-  (ui, mapRules) => ({ui, mapRules})
+  triggerActionSelector,
+  (ui, mapRules, triggerAction) => ({ui, mapRules, triggerAction})
 )
 
 const savePState = pState => {
@@ -125,13 +131,30 @@ const updatePState = oldPState => {
   if (oldPState === null)
     return null
 
-  if (oldPState.$version === latestVersion) {
-    const {$version: _ignored, ...pState} = oldPState
+  let newPState = oldPState
+
+  // 0.3.0 to 0.3.2
+  if (newPState.$version === '0.3.0') {
+    newPState = {
+      ...newPState,
+      triggerAction: 'reload-flash',
+      $version: '0.3.2',
+    }
+  }
+
+  if (newPState.$version === latestVersion) {
+    if (oldPState !== newPState) {
+      setTimeout(() =>
+        savePState(newPState)
+      )
+    }
+
+    const {$version: _ignored, ...pState} = newPState
     return pState
   }
 
   console.warn(`invalid p-state structure, using default.`)
-  console.warn(`the loaded p-state:`, oldPState)
+  console.warn(`the loaded / updated p-state:`, newPState)
   return null
 }
 

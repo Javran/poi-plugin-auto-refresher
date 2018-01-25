@@ -14,7 +14,8 @@ import {
 
 const debouncedSavePState = _.debounce(
   pStateData => setTimeout(() => savePState(pStateData)),
-  500)
+  500
+)
 
 const extPStateSelector = createStructuredSelector({
   pState: pStateSelector,

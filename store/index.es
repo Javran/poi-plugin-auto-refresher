@@ -24,12 +24,16 @@ const reducer = (state = initState, action) => {
     // using _.get because pState could be null
     const ui = _.get(pState,'ui')
     const mapRules = _.get(pState, 'mapRules')
+    const triggerAction = _.get(pState, 'triggerAction')
     return _.flow(
       ui ?
         modifyObject('ui', () => ui) :
         _.identity,
       mapRules ?
         modifyObject('mapRules', () => mapRules) :
+        _.identity,
+      triggerAction ?
+        modifyObject('triggerAction', () => triggerAction) :
         _.identity,
       modifyObject('ready', () => true)
     )(state)

@@ -40,6 +40,11 @@ const mapRulesSelector = createSelector(
   ext => ext.mapRules
 )
 
+const triggerActionSelector = createSelector(
+  extSelector,
+  ext => ext.triggerAction
+)
+
 const mapIdSelector = createSelector(
   extSelector,
   ext => ext.mapId
@@ -89,6 +94,7 @@ export {
   readySelector,
   mapRulesSelector,
   uiSelector,
+  triggerActionSelector,
   mapFocusSelector,
   mapIdSelector,
   allMapIdsSelector,
