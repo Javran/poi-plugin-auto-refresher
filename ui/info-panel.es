@@ -17,7 +17,6 @@ import { __ } from '../tr'
 const { ticker } = window
 const tickLabel = 'auto-refresher'
 
-/* TODO: i18n */
 const pprDuration = mills => {
   if (mills === null) {
     return null

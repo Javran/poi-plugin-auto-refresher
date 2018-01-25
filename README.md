@@ -9,9 +9,16 @@ For details about how configs are written, see [`docs/config.md`](docs/config.md
 
 ## Changelog
 
-### 0.3.2 (pending)
+### 0.3.2
 
 - Display duration since last game start and flash load.
+
+- Alternative trigger actions:
+
+    - Reload Flash (default)
+    - Refresh Page
+    - Popping up a message
+    - Do nothing
 
 ### 0.3.1
 
