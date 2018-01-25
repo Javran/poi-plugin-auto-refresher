@@ -5,11 +5,11 @@ import {
 } from 'subtender'
 import { bindActionCreators } from 'redux'
 
-import { gameReloadFlash } from 'views/services/utils'
 import { store } from 'views/create-store'
 
 import {
   shouldTriggerFuncSelector,
+  performTriggerActionFuncSelector,
 } from '../selectors'
 import { ruleAsId } from '../rule'
 
@@ -76,8 +76,12 @@ const reducer = (state = initState, action) => {
       const edgeId = action.body.api_no
       const shouldTrigger = shouldTriggerFuncSelector(poiState)
       if (shouldTrigger(edgeId)) {
-        // TODO: alternative trigger
-        gameReloadFlash()
+        const performAction = performTriggerActionFuncSelector(poiState)
+        if (typeof performAction === 'function') {
+          performAction()
+        } else {
+          console.error(`unexpected performAction value: ${performAction}`)
+        }
       }
     })
 

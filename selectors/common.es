@@ -7,6 +7,10 @@ import {
 } from 'views/utils/selectors'
 import { generalComparator } from 'subtender'
 import { splitMapId } from 'subtender/kc'
+import {
+  gameReloadFlash,
+  gameRefreshPage,
+} from 'views/services/utils'
 
 // for breaking circular dep
 import { initState } from '../store/common'
@@ -88,6 +92,30 @@ const grouppedMapInfoListSelector = createSelector(
   }
 )
 
+const performTriggerActionFuncSelector = createSelector(
+  triggerActionSelector,
+  triggerAction => {
+    if (triggerAction === 'reloadFlash') {
+      return gameReloadFlash
+    }
+    if (triggerAction === 'refreshPage') {
+      return gameRefreshPage
+    }
+    if (triggerAction === 'toast') {
+      return () => {
+        const {toast} = window
+        toast('Going offroute')
+      }
+    }
+    if (triggerAction === 'noop') {
+      return _.noop
+    }
+
+    console.error(`unknown trigger action: ${triggerAction}, assuming "noop"`)
+    return _.noop
+  }
+)
+
 export {
   extSelector,
   fcdMapSelector,
@@ -101,4 +129,5 @@ export {
   grouppedMapInfoListSelector,
   lastGameStartSelector,
   lastFlashLoadSelector,
+  performTriggerActionFuncSelector,
 }

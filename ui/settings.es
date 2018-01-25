@@ -2,7 +2,7 @@ import { createStructuredSelector } from 'reselect'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap'
-import { modifyObject, not, words } from 'subtender'
+import { modifyObject, words } from 'subtender'
 
 import {
   readySelector,
@@ -10,6 +10,8 @@ import {
 } from '../selectors'
 import { mapDispatchToProps } from '../store'
 import { PTyp } from '../ptyp'
+
+// TODO: i18n
 
 class SettingsImpl extends PureComponent {
   static propTypes = {

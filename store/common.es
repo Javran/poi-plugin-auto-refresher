@@ -48,6 +48,11 @@ const initState = {
      - 'toast': use window.toast to pop up a message
      - 'noop': do nothing
 
+     originally there is a plan of intentionally making delays,
+     but it turns out that, as we already have network delays,
+     the result will look like normal distribution on the server end anyways.
+     so it's not really necessary to have an intentional delay
+
    */
   triggerAction: 'reloadFlash',
   /*
