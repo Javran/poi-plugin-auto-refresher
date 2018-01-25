@@ -95,7 +95,7 @@ class InfoPanelImpl extends Component {
         <Panel.Body>
           <div style={{display: 'flex', alignItems: 'center'}}>
             <span
-              style={{width: '8em'}}
+              style={{width: '9em'}}
             >
               {__('Info.LastGameStart')}:
             </span>
@@ -120,7 +120,7 @@ class InfoPanelImpl extends Component {
           </div>
           <div style={{display: 'flex', alignItems: 'center'}}>
             <span
-              style={{width: '8em'}}
+              style={{width: '9em'}}
             >
               {__('Info.LastFlashLoad')}:
             </span>
