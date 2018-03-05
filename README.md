@@ -9,6 +9,10 @@ For details about how configs are written, see [`docs/config.md`](docs/config.md
 
 ## Changelog
 
+### 0.3.4
+
+- Fix some layout issue
+
 ### 0.3.3
 
 - Fix a style issue
