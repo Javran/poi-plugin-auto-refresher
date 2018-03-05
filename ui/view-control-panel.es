@@ -119,8 +119,8 @@ class ViewControlPanelImpl extends PureComponent {
                   {
 
                     _.flatMap(
-                      grouppedMapInfoList, ([_areaNum, mapInfoList]) =>
-                        mapInfoList.map(({area, num, mapId}) => (
+                      grouppedMapInfoList, ([_areaNum, mapInfoList], areaOffset) =>
+                        mapInfoList.map(({num, mapId}) => (
                           <MenuItem
                             className="menu-item"
                             onSelect={this.handleSelectMap}
@@ -128,7 +128,7 @@ class ViewControlPanelImpl extends PureComponent {
                               ...(getMapRule(mapId).rules.length > 0 ? {fontWeight: 'bold'} : {}),
                               fontSize: '120%',
                               margin: '2px 5px',
-                              gridArea: `${num} / ${area} / span 1 / span 1`,
+                              gridArea: `${num} / ${areaOffset+1} / span 1 / span 1`,
                             }}
                             eventKey={mapId}
                             key={mapId}>
